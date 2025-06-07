@@ -1,3 +1,5 @@
+#import "templates/html-toolkit.typ": a, span
+
 /// Link to a GitHub issue
 ///
 /// - repo-num (str): Repo and issue number, e.g., `"typst#193"`, `"hayagriva#189"`
@@ -9,13 +11,12 @@
     repo = "typst/" + repo
   }
 
-  show link: it => html.elem("a", attrs: (target: "_blank", href: it.dest), it.body)
+  show link: it => a(target: "_blank", href: it.dest, it.body)
   link(
     "https://github.com/" + repo + "/issues/" + num + anchor,
     {
-      html.elem(
-        "span",
-        attrs: (class: "icon"),
+      span(
+        class: "icon",
         // https://primer.style/octicons/icon/issue-opened-16/
         html.elem(
           "svg",
