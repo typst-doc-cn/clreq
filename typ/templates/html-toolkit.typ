@@ -97,16 +97,14 @@
 /// - extra-head (content): Additional content to insert into the head.
 /// ->
 #let load-html-template(template-path, body, extra-head: none) = {
-  let html-children = xml(template-path).at(0).children.filter(it => type(it) != str)
+  let html-elem = xml(template-path).at(0)
+  let html-children = html-elem.children.filter(it => type(it) != str)
   let head = to-html(html-children.at(0)).body
   let body = to-html(html-children.at(1), slot: body)
 
   html.elem(
     "html",
-    attrs: (
-      "lang": "en",
-      "xmlns": "http://www.w3.org/1999/xhtml",
-    ),
+    attrs: html-elem.attrs,
     {
       html.elem(
         "head",
