@@ -1,4 +1,5 @@
-#import "typ/util.typ": issue
+#import "typ/util.typ": issue, render-examples
+#show: render-examples
 
 #html.elem("h1")[
   #link("https://www.w3.org/TR/clreq/")[clreq]-#link("https://www.w3.org/TR/clreq-gap/")[gap] for typst
@@ -82,6 +83,10 @@ Please refer to it with caution.
   #issue("typst#1716", anchor: "#issuecomment-1855739446")
 
   #link("https://typst-doc-cn.github.io/guide/FAQ/underline-misplace.html")[中英文下划线错位了怎么办？ | Typst 中文社区导航]
+
+  ```example
+  #underline[中文和English的下划线不一样高]
+  ```
 
 == Abbreviation, ellipsis, & repetition
 

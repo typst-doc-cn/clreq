@@ -1,4 +1,4 @@
-#import "templates/html-toolkit.typ": a, span
+#import "templates/html-toolkit.typ": a, span, div, div-frame
 
 /// Link to a GitHub issue
 ///
@@ -33,3 +33,23 @@
     },
   )
 }
+
+
+#import "@preview/tidy:0.4.3": show-example as tidy-example
+
+/// Adds the two languages `example` and `examplec` to `raw` that can be used to render code examples side-by-side with an automatic preview.
+///
+/// Please refer to https://github.com/Mc-Zen/tidy/releases/latest/download/tidy-guide.pdf#tidy-render-examples() for more info.
+#let render-examples = tidy-example.render-examples.with(
+  // Edit from test cases of tidy.
+  // https://github.com/Mc-Zen/tidy/blob/3dbdde92b1de56e516886255ce25ed813a87d008/tests/show-example/test.typ
+  layout: (code, preview, ..sink) => {
+    div(
+      class: "example",
+      {
+        code
+        div-frame(attrs: (class: "preview"), preview)
+      },
+    )
+  },
+)

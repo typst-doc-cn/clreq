@@ -286,3 +286,37 @@ figcaption {
 .block-list.accent > li {
   border-left: 2.5px solid var(--accent);
 }
+
+/* render-examples in util.typ */
+.example {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+.example > .preview {
+  border-radius: 8px;
+  /* Copied from typst.app/docs `.preview` */
+  align-items: center;
+  background: #e4e5ea;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  justify-content: center;
+  padding: 12px 16px;
+}
+.example > .preview > svg.typst-doc {
+  padding: 1em;
+  border-radius: 8px;
+  /* Copied from typst.app/docs `.preview > *` */
+  background: #fff;
+  box-shadow: 0 4px 12px rgba(89, 85, 101, .2);
+  height: auto;
+  max-height: 100%;
+  max-width: 100%;
+  width: auto;
+}
+.dark .example > .preview {
+  background: darkgray;
+}
+.dark .example > .preview > svg.typst-doc {
+  background: lightgray;
+}
