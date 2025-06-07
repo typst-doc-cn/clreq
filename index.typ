@@ -1,6 +1,4 @@
-
 #import "/typ/templates/html-toolkit.typ": load-html-template
-#import "@preview/cmarker:0.1.6"
 
 /// Wraps the following content with the HTML template.
 #show: load-html-template.with(
@@ -13,10 +11,4 @@
 
 #show: html.elem.with("main")
 
-#html.elem("h1")[
-  clreq Analysis for Typst
-]
-
-#cmarker.render(read("main.md"))
-
-
+#include "main.typ"
