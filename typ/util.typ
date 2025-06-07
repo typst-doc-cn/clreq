@@ -48,7 +48,7 @@
       class: "example",
       {
         code
-        div-frame(attrs: (class: "preview"), preview)
+        div-frame(preview, class: "preview")
       },
     )
   },
