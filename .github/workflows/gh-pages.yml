@@ -32,6 +32,8 @@ jobs:
         with:
           submodules: recursive
       - uses: typst-community/setup-typst@v4
+      - name: Install fonts
+        run: sudo apt install fonts-noto-cjk
       - run: mkdir -p dist
       - run: typst compile index.typ --features html dist/index.html
       - name: Setup Pages
