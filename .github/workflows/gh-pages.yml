@@ -1,4 +1,4 @@
-name: blog::gh_pages
+name: clreq::gh_pages
 
 on:
   # Runs on pushes targeting the default branch
@@ -37,7 +37,6 @@ jobs:
       - uses: typst-community/setup-typst@v4
       - run: mkdir -p dist
       - run: typst compile index.typ --features html dist/index.html
-      - run: cp public/favicon.svg dist/favicon.svg
       - name: Setup Pages
         uses: actions/configure-pages@v5
       - name: Upload artifact
