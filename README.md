@@ -1,6 +1,6 @@
 # clreq for Typst
 
-A gap analysis of the [Chinese Layout Requirements (clreq)](www.w3.org/International/clreq/) for Typst.
+A gap analysis of the [Chinese Layout Requirements (clreq)](https://www.w3.org/International/clreq/) for Typst.
 
 ## Build
 
