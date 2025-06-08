@@ -122,7 +122,12 @@
 #workaround("https://typst-doc-cn.github.io/guide/FAQ/underline-misplace.html")
 
 ```example
-#underline[中文和English的下划线不一样高]
+>>> Current:
+#underline[中文和English]
+
+>>> Expected:
+>>> #set underline(offset: .15em, stroke: .05em)
+>>> #underline[中文和English]
 ```
 
 == Abbreviation, ellipsis, & repetition
