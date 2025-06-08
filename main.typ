@@ -5,15 +5,29 @@
   #link("https://www.w3.org/TR/clreq/")[clreq]-#link("https://www.w3.org/TR/clreq-gap/")[gap] for typst
 ]
 
-Chinese Layout Gap Analysis for Typst.
+#babel(en: [Chinese Layout Gap Analysis for Typst.], zh: [分析 Typst 与中文排版的差距。])
 
-This document describes gaps for the support of the Chinese script within Typst, a markup-based typesetting software.
-In particular, it is concerned with #link("https://www.w3.org/TR/clreq/")[text layout] and #link("https://std.samr.gov.cn/gb/search/gbDetailed?id=71F772D8055ED3A7E05397BE0A0AB82A")[bibliography].
-It examines whether needed features are supported by the typst compiler, and provides information on potential workarounds.
+#babel(
+  en: [
+    Typst is a markup-based typesetting software, and this document describes gaps for the support of the Chinese script within Typst.
+    In particular, it is concerned with #link("https://www.w3.org/TR/clreq/")[text layout] and #link("https://std.samr.gov.cn/gb/search/gbDetailed?id=71F772D8055ED3A7E05397BE0A0AB82A")[bibliography].
+    It examines whether needed features are supported by the typst compiler, and provides information on potential workarounds.
+  ],
+  zh: [
+    Typst 是一款基于标记的排版软件，这份文档描述了它在中文支持方面的差距，特别是#link("https://www.w3.org/TR/clreq/")[排版]和#link("https://std.samr.gov.cn/gb/search/gbDetailed?id=71F772D8055ED3A7E05397BE0A0AB82A")[参考文献著录]。本文会检查 typst 编译器是否支持所需功能，并介绍可能的临时解决方案。
+  ],
+)
 
-#emoji.warning This document is only an early draft.
-Additionally, it is not endorsed by either #link("https://www.w3.org/")[W3C] or #link("https://typst.app/home")[Typst GmBH].
-Please refer to it with caution.
+#babel(
+  en: [
+    #emoji.warning This document is only an early draft.
+    Additionally, it is not endorsed by either #link("https://www.w3.org/")[W3C] or #link("https://typst.app/home")[Typst GmbH].
+    Please refer to it with caution.
+  ],
+  zh: [
+    #emoji.warning 这份文档仅是早期草稿。此外，本文并无 #link("https://www.w3.org/")[W3C] 或 #link("https://typst.app/home")[Typst GmbH] 背书。请谨慎参考。
+  ],
+)
 
 #set heading(numbering: "1.1")
 #show heading.where(level: 3): set heading(numbering: none)
