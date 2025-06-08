@@ -1,4 +1,4 @@
-#import "typ/util.typ": issue, render-examples
+#import "typ/util.typ": babel, bbl, issue, render-examples, workaround
 #show: render-examples
 
 #html.elem("h1")[
@@ -16,35 +16,54 @@ Additionally, it is not endorsed by either #link("https://www.w3.org/")[W3C] or 
 Please refer to it with caution.
 
 #set heading(numbering: "1.1")
+#show heading.where(level: 3): set heading(numbering: none)
 
 = Text direction
 
 == Writing mode
 
-- RFC: Vertical Writing Mode #issue("typst#5908")
+=== #bbl(en: [Vertical Writing Mode], zh: [直排])
+
+#issue("typst#5908")
 
 == Bidirectional text (N/A)
 
 = Glyph shaping & positioning
 
-== Fonts & font styles
+== Fonts selection
 
-=== Font selection
+=== #bbl(en: [Writing non-Latin (e.g.~Chinese) text without a configured font leads to unpredictable font fallback])
+#issue("typst#5040")
 
-- Writing non-Latin (e.g.~Chinese) text without a configured font leads to unpredictable font fallback #issue("typst#5040")
+=== #bbl(
+  en: [Wrong "monospace" font fallback for CJK characters in raw block],
+  zh: [为什么代码块里面的中文字体显示不正常？],
+)
 
-- Wrong "monospace" font fallback for CJK characters in raw block #issue("typst#3385")
+#issue("typst#3385")
+#workaround("https://typst-doc-cn.github.io/guide/FAQ/chinese-in-raw.html")
 
-  #link("https://typst-doc-cn.github.io/guide/FAQ/chinese-in-raw.html")[为什么代码块里面的中文字体显示不正常？ | Typst 中文社区导航]
+=== #bbl(en: [Language-dependant font configuration])
 
-- Language-dependant font configuration #issue("typst#794")
+#issue("typst#794")
 
-=== Font rendering
+== Font rendering & font styles
 
-- Chinese rendering error #issue("typst#5900")
-- Size per font #issue("typst#6295")
-- Compiler not rendering Chinese/CJK fonts #issue("typst#6054")
-- Support variable fonts #issue("typst#185")
+=== #bbl(en: [Chinese rendering error])
+
+#issue("typst#5900")
+
+=== #bbl(en: [Size per font])
+
+#issue("typst#6295")
+
+=== #bbl(en: [Compiler not rendering Chinese/CJK fonts])
+
+#issue("typst#6054")
+
+=== #bbl(en: [Support variable fonts])
+
+#issue("typst#185")
 
 == Context-based shaping and positioning (N/A)
 
@@ -52,11 +71,11 @@ Please refer to it with caution.
 
 == Letterform slopes, weights, & italics
 
-- Fake text weight and style (synthesized bold and italic) #issue("typst#394")
+=== #bbl(en: [Fake text weight and style (synthesized bold and italic)], zh: [中文没有加粗或斜体])
 
-  #link("https://typst-doc-cn.github.io/guide/FAQ/chinese-bold.html")[中文没有加粗 | Typst 中文社区导航]
-
-- #link("https://typst-doc-cn.github.io/guide/FAQ/chinese-skew.html")[如何设置中文字体的斜体？ | Typst 中文社区导航]
+#issue("typst#394")
+#workaround("https://typst-doc-cn.github.io/guide/FAQ/chinese-bold.html", note: "bold")
+#workaround("https://typst-doc-cn.github.io/guide/FAQ/chinese-skew.html", note: "skew")
 
 == Case & other character transforms (N/A)
 
@@ -72,28 +91,37 @@ Please refer to it with caution.
 
 == Quotations & citations
 
-- Typst 0.13 `covers: "latin-in-cjk"` doesn’t cover apostrophes and quotation marks #issue("typst#5858")
-- #link("https://typst-doc-cn.github.io/guide/FAQ/smartquote-font.html")[引号的字体不对 / 引号的宽度不对 | Typst 中文社区导航]
+=== #bbl(
+  en: [`covers: "latin-in-cjk"` doesn’t cover apostrophes and quotation marks],
+  zh: [引号的字体不对 / 引号的宽度不对],
+)
+
+#issue("typst#5858")
+#workaround("https://typst-doc-cn.github.io/guide/FAQ/smartquote-font.html")
 
 == Emphasis & highlighting
 
-- Superscripts in underlined text makes the underline change size and position #issue("typst#1210")
+=== #bbl(en: [Underline breaks when mixing Chinese and English], zh: [中英文下划线错位])
 
-  Underline breaks when mixing Chinese and English, mentioned in
-  #issue("typst#1716", anchor: "#issuecomment-1855739446")
+#issue("typst#1210")
+#issue("typst#1716", anchor: "#issuecomment-1855739446")
+#workaround("https://typst-doc-cn.github.io/guide/FAQ/underline-misplace.html")
 
-  #link("https://typst-doc-cn.github.io/guide/FAQ/underline-misplace.html")[中英文下划线错位了怎么办？ | Typst 中文社区导航]
-
-  ```example
-  #underline[中文和English的下划线不一样高]
-  ```
+```example
+#underline[中文和English的下划线不一样高]
+```
 
 == Abbreviation, ellipsis, & repetition
 
 == Inline notes & annotations
 
-- Add support for ruby (CJK, e.g., furigana for Japanese) #issue("typst#1489")
-- warichu (mentioned in #issue("typst#193"))
+=== #bbl(en: [Add support for ruby (CJK, e.g., furigana for Japanese)])
+
+#issue("typst#1489")
+
+=== #bbl(en: [warichu])
+
+#issue("typst#193", note: [mentioned])
 
 == Text decoration & other inline features
 
@@ -105,41 +133,62 @@ Please refer to it with caution.
 
 == Text alignment & justification
 
-- CJK-latin glues stretch only before latin characters #issue("typst#6062")
+=== #bbl(en: [CJK-latin glues stretch only before latin characters])
 
-- Strict grid for CJK, hopefully via glue #issue("typst#4404")
+#issue("typst#6062")
 
-- CJK brackets at the beginning of paragraph #issue("typst#4011")
+=== #bbl(en: [Strict grid for CJK, hopefully via glue])
 
-- CJK punctuation at the start of paragraphs are not adjusted sometimes #issue("typst#2348")
+#issue("typst#4404")
 
-- Paragraph should be able to contain tight lists and block-level equations #issue("typst#3206")
+=== #bbl(en: [CJK brackets at the beginning of paragraph])
 
-  #link("https://typst-doc-cn.github.io/guide/FAQ/block-equation-in-paragraph.html")[如何避免公式、图表等块元素的下一行缩进？ | Typst 中文社区导航]
+#issue("typst#4011")
 
-- 均排 Even inter-character spacing
+=== #bbl(en: [CJK punctuation at the start of paragraphs are not adjusted sometimes])
 
-  #link("https://typst-doc-cn.github.io/guide/FAQ/character-intersperse.html")[如何让几个汉字占固定宽度并均匀分布？ | Typst 中文社区导航]
+#issue("typst#2348")
+
+=== #bbl(
+  en: [Paragraph should be able to contain tight lists and block-level equations],
+  zh: [如何避免公式、图表等块元素的下一行缩进],
+)
+
+#issue("typst#3206")
+#workaround("https://typst-doc-cn.github.io/guide/FAQ/block-equation-in-paragraph.html")
+
+=== #bbl(en: [Even inter-character spacing], zh: [均排])
+
+#workaround("https://typst-doc-cn.github.io/guide/FAQ/character-intersperse.html")
+
+#babel(zh: [均排是指让几个汉字占固定宽度并均匀分布。])
 
 == Text spacing
 
-- CJK-Latin-spacing not working with raw text #issue("typst#2702")
+=== #bbl(en: [CJK-Latin-spacing not working with raw text])
 
-- Punctuation compression does not work with `#show` #issue("typst#5474")
+#issue("typst#2702")
 
-- CJK-Latin-spacing not working with inline equation #issue("typst#2703")
+=== #bbl(en: [Punctuation compression does not work with `#show`])
 
-  #link("https://typst-doc-cn.github.io/guide/FAQ/chinese-space.html")[行内公式与中文之间没有自动空格 | Typst 中文社区导航]
+#issue("typst#5474")
 
-- #link("https://typst-doc-cn.github.io/guide/FAQ/weird-punct.html")[为什么连续标点会挤压在一起？ | Typst 中文社区导航]
+=== #bbl(en: [CJK-Latin-spacing not working with inline equation], zh: [行内公式与中文之间没有自动空格])
+
+#issue("typst#2703")
+#workaround("https://typst-doc-cn.github.io/guide/FAQ/chinese-space.html")
+
+=== #bbl(zh: [连续标点会挤压在一起])
+#workaround("https://typst-doc-cn.github.io/guide/FAQ/weird-punct.html")
 
 == Baselines, line-height, etc. (N/A)
 
 == Lists, counters, etc.
 
-- Too wide spacing between heading numbering and title in CJK #issue("typst#5778")
+=== #bbl(en: [Too wide spacing between heading numbering and title in CJK], zh: [标题的编号后面的空格])
 
-  #link("https://typst-doc-cn.github.io/guide/FAQ/heading-numbering-space.html")[如何去掉标题的编号后面的空格？ | Typst 中文社区导航]
+#issue("typst#5778")
+#workaround("https://typst-doc-cn.github.io/guide/FAQ/heading-numbering-space.html")
 
 == Styling initials
 
@@ -159,50 +208,83 @@ Please refer to it with caution.
 
 == Citing
 
-- Continuous numbering, mentioned in
-  #issue("hayagriva#189")
+=== #bbl(en: [Continuous numbering], zh: [参考文献条目中不连续页码显示错误（缺少“,”）])
 
-  #link("https://typst-doc-cn.github.io/guide/FAQ/bib-missing-page-delimiter.html")[参考文献条目中不连续页码显示错误（缺少“,”） | Typst 中文社区导航]
+#issue("hayagriva#189", note: [mentioned])
 
-- #link("https://typst-doc-cn.github.io/guide/FAQ/cite-flying.html")[引用编号的数字高于括号 | Typst 中文社区导航]
+#link("https://typst-doc-cn.github.io/guide/FAQ/bib-missing-page-delimiter.html")
 
-- #link("https://typst-doc-cn.github.io/guide/FAQ/ref-superscript.html")[引用参考文献时，如何共存上标和非上标形式？ | Typst 中文社区导航]
+=== #bbl(zh: [引用编号的数字高于括号])
+
+#workaround("https://typst-doc-cn.github.io/guide/FAQ/cite-flying.html")
+
+=== #bbl(zh: [引用参考文献时，如何共存上标和非上标形式])
+
+#workaround("https://typst-doc-cn.github.io/guide/FAQ/ref-superscript.html")
 
 == Bibliography listing
 
-- chinese et al. #issue("hayagriva#291")
+=== #bbl(en: [chinese et al.], zh: [修复英文参考文献中的“等”])
 
-  #link("https://typst-doc-cn.github.io/guide/FAQ/bib-etal-lang.html")[如何修复英文参考文献中的“等”？ | Typst 中文社区导航]
+#issue("hayagriva#291")
+#workaround("https://typst-doc-cn.github.io/guide/FAQ/bib-etal-lang.html")
 
-- CJK sorting is based on unicode code points #issue("hayagriva#259")
+=== #bbl(en: [CJK sorting is based on unicode code points])
 
-- `gb-7714-2015-note` show incorrectly, mentioned in #issue("hayagriva#189")
+#issue("hayagriva#259")
 
-- Some entries in thesis and report bibliography items are not shown #issue("hayagriva#112")
+=== #bbl(en: [`gb-7714-2015-note` show incorrectly])
 
-  #link("https://typst-doc-cn.github.io/guide/FAQ/bib-missing-school.html")[参考文献学位论文条目 `[D]` 后不显示“地点: 学校名称, 年份.” | Typst 中文社区导航]
+#issue("hayagriva#189", note: [mentioned])
+
+=== #bbl(
+  en: [Some entries in thesis and report bibliography items are not shown],
+  zh: [参考文献学位论文条目`[D]`后不显示“地点: 学校名称, 年份.”],
+)
+
+#issue("hayagriva#112")
+#workaround("https://typst-doc-cn.github.io/guide/FAQ/bib-missing-school.html")
 
 == Bibliography file
 
-- All (`Misc`?) entries with URL are recognized as `webpage` (in `gb-7714-2015-numeric`?) #issue("hayagriva#312")
-- #link("https://typst-doc-cn.github.io/guide/FAQ/bib-csl.html")[为什么指定参考文献 CSL 后，报错“failed to load CSL style”？ | Typst 中文社区导航]
+=== #bbl(en: [All (`Misc`?) entries with URL are recognized as `webpage` (in `gb-7714-2015-numeric`?)])
+
+#issue("hayagriva#312")
+
+=== #bbl(zh: [指定参考文献 CSL 后，报错“failed to load CSL style”])
+
+#workaround("https://typst-doc-cn.github.io/guide/FAQ/bib-csl.html")
 
 = Other
 
 == Culture-specific features
 
-- `第一章` vs.~`章一`, mentioned in
-  Proper i18n for figure captions #issue("typst#2485")
-- #link("https://typst-doc-cn.github.io/guide/FAQ/dual_language_caption.html")[figure 的 caption 如何实现双语？ | Typst 中文社区导航]
-- Section name should be after section number in reference in Chinese #issue("typst#5102")
+=== #bbl(en: [Proper i18n for figure captions], zh: [`第一章` vs.~`章一`])
+
+#issue("typst#2485", note: [mentioned])
+
+=== #bbl(zh: [figure 的 caption 如何实现双语])
+
+#workaround("https://typst-doc-cn.github.io/guide/FAQ/dual_language_caption.html")
+
+=== #bbl(en: [Section name should be after section number in reference in Chinese])
+
+#issue("typst#5102")
 
 == What else?
 
-- Ignore linebreaks between CJK characters in source code #issue("typst#792")
+=== #bbl(
+  en: [Ignore linebreaks between CJK characters in source code],
+  zh: [写中文文档时，如何去掉源码中换行导致的空格],
+)
 
-  #link("https://typst-doc-cn.github.io/guide/FAQ/chinese-remove-space.html")[写中文文档时，如何去掉源码中换行导致的空格？ | Typst 中文社区导航]
+#issue("typst#792")
+#workaround("https://typst-doc-cn.github.io/guide/FAQ/chinese-remove-space.html")
+#workaround("https://typst.app/universe/package/cjk-unbreak")
 
-- #link("https://typst-doc-cn.github.io/guide/FAQ/webapp-spellcheck.html")[如何关闭 webapp 的拼写检查？ | Typst 中文社区导航]
+=== #bbl(zh: [关闭 webapp 的拼写检查])
+
+#workaround("https://typst-doc-cn.github.io/guide/FAQ/webapp-spellcheck.html")
 
 #set heading(numbering: none)
 

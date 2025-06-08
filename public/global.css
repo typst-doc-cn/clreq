@@ -120,6 +120,9 @@ h5 {
   margin-inline-end: 0px;
   line-height: 1.5;
 }
+h1, h2, h3, h4, h5, h6 {
+  text-align: start;
+}
 p {
   margin-block-end: 0.5em;
 }
@@ -326,4 +329,18 @@ figcaption {
 }
 .dark .example > .preview > svg.typst-doc {
   background: lightgray;
+}
+
+/* Multilingual, copied from clreq */
+[its-locale-filter-list="zh"] {
+  border-left: 3px solid rgba(248, 138, 5, .5);
+}
+span[its-locale-filter-list="zh"] {
+  display: inline-block;
+  margin-left: .3em;
+  padding-left: .3em;
+}
+p[its-locale-filter-list="zh"] {
+  margin-left: calc(-.4em - 2px);
+  padding-left: .4em;
 }
