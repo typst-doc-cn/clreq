@@ -122,10 +122,10 @@
 #workaround("https://typst-doc-cn.github.io/guide/FAQ/underline-misplace.html")
 
 ```example
->>> Current:
+>>> Current: \
 #underline[中文和English]
 
->>> Expected:
+>>> Expected: \
 >>> #set underline(offset: .15em, stroke: .05em)
 >>> #underline[中文和English]
 ```
@@ -176,11 +176,48 @@
 #issue("typst#3206")
 #workaround("https://typst-doc-cn.github.io/guide/FAQ/block-equation-in-paragraph.html")
 
+#babel(
+  en: [Chinese publications usually apply 2-em wide first-line indents.],
+  zh: [中文出版品上，段首缩排以两个汉字的空间为标准。]
+)
+
+```example
+>>> #show: block.with(width: 10em)
+>>> Current:
+#set par(first-line-indent: (amount: 2em, all: true))
+
+段首起始该缩进
+$ integral f dif x $
+此处应当仍在段内，不该缩进。
+
+>>> #set par(first-line-indent: 0em)
+>>> Expected:
+>>> 
+>>> #h(2em)段首起始该缩进
+>>> $ integral f dif x $
+>>> 此处应当仍在段内，不该缩进。
+```
+
 === #bbl(en: [Even inter-character spacing], zh: [均排])
 
 #workaround("https://typst-doc-cn.github.io/guide/FAQ/character-intersperse.html")
+#workaround("https://typst.app/universe/package/tricorder")
 
 #babel(zh: [均排是指让几个汉字占固定宽度并均匀分布。])
+
+```example
+>>> Current:
+>>>
+丁声树 黎锦熙 \
+李荣 陆志韦
+
+>>> Expected:
+>>> #import "@preview/tricorder:0.1.0": tricorder
+>>> #tricorder(
+>>>   columns: 2,
+>>>   .."丁声树、黎锦熙、李荣、陆志韦".split("、"),
+>>> )
+```
 
 == Text spacing
 
@@ -197,6 +234,14 @@
 #issue("typst#2703")
 #workaround("https://typst-doc-cn.github.io/guide/FAQ/chinese-space.html")
 
+```example
+>>> Current: \
+汉字$A$汉字
+
+>>> Expected: \
+>>> 汉字#h(0.25em)$A$#h(0.25em)汉字
+```
+
 === #bbl(zh: [连续标点会挤压在一起])
 #workaround("https://typst-doc-cn.github.io/guide/FAQ/weird-punct.html")
 
@@ -208,6 +253,18 @@
 
 #issue("typst#5778")
 #workaround("https://typst-doc-cn.github.io/guide/FAQ/heading-numbering-space.html")
+
+```example
+>>> #counter(heading).update(0)
+>>> #show heading: pad.with(top: -0.75em)
+>>> Current:
+#set heading(numbering: "一、")
+= 标题
+
+>>> Expected:
+>>> #set heading(numbering: none)
+>>> = 一、标题
+```
 
 == Styling initials
 
@@ -230,7 +287,6 @@
 === #bbl(en: [Continuous numbering], zh: [参考文献条目中不连续页码显示错误（缺少“,”）])
 
 #issue("hayagriva#189", note: [mentioned])
-
 #workaround("https://typst-doc-cn.github.io/guide/FAQ/bib-missing-page-delimiter.html")
 
 === #bbl(zh: [引用编号的数字高于括号])
@@ -308,6 +364,17 @@
 #set heading(numbering: none)
 
 = Addendum
+
+== Environment of the examples
+
+- #bbl(en: [Update date], zh: [更新日期]) \
+  #datetime.today().display()
+
+- #bbl(en: [Compiler], zh: [编译器]) \
+  typst v#sys.version
+
+- #bbl(en: [Default fonts], zh: [默认字体]) \
+  New Computer Modern, Noto Serif CJK SC
 
 == References
 
