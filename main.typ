@@ -212,7 +212,7 @@ Please refer to it with caution.
 
 #issue("hayagriva#189", note: [mentioned])
 
-#link("https://typst-doc-cn.github.io/guide/FAQ/bib-missing-page-delimiter.html")
+#workaround("https://typst-doc-cn.github.io/guide/FAQ/bib-missing-page-delimiter.html")
 
 === #bbl(zh: [引用编号的数字高于括号])
 
