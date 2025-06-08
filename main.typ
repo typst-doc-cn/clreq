@@ -156,17 +156,64 @@
 
 #issue("typst#6062")
 
+```example
+>>> Current:
+#set par(justify: true)
+#block(width: 3em)[第1回成段]
+
+>>> Expected:
+>>>
+>>> #block(width: 3em)[第 1 回成段]
+```
+
 === #bbl(en: [Strict grid for CJK, hopefully via glue])
 
 #issue("typst#4404")
+
+```example
+>>> #set text(top-edge: "ascender", bottom-edge: "descender")
+>>> Current:
+#set par(justify: true)
+#block(width: 7.5em)[
+  天生我材必有用千金散尽还复来烹羊宰牛且为乐会须一饮三百杯
+]
+
+>>> Expected:
+>>> #set par(justify: false)
+>>> #set text(tracking: 0.5em / 6)
+>>> #block(width: 7.5em)[
+>>>   天生我材必有用#h(-0.5em / 6)千金散尽还复来#h(-0.5em / 6)烹羊宰牛且为乐#h(-0.5em / 6)会须一饮三百杯
+>>> ]
+```
 
 === #bbl(en: [CJK brackets at the beginning of paragraph])
 
 #issue("typst#4011")
 
-=== #bbl(en: [CJK punctuation at the start of paragraphs are not adjusted sometimes])
+=== #bbl(
+  en: [CJK punctuation at the start of paragraphs are not adjusted sometimes],
+  zh: [段首的夹注符号有时不会调整间距],
+)
 
 #issue("typst#2348")
+
+```example
+>>> #show: block.with(width: 8em)
+>>> Current:
+>>>
+#set par(justify: true)
+《新生》的出版之期接近了……
+
+#set par(first-line-indent: 2em)
+《新生》的出版之期接近了……
+
+>>> #set par(first-line-indent: 0em)
+>>> Expected:
+>>>
+>>> 《新生》的出版之期接近了……
+>>>
+>>> #h(1.5em)《新生》#h(-0.5em)的出版之期接近了……
+```
 
 === #bbl(
   en: [Paragraph should be able to contain tight lists and block-level equations],
@@ -178,7 +225,7 @@
 
 #babel(
   en: [Chinese publications usually apply 2-em wide first-line indents.],
-  zh: [中文出版品上，段首缩排以两个汉字的空间为标准。]
+  zh: [中文出版品上，段首缩排以两个汉字的空间为标准。],
 )
 
 ```example
@@ -192,7 +239,7 @@ $ integral f dif x $
 
 >>> #set par(first-line-indent: 0em)
 >>> Expected:
->>> 
+>>>
 >>> #h(2em)段首起始该缩进
 >>> $ integral f dif x $
 >>> 此处应当仍在段内，不该缩进。
@@ -229,6 +276,23 @@ $ integral f dif x $
 
 #issue("typst#5474")
 
+```example
+>>> Current:
+>>>
+噫）。嘘）．唏
+
+>>> #[
+#show "。": "．"
+噫）。嘘）．唏
+>>> ]
+
+>>> Expected:
+>>>
+>>> 噫）。嘘）．唏
+>>>
+>>> 噫）．嘘）．唏
+```
+
 === #bbl(en: [CJK-Latin-spacing not working with inline equation], zh: [行内公式与中文之间没有自动空格])
 
 #issue("typst#2703")
@@ -245,7 +309,36 @@ $ integral f dif x $
 === #bbl(zh: [连续标点会挤压在一起])
 #workaround("https://typst-doc-cn.github.io/guide/FAQ/weird-punct.html")
 
-== Baselines, line-height, etc. (N/A)
+== Baselines, line-height, etc.
+
+=== #bbl(en: [Default line height is too tight for Chinese], zh: [默认行高对中文来说过小])
+
+#workaround("https://typst-doc-cn.github.io/guide/FAQ/word-line-spacing.html")
+
+#babel(
+  en: [
+    Unlike the Latin alphabet, Chinese characters have no concept of ascending and descending parts.
+    So even though the numerical values of the leading are the same, the visual spacing of Chinese is smaller than that of Western text.
+  ],
+  zh: [
+    与拉丁字母不同，汉字没有升降部的概念。所以尽管行距的数值相同，中文的视觉效果会比西文紧。
+  ],
+)
+
+```example
+>>> #set box(fill: aqua.lighten(50%))
+>>> Current: \
+>>> // Default: cap-height to baseline.
+<<<Typst 国王 \
+<<<Typst 国王
+>>> #box[Typst 国王] \
+>>> #box[Typst 国王]
+
+>>> Expected: \
+>>> #set text(top-edge: "ascender", bottom-edge: "descender")
+>>> #box[Typst 国王] \
+>>> #box[Typst 国王]
+```
 
 == Lists, counters, etc.
 
@@ -255,10 +348,10 @@ $ integral f dif x $
 #workaround("https://typst-doc-cn.github.io/guide/FAQ/heading-numbering-space.html")
 
 ```example
->>> #counter(heading).update(0)
 >>> #show heading: pad.with(top: -0.75em)
 >>> Current:
-#set heading(numbering: "一、")
+<<<#set heading(numbering: "一、")
+>>> #set heading(numbering: (..nums) => "一、")
 = 标题
 
 >>> Expected:
@@ -292,6 +385,23 @@ $ integral f dif x $
 === #bbl(zh: [引用编号的数字高于括号])
 
 #workaround("https://typst-doc-cn.github.io/guide/FAQ/cite-flying.html")
+
+````example
+>>> Current: \
+#set text(font: "Noto Serif CJK SC")
+孔乙己@key\上大人
+
+>>> #show cite: set super(typographic: false)
+>>> Expected: \
+>>> 孔乙己@key\上大人
+>>> #show bibliography: none
+#let bib = ```bib
+@misc{key,
+  title = {Title},
+}
+```.text
+#bibliography(bytes(bib), style: "gb-7714-2015-numeric")
+````
 
 === #bbl(zh: [引用参考文献时，如何共存上标和非上标形式])
 
