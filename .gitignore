@@ -1,7 +1,6 @@
-assets
-target
-.vscode
+/dist/
+__pycache__/
+/.vscode/
 /favicon.svg
-index.html
-*.ttc
-*.otf
+/examples/**/*.example.typ
+/fonts/

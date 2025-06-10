@@ -1,15 +1,28 @@
-# clreq for Typst
+# [clreq](https://www.w3.org/TR/clreq/)-[gap](https://www.w3.org/TR/clreq-gap/) for typst
 
-A gap analysis of the [Chinese Layout Requirements (clreq)](https://www.w3.org/International/clreq/) for Typst.
+Chinese Layout Gap Analysis for Typst.
 
 ## Build
 
 ```shell
-# typst compile/watch
-typst watch index.typ --features html index.html
+just compile
+# or `just watch`
 ```
 
-Note that the font _Noto Serif CJK SC_ is required. You can download [`09_NotoSerifCJKsc.zip`](https://mirrors.cernet.edu.cn/github-release/googlefonts/noto-cjk/LatestRelease/09_NotoSerifCJKsc.zip) from [校园网联合镜像站 · Google Fonts](https://mirrors.cernet.edu.cn/font/GoogleFonts), or [Language Specific OTFs Simplified Chinese (简体中文)](https://github.com/notofonts/noto-cjk/releases/latest/download/09_NotoSerifCJKsc.zip) from [GitHub Releases · notofonts/noto-cjk](https://github.com/notofonts/noto-cjk/releases).
+Prerequisites:
+
+- just, the command runner
+
+  Install by downloading [pre-built binaries](https://just.systems/man/en/pre-built-binaries.html).
+  Alternatively, you can inspect [`justfile`](./justfile) and run commands manually.
+
+- _Noto Serif CJK SC_, the typeface
+
+  Download [`09_NotoSerifCJKsc.zip`](https://mirrors.cernet.edu.cn/github-release/googlefonts/noto-cjk/LatestRelease/09_NotoSerifCJKsc.zip) from [校园网联合镜像站 · Google Fonts](https://mirrors.cernet.edu.cn/font/GoogleFonts), or [Language Specific OTFs Simplified Chinese (简体中文)](https://github.com/notofonts/noto-cjk/releases/latest/download/09_NotoSerifCJKsc.zip) from [GitHub Releases · notofonts/noto-cjk](https://github.com/notofonts/noto-cjk/releases).
+
+  Then install the fonts to system, or put them under `./fonts/`.
+
+<!-- TODO: How to add an example? Internal or external? -->
 
 ## License
 

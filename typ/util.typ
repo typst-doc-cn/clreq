@@ -108,6 +108,20 @@
 
 #import "@preview/tidy:0.4.3": show-example as tidy-example
 
+/// Layout an example
+///
+/// Edit from test cases of tidy.
+/// https://github.com/Mc-Zen/tidy/blob/3dbdde92b1de56e516886255ce25ed813a87d008/tests/show-example/test.typ
+#let layout-example(code, preview, ..sink) = {
+  div(
+    class: "example",
+    {
+      code
+      div-frame(preview, class: "preview")
+    },
+  )
+}
+
 /// Adds the language `example` to `raw` that can be used to render code examples side-by-side with an automatic preview.
 ///
 /// Please refer to https://github.com/Mc-Zen/tidy/releases/latest/download/tidy-guide.pdf#tidy-render-examples() for more info.
@@ -129,17 +143,7 @@
       #set text(font: ((name: "New Computer Modern", covers: "latin-in-cjk"), "Noto Serif CJK SC"), fallback: false)
       ```.text
         + "\n",
-      // Edit from test cases of tidy.
-      // https://github.com/Mc-Zen/tidy/blob/3dbdde92b1de56e516886255ce25ed813a87d008/tests/show-example/test.typ
-      layout: (code, preview, ..sink) => {
-        div(
-          class: "example",
-          {
-            code
-            div-frame(preview, class: "preview")
-          },
-        )
-      },
+      layout: layout-example,
     )
   }
   body

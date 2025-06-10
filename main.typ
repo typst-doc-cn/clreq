@@ -430,6 +430,8 @@ $ integral f dif x $
 #issue("hayagriva#112")
 #workaround("https://typst-doc-cn.github.io/guide/FAQ/bib-missing-school.html")
 
+#include "examples/thesis.bib.example.typ" // @as-example
+
 == Bibliography file
 
 === #bbl(en: [All (`Misc`?) entries with URL are recognized as `webpage` (in `gb-7714-2015-numeric`?)])

@@ -10,10 +10,9 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+      - uses: taiki-e/install-action@v2
         with:
-          submodules: recursive
+          tool: just
       - uses: typst-community/setup-typst@v4
-      - run: mkdir -p dist
-      - run: typst compile index.typ --features html dist/index.html
+      - run: just compile
