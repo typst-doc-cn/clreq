@@ -16,3 +16,7 @@ jobs:
           tool: just
       - uses: typst-community/setup-typst@v4
       - run: just compile
+      - uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: "./dist"
