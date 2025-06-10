@@ -54,7 +54,7 @@ def compile_examples_in_document(doc: Path) -> Generator[Path, None, None]:
     doc_content = doc.read_text(encoding="utf-8")
 
     pattern = re.compile(
-        r'^#include\s+"([^"]+).example.typ"\s*//\s*@as-example$', flags=re.MULTILINE
+        r'^#include\s+"([^"]+)\.example\.typ"\s*//\s*@as-example$', flags=re.MULTILINE
     )
 
     for match in pattern.findall(doc_content):
