@@ -15,6 +15,8 @@ jobs:
         with:
           tool: just
       - uses: typst-community/setup-typst@v4
+      - name: Install fonts
+        run: sudo apt install fonts-noto-cjk
       - run: just compile
       - uses: actions/upload-artifact@v4
         with:
