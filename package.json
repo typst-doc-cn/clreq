@@ -1,0 +1,13 @@
+{
+    "name": "clreq-typst",
+    "version": "0.1.0",
+    "private": true,
+    "description": "Typst document for Chinese Layout Requirements",
+    "dependencies": {
+        "glob-watcher": "^6.0.0"
+    },
+    "scripts": {
+        "build": "node scripts/compile.mjs",
+        "dev": "node scripts/compile.mjs -w"
+    }
+}

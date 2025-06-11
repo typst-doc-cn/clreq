@@ -4,3 +4,7 @@ __pycache__/
 /favicon.svg
 /examples/**/*.example.typ
 /fonts/
+/target/
+/node_modules/
+package-lock.json
+Yarn.lock
