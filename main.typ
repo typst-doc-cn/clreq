@@ -513,7 +513,6 @@ $ integral f dif x $
 
   - Illustrations / minimal examples
   - #link("https://www.w3.org/TR/clreq-gap/#prioritization")[Prioritization]
-  - Links to available workarounds
   - Full Chinese/English translation
   - Include resolved issues (for historians)
 
@@ -525,8 +524,6 @@ $ integral f dif x $
       #link("https://www.w3.org/copyright/software-license-2023/")[the W3C license]
       permits
     - Contributing guide
-
-  - Check duplication
 
   - GitHub
 

@@ -62,6 +62,7 @@
       } else { [~(#note)] }
     },
   )
+  [#metadata((repo-num: repo-num, note: repr(note))) <issue>]
 }
 
 /// Link to a workaround

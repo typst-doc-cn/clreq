@@ -27,3 +27,4 @@ jobs:
         with:
           name: dist
           path: "./dist"
+      - run: pnpm check

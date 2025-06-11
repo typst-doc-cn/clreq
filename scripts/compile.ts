@@ -4,14 +4,22 @@ import watch from "glob-watcher";
 
 import { mainHint, ROOT_DIR, typst } from "./cli_util.ts";
 
-
-const extraArgs = [
+export const extraArgs = [
   "--diagnostic-format=short",
   "--features=html",
   `--font-path=${ROOT_DIR}/fonts`,
 ];
 
-await main();
+export const queryExtraArgs = [
+  // To allow the first query before compilation, tell that the cache is not ready yet.
+  "--input",
+  "cache-ready=false",
+  ...extraArgs,
+];
+
+if (import.meta.url === `file://${process.argv[1]}`) {
+  await main();
+}
 
 async function main() {
   await fs.mkdir("dist", { recursive: true });
@@ -59,11 +67,8 @@ async function renderExamples() {
       "main.typ",
       "<external-example>",
       "--field=value",
-      // To allow the first compile, tell that the cache is not ready yet.
-      "--input",
-      "cache-ready=false",
-      ...extraArgs,
-    ])
+      ...queryExtraArgs,
+    ]),
   );
 
   const compileExample = async ({ id, content }: { id: string, content: string; }) => {
