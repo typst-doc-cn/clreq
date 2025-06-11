@@ -27,15 +27,19 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
         with:
-          submodules: recursive
+          version: 10
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
       - uses: typst-community/setup-typst@v4
       - name: Install fonts
         run: sudo apt install fonts-noto-cjk
-      - run: mkdir -p dist
-      - run: typst compile index.typ --features html dist/index.html
+      - run: pnpm install
+      - run: pnpm build
       - name: Setup Pages
         uses: actions/configure-pages@v5
       - name: Upload artifact

@@ -1,7 +1,12 @@
-assets
-target
-.vscode
-/favicon.svg
-index.html
-*.ttc
-*.otf
+/.vscode/
+
+/fonts/
+
+/dist/
+/target/
+
+/node_modules/
+
+# Prefer pnpm-lock.yaml
+package-lock.json
+yarn.lock

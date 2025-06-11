@@ -1,4 +1,5 @@
-#import "typ/util.typ": babel, bbl, issue, render-examples, workaround
+#import "typ/util.typ": babel, bbl, issue, workaround
+#import "typ/show-example.typ": render-examples
 #show: render-examples
 
 #html.elem("h1")[
@@ -386,7 +387,7 @@ $ integral f dif x $
 
 #workaround("https://typst-doc-cn.github.io/guide/FAQ/cite-flying.html")
 
-````example
+````example-page
 >>> Current: \
 #set text(font: "Noto Serif CJK SC")
 孔乙己@key\上大人
@@ -429,6 +430,20 @@ $ integral f dif x $
 
 #issue("hayagriva#112")
 #workaround("https://typst-doc-cn.github.io/guide/FAQ/bib-missing-school.html")
+
+```example-bib
+@thesis{王楠2016,
+  title = {在“共产主义视镜”下想象科学 ——“十七年”期间的中国科幻文学与科学话语},
+  author = {王楠},
+  date = {2016-08-05},
+  institution = {新加坡国立大学},
+  location = {新加坡},
+  url = {https://scholarbank.nus.edu.sg/handle/10635/132143},
+  urldate = {2025-02-15},
+  langid = {chinese}
+}
+% 王楠. 在“共产主义视镜”下想象科学 ——“十七年”期间的中国科幻文学与科学话语[D/OL]. 新加坡: 新加坡国立大学, 2016[2025-02-15]. https://scholarbank.nus.edu.sg/handle/10635/132143.
+```
 
 == Bibliography file
 
