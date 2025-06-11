@@ -5,8 +5,11 @@ Chinese Layout Gap Analysis for Typst.
 ## Build
 
 ```shell
-pnpm build
-# or `pnpm dev`
+# Compile
+pnpm build # ⇒ dist/index.html
+
+# Recompile on changes
+pnpm dev # ⇒ http://localhost:3000
 ```
 
 Prerequisites:
@@ -19,7 +22,54 @@ Prerequisites:
 
   Then install the fonts to system, or put them under `./fonts/`.
 
-<!-- TODO: How to add an example? Internal or external? -->
+## How to add an example
+
+You can add an example to [`main.typ`](./main.typ) by writing a fenced code block with one of the following languages.
+
+### Simple examples (`example`)
+
+````typst
+```example
+>>> Current: \
+#underline[中文和English]
+
+>>> Expected: \
+>>> #set underline(offset: .15em, stroke: .05em)
+>>> #underline[中文和English]
+```
+````
+
+- Regular lines:
+
+  👀 shown as the source, and 🚀 executed in preview.
+
+- Lines starting with `>>>`:
+
+  🙈 hidden from the source, but still 🚀 executed in preview.
+
+- Lines starting with `<<<`:
+
+  👀 shown as the source, but 🛑 not executed in the preview.
+
+Note that `#set page(width: …)` does not work here.
+You could use `#show: block.with(width: …)` instead.
+
+### Bibliography examples (`example-bib`)
+
+````typst
+```example-bib
+@book{key,
+  title = {标题},
+  author = {作者},
+  year = {2025}
+}
+% 作者. 标题. 2025.
+```
+````
+
+- Regular lines: BibTeX entries.
+
+- Lines starting with `%`: Expected output.
 
 ## License
 

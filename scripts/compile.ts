@@ -5,14 +5,6 @@ import watch from "glob-watcher";
 import { mainHint, ROOT_DIR, typst } from "./cli_util.ts";
 
 
-const PREAMBLE = `
-// Some browsers hide the border. Therefore, the margin is necessary.
-#set page(width: auto, height: auto, margin: 0.5em)
-// Make it reproducible.
-#set text(font: ((name: "New Computer Modern", covers: "latin-in-cjk"), "Noto Serif CJK SC"), fallback: false)
-`.trim() + "\n";
-// This preamble is different from that of typ/show-example.typ, due to different mechanisms of compilation.
-
 const extraArgs = [
   "--diagnostic-format=short",
   "--features=html",
@@ -83,7 +75,7 @@ async function renderExamples() {
     } else {
       // compiles and creates svg files
       try {
-        await typst(id, ["compile", "-", output, ...extraArgs], { stdin: PREAMBLE + content });
+        await typst(id, ["compile", "-", output, ...extraArgs], { stdin: content });
         console.log(mainHint(`Compiled example: ${id}`));
       } catch (error) {
         console.error(`Error compiling example ${id}:`, error);

@@ -3,9 +3,21 @@
 
 #import "templates/html-toolkit.typ": img, div, div-frame
 
+/// If cache is ready, use files in `target/cache/`.
+/// Otherwise, skip these files.
+/// -> bool
 #let cache-ready = sys.inputs.at("cache-ready", default: "true") == "true"
-// If cache is ready, use files in `target/cache/`.
-// Otherwise, skip these files.
+
+
+/// -> str
+#let GENERAL-PREAMBLE = ```typ
+#set text(
+  font: ((name: "New Computer Modern", covers: "latin-in-cjk"), "Noto Serif CJK SC"),
+  // Make it reproducible.
+  fallback: false,
+)
+```.text
+
 
 /// Layout an example
 ///
@@ -55,9 +67,10 @@
       preamble: ```typ
       // Some browsers hide the border. Therefore, the inset is necessary.
       #show: block.with(inset: 0.5em)
-      // Make it reproducible.
-      #set text(font: ((name: "New Computer Modern", covers: "latin-in-cjk"), "Noto Serif CJK SC"), fallback: false)
-      ```.text
+      {GENERAL-PREAMBLE}
+      ```
+        .text
+        .replace("{GENERAL-PREAMBLE}", GENERAL-PREAMBLE)
         + "\n",
       layout: layout-example,
     )
@@ -71,7 +84,9 @@
     let expected = lines.filter(x => x.starts-with("%")).map(x => x.trim("%", at: start).trim())
 
     let executed = ````typ
-    #set page(width: 30em)
+    // Some browsers hide the border. Therefore, the margin is necessary.
+    #set page(width: 30em, height: auto, margin: 0.5em, fill: none)
+    {GENERAL-PREAMBLE}
 
     Current:
 
@@ -88,6 +103,7 @@
     {expected}
     ````
       .text
+      .replace("{GENERAL-PREAMBLE}", GENERAL-PREAMBLE)
       .replace("{displayed}", displayed)
       .replace("{expected}", expected.map(x => "+ " + x).join("\n"))
 
