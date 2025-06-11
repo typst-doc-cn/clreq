@@ -11,13 +11,18 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: taiki-e/install-action@v2
+      - uses: pnpm/action-setup@v4
         with:
-          tool: just
+          version: 10
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
       - uses: typst-community/setup-typst@v4
       - name: Install fonts
         run: sudo apt install fonts-noto-cjk
-      - run: just compile
+      - run: pnpm install
+      - run: pnpm build
       - uses: actions/upload-artifact@v4
         with:
           name: dist

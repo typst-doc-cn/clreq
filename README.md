@@ -5,16 +5,13 @@ Chinese Layout Gap Analysis for Typst.
 ## Build
 
 ```shell
-just compile
-# or `just watch`
+pnpm build
+# or `pnpm dev`
 ```
 
 Prerequisites:
 
-- just, the command runner
-
-  Install by downloading [pre-built binaries](https://just.systems/man/en/pre-built-binaries.html).
-  Alternatively, you can inspect [`justfile`](./justfile) and run commands manually.
+- [pnpm](https://pnpm.io), the package manager
 
 - _Noto Serif CJK SC_, the typeface
 

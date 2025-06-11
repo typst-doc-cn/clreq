@@ -1,13 +1,14 @@
 {
-    "name": "clreq-typst",
+    "name": "clreq-gap-typst",
     "version": "0.1.0",
     "private": true,
-    "description": "Typst document for Chinese Layout Requirements",
+    "type": "module",
+    "description": "Chinese Layout Gap Analysis for Typst",
     "dependencies": {
         "glob-watcher": "^6.0.0"
     },
     "scripts": {
-        "build": "node scripts/compile.mjs",
-        "dev": "node scripts/compile.mjs -w"
+        "build": "node --experimental-strip-types scripts/compile.ts",
+        "dev": "node --experimental-strip-types scripts/compile.ts --watch"
     }
 }

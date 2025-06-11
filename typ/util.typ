@@ -1,4 +1,4 @@
-#import "templates/html-toolkit.typ": a, span, div, div-frame
+#import "templates/html-toolkit.typ": a, span
 
 /// Multilingual
 #let _babel(en: [], zh: [], tag: "span") = {
@@ -103,48 +103,4 @@
       body
     },
   )
-}
-
-
-#import "@preview/tidy:0.4.3": show-example as tidy-example
-
-/// Layout an example
-///
-/// Edit from test cases of tidy.
-/// https://github.com/Mc-Zen/tidy/blob/3dbdde92b1de56e516886255ce25ed813a87d008/tests/show-example/test.typ
-#let layout-example(code, preview, ..sink) = {
-  div(
-    class: "example",
-    {
-      code
-      div-frame(preview, class: "preview")
-    },
-  )
-}
-
-/// Adds the language `example` to `raw` that can be used to render code examples side-by-side with an automatic preview.
-///
-/// Please refer to https://github.com/Mc-Zen/tidy/releases/latest/download/tidy-guide.pdf#tidy-render-examples() for more info.
-#let render-examples(
-  /// Body to apply the show rule to.
-  /// -> any
-  body,
-) = {
-  show raw.where(lang: "example"): it => {
-    set text(4em / 3)
-
-    tidy-example.show-example(
-      raw(it.text, block: true, lang: "typ"),
-      mode: "markup",
-      preamble: ```typ
-      // Some browsers hide the border. Therefore, the inset is necessary.
-      #show: block.with(inset: 0.5em)
-      // Make it reproducible.
-      #set text(font: ((name: "New Computer Modern", covers: "latin-in-cjk"), "Noto Serif CJK SC"), fallback: false)
-      ```.text
-        + "\n",
-      layout: layout-example,
-    )
-  }
-  body
 }

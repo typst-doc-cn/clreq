@@ -1,21 +1,6 @@
-#import "typ/util.typ": babel, bbl, issue, render-examples, workaround
+#import "typ/util.typ": babel, bbl, issue, workaround
+#import "typ/show-example.typ": render-examples
 #show: render-examples
-#import "@preview/jumble:0.0.1": sha1, bytes-to-hex
-
-// todo: finish example setup
-#show raw.where(lang: "new-example"): it => {
-  context [
-    #metadata((
-      // todo: deduplicate
-      id: "example-" + bytes-to-hex(sha1(it.text)),
-      content: it.text,
-    )) <new-example>
-  ]
-  it
-}
-
-// todo: render example according to example snapshot
-#json("content/snapshot/example.json")
 
 #html.elem("h1")[
   #link("https://www.w3.org/TR/clreq/")[clreq]-#link("https://www.w3.org/TR/clreq-gap/")[gap] for typst
@@ -446,14 +431,18 @@ $ integral f dif x $
 #issue("hayagriva#112")
 #workaround("https://typst-doc-cn.github.io/guide/FAQ/bib-missing-school.html")
 
-// #include "examples/thesis.bib.example.typ" // @as-example
-
-```new-example
-test
-```
-
-```new-example
-test 2
+```example-bib
+@thesis{王楠2016,
+  title = {在“共产主义视镜”下想象科学 ——“十七年”期间的中国科幻文学与科学话语},
+  author = {王楠},
+  date = {2016-08-05},
+  institution = {新加坡国立大学},
+  location = {新加坡},
+  url = {https://scholarbank.nus.edu.sg/handle/10635/132143},
+  urldate = {2025-02-15},
+  langid = {chinese}
+}
+% 王楠. 在“共产主义视镜”下想象科学 ——“十七年”期间的中国科幻文学与科学话语[D/OL]. 新加坡: 新加坡国立大学, 2016[2025-02-15]. https://scholarbank.nus.edu.sg/handle/10635/132143.
 ```
 
 == Bibliography file

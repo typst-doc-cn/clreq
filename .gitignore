@@ -1,10 +1,12 @@
-/dist/
-__pycache__/
 /.vscode/
-/favicon.svg
-/examples/**/*.example.typ
+
 /fonts/
+
+/dist/
 /target/
+
 /node_modules/
+
+# Prefer pnpm-lock.yaml
 package-lock.json
-Yarn.lock
+yarn.lock
