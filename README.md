@@ -2,6 +2,9 @@
 
 A gap analysis of the [Chinese Layout Requirements (clreq)](https://www.w3.org/International/clreq/) for Typst.
 
+[![Check](https://github.com/typst-doc-cn/clreq/actions/workflows/check.yml/badge.svg)](https://github.com/typst-doc-cn/clreq/actions/workflows/check.yml)
+[![clreq::gh_pages](https://github.com/typst-doc-cn/clreq/actions/workflows/gh-pages.yml/badge.svg)](https://github.com/typst-doc-cn/clreq/actions/workflows/gh-pages.yml)
+
 ## Build
 
 ```shell
