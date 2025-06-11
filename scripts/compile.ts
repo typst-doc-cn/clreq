@@ -1,4 +1,5 @@
 import fs from "node:fs/promises";
+import { fileURLToPath } from "node:url";
 
 import watch from "glob-watcher";
 
@@ -17,7 +18,7 @@ export const queryExtraArgs = [
   ...extraArgs,
 ];
 
-if (import.meta.url === `file://${process.argv[1]}`) {
+if (process.argv[1] === fileURLToPath(import.meta.url)) {
   await main();
 }
 
