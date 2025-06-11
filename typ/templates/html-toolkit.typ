@@ -8,7 +8,7 @@
 
 /// The target for the HTML export.
 ///
-/// Avaiable targets:
+/// Available targets:
 /// - `web-light`: Light theme for web.
 /// - `web-dark`: Dark theme for web.
 /// - `pdf`: PDF export.

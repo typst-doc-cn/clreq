@@ -28,7 +28,7 @@ async function main() {
   if (process.argv.includes("--watch") || process.argv.includes("-w")) {
     console.log("Watching for changes...");
 
-    // We estimiate which files could affect the compilation
+    // We estimate which files could affect the compilation
     const glob = watch(["{index,main}.typ", "typ/**/*"], {
       persistent: true,
       ignorePermissionErrors: true,
