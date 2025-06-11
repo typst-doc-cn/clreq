@@ -57,7 +57,7 @@
   /// -> any
   body,
 ) = {
-  // Internal example, directly compiled in main.typ.
+  // Simple example, directly evaluated in main.typ.
   show raw.where(lang: "example"): it => {
     set text(4em / 3)
 
@@ -76,7 +76,33 @@
     )
   }
 
-  // External example, compiled by scripts/compile.mts.
+  // Page example, compiled by scripts/compile.ts.
+  show raw.where(lang: "example-page"): it => {
+    let lines = it.text.split("\n")
+
+    let displayed = lines.filter(x => not x.starts-with(">>>")).map(x => x.trim("<<<", at: start)).join("\n")
+    let executed = lines.filter(x => not x.starts-with("<<<")).map(x => x.trim(">>>", at: start)).join("\n")
+
+    let full-executed = ````typ
+    // Some browsers hide the border. Therefore, the margin is necessary.
+    #set page(width: auto, height: auto, margin: 0.5em, fill: none)
+    {GENERAL-PREAMBLE}
+
+    {executed}
+    ````
+      .text
+      .replace("{GENERAL-PREAMBLE}", GENERAL-PREAMBLE)
+      .replace("{executed}", executed)
+
+    let id = "example-" + bytes-to-hex(sha1(full-executed))
+    [
+      #metadata((id: id, content: full-executed)) <external-example>
+    ]
+    set text(4em / 3)
+    layout-external-example(raw(displayed, block: true, lang: "typ"), id)
+  }
+
+  // Bibliography example, compiled by scripts/compile.ts.
   show raw.where(lang: "example-bib"): it => {
     let lines = it.text.split("\n")
 

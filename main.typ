@@ -387,7 +387,7 @@ $ integral f dif x $
 
 #workaround("https://typst-doc-cn.github.io/guide/FAQ/cite-flying.html")
 
-````example
+````example-page
 >>> Current: \
 #set text(font: "Noto Serif CJK SC")
 孔乙己@key\上大人

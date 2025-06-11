@@ -28,6 +28,8 @@ You can add an example to [`main.typ`](./main.typ) by writing a fenced code bloc
 
 ### Simple examples (`example`)
 
+A simple typst example.
+
 ````typst
 ```example
 >>> Current: \
@@ -51,8 +53,46 @@ You can add an example to [`main.typ`](./main.typ) by writing a fenced code bloc
 
   👀 shown as the source, but 🛑 not executed in the preview.
 
-Note that `#set page(width: …)` does not work here.
-You could use `#show: block.with(width: …)` instead.
+#### Limitations
+
+Simple examples are evaluated in a container and their states are shared across the entire document.
+
+As a result:
+
+- Any page configuration is not allowed. 
+
+  If you just want to `#set page(width: …)`, then use `#show: block.with(width: …)` instead.
+
+- Updating counters will affect the following examples.
+
+- Citations and bibliographies will conflict with other examples.
+
+- …
+
+If you need advanced features, please write a page example instead.
+
+### Page examples (`example-page`)
+
+A standalone typst example compiled in a page.
+
+`````typst
+````example-page
+>>> Current: \
+孔乙己@key
+
+>>> Expected: \
+>>> 孔乙己@key
+>>> #show bibliography: none
+#let bib = ```bib
+@misc{key,
+  title = {Title},
+}
+```.text
+#bibliography(bytes(bib), style: "gb-7714-2015-numeric")
+````
+`````
+
+The meanings of `<<<` and `>>>` are the same as those in simple examples.
 
 ### Bibliography examples (`example-bib`)
 
