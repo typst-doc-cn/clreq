@@ -25,16 +25,6 @@ async function main() {
   await fs.mkdir("dist/examples", { recursive: true });
   await fs.mkdir("dist/assets", { recursive: true });
 
-  const compileOnce = async () => {
-    await renderExamples();
-    await typst("index", [
-      "compile",
-      "index.typ",
-      "dist/index.html",
-      ...extraArgs,
-    ]);
-  };
-
   if (process.argv.includes("--watch") || process.argv.includes("-w")) {
     console.log("Watching for changes...");
 
@@ -43,22 +33,23 @@ async function main() {
       persistent: true,
       ignorePermissionErrors: true,
     });
+    console.clear();
+    typst("index", ["watch", "index.typ", "dist/index.html", ...extraArgs]);
 
     glob.on("change", async (_event, path) => {
-      console.clear();
-      console.log(`File changed: ${path}`);
+      console.log(`File changed...`);
       try {
-        await compileOnce();
+        await renderExamples();
         console.log(mainHint("Recompiled successfully."));
       } catch (error) {
         console.error("Error during recompilation:", error);
       }
     });
-    console.clear();
-    await compileOnce();
+    await renderExamples();
   } else {
     try {
-      await compileOnce();
+      await renderExamples();
+      typst("index", ["compile", "index.typ", "dist/index.html", ...extraArgs]);
       console.log("Compilation completed successfully.");
     } catch (error) {
       console.error("Error during compilation:", error);
