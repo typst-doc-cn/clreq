@@ -233,18 +233,6 @@ main .icon svg {
 .theme-icon {
   cursor: pointer;
 }
-.dark .theme-icon.light {
-  display: block;
-}
-.dark .theme-icon.dark {
-  display: none;
-}
-.theme-icon.light {
-  display: none;
-}
-.theme-icon.dark {
-  display: block;
-}
 .dark .code-image.themed .light {
   display: none;
 }

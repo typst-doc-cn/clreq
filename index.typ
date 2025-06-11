@@ -5,7 +5,7 @@
   "/typ/templates/template.html",
   extra-head: {
     h.style(read("public/global.css"))
-    h.script(read("/public/main.js"))
+    h.script(read("/public/main.js"), type: "module")
   },
 )
 
