@@ -22,13 +22,14 @@ const extraArgs = [
 await main();
 
 async function main() {
-  await fs.mkdir("dist/assets", { recursive: true });
+  await fs.mkdir("dist", { recursive: true });
+  await fs.mkdir("target/cache", { recursive: true });
 
   if (process.argv.includes("--watch") || process.argv.includes("-w")) {
     console.log("Watching for changes...");
 
     // We estimiate which files could affect the compilation
-    const glob = watch(["{index,main}.typ", "examples/**/*", "typ/**/*"], {
+    const glob = watch(["{index,main}.typ", "typ/**/*"], {
       persistent: true,
       ignorePermissionErrors: true,
     });
@@ -66,12 +67,15 @@ async function renderExamples() {
       "main.typ",
       "<external-example>",
       "--field=value",
+      // To allow the first compile, tell that the cache is not ready yet.
+      "--input",
+      "cache-ready=false",
       ...extraArgs,
     ])
   );
 
   const compileExample = async ({ id, content }: { id: string, content: string; }) => {
-    const output = `dist/assets/${id}.svg`;
+    const output = `target/cache/${id}.svg`;
     const compiled = await fs.stat(output).then(() => true).catch(() => false);
     if (compiled) {
       // if already compiled, skip

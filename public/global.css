@@ -313,7 +313,7 @@ figcaption {
   justify-content: center;
   padding: 12px 16px;
 }
-.example > .preview > .typst-doc {
+.example > .preview > svg.typst-doc {
   /* The visual padding is the sum of CSS padding and SVG inset. See `render-examples` in util.typ */
   padding: 0.5em;
   border-radius: 8px;
@@ -328,7 +328,7 @@ figcaption {
 .dark .example > .preview {
   background: darkgray;
 }
-.dark .example > .preview > .typst-doc {
+.dark .example > .preview > svg.typst-doc {
   background: lightgray;
 }
 

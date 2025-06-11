@@ -3,6 +3,10 @@
 
 #import "templates/html-toolkit.typ": img, div, div-frame
 
+#let cache-ready = sys.inputs.at("cache-ready", default: "true") == "true"
+// If cache is ready, use files in `target/cache/`.
+// Otherwise, skip these files.
+
 /// Layout an example
 ///
 /// Edit from test cases of tidy.
@@ -25,12 +29,10 @@
 /// - code (content): a `raw` element containing the displayed code
 /// - id (str): ID of the executed code
 /// -> content
-#let layout-external-example(code, id) = div(
-  class: "example",
-  {
-    code
-    // TODO: `src` should be updated if the base URL changes.
-    div(img({ }, src: "assets/{id}.svg".replace("{id}", id), class: "typst-doc"), class: "preview")
+#let layout-external-example(code, id) = layout-example(
+  code,
+  if cache-ready {
+    image("../target/cache/{id}.svg".replace("{id}", id))
   },
 )
 
