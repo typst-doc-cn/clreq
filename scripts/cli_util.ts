@@ -1,3 +1,4 @@
+import assert from "node:assert";
 import { type SpawnOptions, spawn } from "node:child_process";
 import { dirname } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -8,18 +9,18 @@ const lightGreen = "\x1b[32m";
 const lightBlue = "\x1b[34m";
 const reset = "\x1b[0m";
 
-export const log = (line, id, color = lightGreen) => `${color}[${id}]${reset} ${line}`;
-export const mainHint = (line) => log(line, "main", lightBlue);
+export const log = (line: string, id: string, color = lightGreen): string => `${color}[${id}]${reset} ${line}`;
+export const mainHint = (line: string): string => log(line, "main", lightBlue);
 
 /**
  * Prefix each line of the buffer with the identifier and a color.
  *
- * @param {Buffer} buffer - The buffer containing the output from the typst command
- * @param {string} id - Identifier for the task process, used for logging
- * @returns {string} - The formatted string with each line prefixed by the identifier
+ * @param text - The buffer containing the output from the typst command
+ * @param id - Identifier for the task process, used for logging
+ * @returns - The formatted string with each line prefixed by the identifier
  */
-function prefixScreen(buffer, id) {
-  const lines = buffer.toString("utf-8").trim().split("\n");
+function prefixScreen(text: string, id: string): string {
+  const lines = text.trim().split("\n");
   return lines.map((line) => log(line, id)).join("\n");
 }
 
@@ -36,15 +37,27 @@ export function typst(id: string, args: string[], opts: SpawnOptions & { stdin?:
     const { stdin, ...spawn_opts } = opts;
     const proc = spawn("typst", args, spawn_opts);
     if (stdin) {
+      assert(proc.stdin !== null);
       proc.stdin.write(stdin);
       proc.stdin.end();
     }
+    assert(proc.stdout !== null);
+    assert(proc.stderr !== null);
 
-    const result = [];
+    const result: Buffer[] = [];
     proc.stdout.on("data", (data) => {
       result.push(data);
     });
-    proc.stderr.on("data", (data) => console.error(prefixScreen(data, id)));
+    proc.stderr.on("data", (data) => {
+      const text: string = data.toString("utf-8");
+      if (args[0] == 'query' && text.includes('warning: elem was ignored during paged export')) {
+        // In v0.13, typst query doesn’t respect the export format.
+        // https://github.com/typst/typst/issues/6404
+        // Suppress the warning.
+        return;
+      }
+      console.error(prefixScreen(text, id));
+    });
     proc.on("close", (code) => {
       if (code !== 0) {
         reject(new Error(`Typst process exited with code ${code}`));
