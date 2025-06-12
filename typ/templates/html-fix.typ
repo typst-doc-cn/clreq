@@ -20,19 +20,13 @@
       it
     } else {
       // Add id to headings in html
-      heading(
-        bookmarked: it.bookmarked,
-        depth: it.depth,
-        hanging-indent: it.hanging-indent,
-        level: it.level,
-        offset: it.offset,
-        outlined: it.outlined,
-        supplement: it.supplement,
-        numbering: none, // or it will be counted twice
+      html.elem(
+        "h" + str(it.level + 1),
+        attrs: (id: str(label)),
         {
           counter(heading).display(it.numbering)
           [ ]
-          h.span(id: str(label), it.body)
+          it.body
         },
       )
     }
