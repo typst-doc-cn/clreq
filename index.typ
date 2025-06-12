@@ -11,4 +11,7 @@
 
 #show: h.main
 
+#import "typ/templates/html-toolkit.typ": abbr
+#show "W3C": abbr("W3C", title: "World Wide Web Consortium")
+
 #include "main.typ"

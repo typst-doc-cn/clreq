@@ -1,4 +1,4 @@
-#import "templates/html-toolkit.typ": a, span
+#import "templates/html-toolkit.typ": a, span, article, p
 
 /// Multilingual
 #let _babel(en: [], zh: [], tag: "span") = {
@@ -25,6 +25,11 @@
 /// For headings
 #let bbl = _babel.with(tag: "span")
 
+/// Display the linked URL in a new tab
+///
+/// Usage: `#show link: link-in-new-tab`
+#let link-in-new-tab = it => a(target: "_blank", href: it.dest, it.body)
+
 /// Link to a GitHub issue
 ///
 /// - repo-num (str): Repo and issue number, e.g., `"typst#193"`, `"hayagriva#189"`
@@ -37,7 +42,7 @@
     repo = "typst/" + repo
   }
 
-  show link: it => a(target: "_blank", href: it.dest, it.body)
+  show link: link-in-new-tab
   link(
     "https://github.com/" + repo + "/issues/" + num + anchor,
     {
@@ -83,7 +88,7 @@
     [hackable (#human-dest, #note)]
   }
 
-  show link: it => a(target: "_blank", href: it.dest, it.body)
+  show link: link-in-new-tab
   link(
     dest,
     {
@@ -105,3 +110,28 @@
     },
   )
 }
+
+/// Introduction of a section
+///
+/// If it is derived from #link("https://github.com/w3c/i18n-activity/blob/5cfa8e5d304c8db0473562defab7032d90217f1b/templates/gap-analysis/prompts.js")[W3C i18n-activity gap-analysis prompts],
+/// then provide the URL as `from-w3c`.
+///
+/// - from-w3c (str): URL to the original W3C prompt, if applicable.
+/// - body (content):
+/// -> content
+#let prompt(from-w3c: none, body) = article(
+  class: "prompt",
+  {
+    body
+
+    if from-w3c != none {
+      p(class: "license")[
+        #show link: link-in-new-tab
+        #bbl(
+          en: [(derived from #link(from-w3c)[a W3C document] under #a(target: "_blank", href: "https://www.w3.org/copyright/software-license-2023/", title: "Software and Document License")[its license])],
+          zh: [（按#a(target: "_blank", href: "https://www.w3.org/zh-hans/copyright/software-license-2023/", title: "软件和文档许可协议")[相应协议]修改自 #link(from-w3c)[W3C 文档]）],
+        )
+      ]
+    }
+  },
+)

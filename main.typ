@@ -1,4 +1,4 @@
-#import "typ/util.typ": babel, bbl, issue, workaround
+#import "typ/util.typ": babel, bbl, issue, workaround, prompt
 #import "typ/show-example.typ": render-examples
 #show: render-examples
 
@@ -33,19 +33,48 @@
 #set heading(numbering: "1.1")
 #show heading.where(level: 3): set heading(numbering: none)
 
-= Text direction
+= #bbl(en: [Text direction], zh: [文本方向])
 
-== Writing mode
+#prompt(from-w3c: "https://www.w3.org/TR/clreq-gap/#direction")[
+  #babel(
+    en: [See also @page-layout for features such as column layout, page turning direction, etc. that are affected by text direction.],
+    zh: [分栏布局、翻页方向等也受文本方向影响，这些请参阅@page-layout.],
+  )
+]
+
+== #bbl(en: [Writing mode], zh: [行文模式])
+
+#prompt(from-w3c: "https://www.w3.org/TR/clreq-gap/#writing_mode")[
+  #babel(
+    en: [
+      In what direction does text flow along a line and across a page? (If the basic direction is right-to-left see @bidi-text.) If the script uses vertically oriented text, what are the requirements? What about if you mix vertical text with scripts that are normally only horizontal? Do you need a switch to use different characters in vertical vs. horizontal text? Does typst support short runs of horizontal text in vertical lines (tate-chu-yoko in Japanese) as expected? Is the orientation of characters and the directional ordering of characters supported as needed?
+    ],
+    zh: [
+      文本在行内和跨页时分别沿什么方向书写？（若基本方向就时从右到左，请移步@bidi-text）如果文段可能沿竖直方向排列（直排），有哪些要求？若直排文段中混入其它文字，而这种文字通常水平书写，又如何？是否需要开关以在直排、横排时使用不同字符？typst 能否正常在直排文本中将小段文本按横排插入（日文的“纵中横”）？字符的朝向及排列方向符合需求吗？
+    ],
+  )
+]
 
 === #bbl(en: [Vertical Writing Mode], zh: [直排])
 
 #issue("typst#5908")
 
-== Bidirectional text (N/A)
+== Bidirectional text (N/A) <bidi-text>
 
-= Glyph shaping & positioning
+#prompt(from-w3c: "https://www.w3.org/TR/clreq-gap/#bidi_text")[
+  If the general inline direction is right-to-left, are there any issues when handling that? Where the inline direction of text is mixed, is this bidirectional text adequately supported? What about numbers and expressions? Do the Unicode bidi controls and typst markup provide the support needed? Is isolation of directional runs problematic?
+]
 
-== Fonts selection
+= #bbl(en: [Glyph shaping & positioning], zh: [字形的变形与定位])
+
+== #bbl(en: [Fonts selection], zh: [字体选择])
+
+#prompt[
+  #babel(
+    en: [Do the standard fallback fonts used in typst match expectations? Is it convenient to select fonts?],
+    zh: [typst 的标准回落字体符合预期吗？选择字体方便吗？],
+  )
+]
 
 === #bbl(en: [Writing non-Latin (e.g.~Chinese) text without a configured font leads to unpredictable font fallback])
 #issue("typst#5040")
@@ -58,11 +87,24 @@
 #issue("typst#3385")
 #workaround("https://typst-doc-cn.github.io/guide/FAQ/chinese-in-raw.html")
 
-=== #bbl(en: [Language-dependant font configuration])
+=== #bbl(en: [Language-dependant font configuration], zh: [按语言设置字体])
 
 #issue("typst#794")
 
-== Font rendering & font styles
+== #bbl(en: [Font rendering & font styles], zh: [字体渲染与字体风格]) <font-render>
+
+#prompt(from-w3c: "https://www.w3.org/TR/clreq-gap/#fonts")[
+  #babel(
+    en: [
+      How are fonts grouped into recognisable writing styles? How is each writing style used?
+      Are special font or OpenType features needed for this script that are not available? What other general, font-related issues arise? The font styles described here refer to alternative types of writing style, such as naskh vs nastaliq; for oblique, italic, and weights see instead @letterforms.
+    ],
+    zh: [
+      字体如何分类成可辨识的字体风格？如何使用各类字体风格？这种文字是否还需要尚不可用的特定字体或 OpenType 特性？
+      还有哪些字体相关的一般问题？此处“字体风格”是指书写风格的不同变体，例如阿拉伯文中naskh与nastaliq；至于倾斜体（oblique）、意大利体（italic）以及各级字重，请移步@letterforms。
+    ],
+  )
+]
 
 === #bbl(en: [Chinese rendering error])
 
@@ -82,9 +124,29 @@
 
 == Context-based shaping and positioning (N/A)
 
-== Cursive text (N/A)
+#prompt(from-w3c: "https://www.w3.org/TR/clreq-gap/#glyphs")[
+  If context-sensitive rendering support is needed to shape combinations of letters or position certain glyphs relative to others, is this adequately provided for? Does the script in question require additional user control features to support alterations to the position or shape of glyphs, for example adjusting the distance between the base text and diacritics, or changing the glyphs used in a systematic way? Do you need to be able to compose/decompose conjuncts or ligatures, or show characters that are otherwise hidden, etc? If text is cursive, see the separate @cursive.
+]
 
-== Letterform slopes, weights, & italics
+== Cursive text (N/A) <cursive>
+
+#prompt(from-w3c: "https://www.w3.org/TR/clreq-gap/#cursive")[
+  // TODO: The apostrophe here uses the wrong font.
+  If this script is cursive (ie. letters are generally joined up, like in Arabic, N’Ko, Syriac, etc), are there problems or needed features related to the handling of cursive text? Do cursive links break if parts of a word are marked up or styled? Do Unicode joiner and non-joiner characters behave as expected?
+]
+
+== Letterform slopes, weights, & italics <letterforms>
+
+#prompt(from-w3c: "https://www.w3.org/TR/clreq-gap/#letterforms")[
+  #babel(
+    en: [
+      This covers ways of modifying the glyphs for a range of text, such as for italicisation, bolding, oblique, etc. Are italicisation, bolding, oblique, etc relevant? Do italic fonts lean in the right direction? Is synthesised italicisation or oblique problematic? Are there other problems relating to bolding or italicisation - perhaps relating to generalised assumptions of applicability? For alternative writing/font styles, see @font-render.
+    ],
+    zh: [
+      这节讨论针对一串文本的字形的修改方法，例如意大利体（italic）、粗体、倾斜体（oblique）等。是否有意大利体、粗体、倾斜体的概念？意大利体的倾斜方向正确吗？倾斜体（即伪意大利体）有问题吗？还有其它加粗、倾斜相关的问题吗——也许某些普遍假设并不适用？至于各类字体风格，请移步@font-render。
+    ],
+  )
+]
 
 === #bbl(en: [Fake text weight and style (synthesized bold and italic)], zh: [中文没有加粗或斜体])
 
@@ -94,27 +156,72 @@
 
 == Case & other character transforms (N/A)
 
-= Typographic units
+#prompt(from-w3c: "https://www.w3.org/TR/clreq-gap/#transforms")[
+  Does your script need special text transforms that are not supported? For example, do you need to to convert between half-width and full-width presentation forms? Does your script convert letters to uppercase, capitalised and lowercase alternatives according to your typographic needs? How about other transforms?
+]
 
-== Characters & encoding
+= #bbl(en: [Typographic units], zh: [排版单元])
+
+== #bbl(en: [Characters & encoding], zh: [字符与编码])
+
+#prompt(from-w3c: "https://www.w3.org/TR/clreq-gap/#encoding")[
+  Most languages are now supported by Unicode, but there are still occasional issues. In particular, there may be issues related to ordering of characters, or competing encodings (as in Myanmar), or standardisation of variation selectors or the encoding model (as in Mongolian). Are there any character repertoire issues preventing use of this script in typst? Do variation selectors need attention? Are there any other encoding-related issues?
+]
 
 == Grapheme/word segmentation & selection
 
-= Punctuation & inline features
+#prompt(from-w3c: "https://www.w3.org/TR/clreq-gap/#segmentation")[
+  This is about how text is divided into graphemes, words, sentences, etc., and behaviour associated with that. Are there special requirements for the following operations: forwards/backwards deletion, cursor movement & selection, character counts, searching & matching, text insertion, line-breaking, justification, case conversions, sorting? Are words separated by spaces, or other characters? Are there special requirements when double-clicking or triple-clicking on the text? Are words hyphenated? (Some of the answers to these questions may be picked up in other sections, such as @line-breaking, or @initials.)
+]
 
-== Phrase & section boundaries
+= #bbl(en: [Punctuation & inline features], zh: [标点符号及其它行内特性])
 
-== Quotations & citations
+== #bbl(en: [Phrase & section boundaries], zh: [短语与章节边界])
+
+#prompt(from-w3c: "https://www.w3.org/TR/clreq-gap/#punctuation_etc")[
+  #babel(
+    en: [
+      What characters are used to indicate the boundaries of phrases, sentences, and sections? What about other punctuation, such as dashes, connectors, separators, etc? Are there specific problems related to punctuation or the interaction of the text with punctuation (for example, punctuation that is separated from preceding text but must not be wrapped alone to the next line)? Are there problems related to bracketing information or demarcating things such as proper nouns, etc? Some of these topics have their own sections; see also @quotations, and @abbrev.
+    ],
+    zh: [
+      表示短语、句子或段落的边界用什么字符？破折号、连接符、分隔符等其它标点符号呢？关于标点符号或，或者文字与标点符号相互作用，是否存在特定问题（例如某标点符号与前文分开，但不允许换至下一行）？专有名词等需要明确括住的信息，使用正常吗？其中部分话题有专门章节，参见@quotations、@abbrev。
+    ],
+  )
+]
+
+== #bbl(en: [Quotations & citations], zh: [引文]) <quotations>
+
+#prompt(from-w3c: "https://www.w3.org/TR/clreq-gap/#quotations")[
+  #babel(
+    en: [
+      This is a subtopic of phrase & section boundaries that is worth handling separately. What characters are used to indicate quotations? Do quotations within quotations use different characters? What characters are used to indicate dialogue? Are the same mechanisms used to cite words, or for scare quotes, etc? What about citing book or article names? Are there any issues when dealing with quotations marks, especially when nested? Should block quotes be indented or handled specially? Do quotation marks take text direction into account appropriately?
+    ],
+    zh: [
+      有些短语或章节边界需要单独处理，本节讨论这方面话题。引语用什么字符标识？引文中的引文是否要用不同字符？对话用什么字符标识？引用单词（即 scare quotes）的方法相同吗？引用书籍或文章名标题呢？处理引号有无问题，特别是嵌套时？用于整段的引号需要缩进或特别处理吗？引号是否考虑了文本方向？
+    ],
+  )
+]
 
 === #bbl(
-  en: [`covers: "latin-in-cjk"` doesn’t cover apostrophes and quotation marks],
+  en: [`covers: "latin-in-cjk"` does not cover apostrophes and quotation marks],
   zh: [引号的字体不对 / 引号的宽度不对],
 )
 
 #issue("typst#5858")
 #workaround("https://typst-doc-cn.github.io/guide/FAQ/smartquote-font.html")
 
-== Emphasis & highlighting
+== #bbl(en: [Emphasis & highlighting], zh: [强调与突出显示])
+
+#prompt(from-w3c: "https://www.w3.org/TR/clreq-gap/#emphasis")[
+  #babel(
+    en: [
+      How are emphasis and highlighting achieved? If lines or marks are drawn alongside, over or through the text, do they need to be a special distance from the text itself? Is it important to skip characters when underlining, etc? How do things change for vertically set text?
+    ],
+    zh: [
+      如何强调或突出显示一串文本？若在文字旁边、文字上方上方或穿过文字划线或者做标记，是否需与文字保持特定距离？加下划线时是否需要跳过某些字符？直排时规则又如何？
+    ],
+  )
+]
 
 === #bbl(en: [Underline breaks when mixing Chinese and English], zh: [中英文下划线错位])
 
@@ -131,11 +238,35 @@
 >>> #underline[中文和English]
 ```
 
-== Abbreviation, ellipsis, & repetition
+== #bbl(en: [Abbreviation, ellipsis, & repetition], zh: [缩写、省略与重复]) <abbrev>
 
-== Inline notes & annotations
+#prompt(from-w3c: "https://www.w3.org/TR/clreq-gap/#abbrev")[
+  #babel(
+    en: [
+      What characters or other methods are used to indicate abbreviation, ellipsis & repetition? Are there problems?
+    ],
+    zh: [
+      缩写、省略和重复用什么字符或方法表示？有问题吗？
+    ],
+  )
+]
 
-=== #bbl(en: [Add support for ruby (CJK, e.g., furigana for Japanese)])
+== #bbl(en: [Inline notes & annotations], zh: [行内注与行间注]) <inline-notes>
+
+#prompt(from-w3c: "https://www.w3.org/TR/clreq-gap/#inline_notes")[
+  #babel(
+    en: [
+      What mechanisms, if any, are used to create *inline* notes and annotations? Are the appropriate methods for inline annotations supported for this script?
+      Both Hanyu Pinyin (Romanization) and Bopomofo (Phonetic Symbols) are included.
+      This section deals with inline annotation approaches. For annotation methods where a marker in the text points out to another part of the document, see @footnotes-etc.
+    ],
+    zh: [
+      如果这种文字有*行内*注与行间注，分别采用什么机制？相关方法是否支持？汉语拼音、注音符号都算在内。本节关注行内注释；至于指向文档其它部分的注释，请参考@footnotes-etc。
+    ],
+  )
+]
+
+=== #bbl(en: [Add support for ruby (CJK, e.g., furigana for Japanese)], zh: [支持标注拼音])
 
 #issue("typst#1489")
 
@@ -143,15 +274,38 @@
 
 #issue("typst#193", note: [mentioned])
 
-== Text decoration & other inline features
+== #bbl(en: [Text decoration & other inline features], zh: [文本标示与其他行内特性])
 
-== Data formats & numbers
+#prompt(from-w3c: "https://www.w3.org/TR/clreq-gap/#text_decoration")[
+  This section is a catch-all for inline features that do not fit under the previous sections. It can also be used to describe in one place a set of general requirements related to inline features when those features appear in more than one of the sections above. It covers characters or methods (eg. text decoration) that are used to convey information about a range of text. Are all needed forms of highlighting or marking of text available, such as wavy underlining, numeric overbars, etc. If lines are drawn alongside, over or through the text, do they need to be a special distance from the text itself? Is it important to skip characters when underlining, etc? How do things change for vertically set text? Are there other punctuation marks that were not covered in preceding sections? Are lines correctly drawn relative to vertical text?
+]
 
-= Line and paragraph layout
+== #bbl(en: [Data formats & numbers], zh: [数据格式与数字])
 
-== Line breaking & hyphenation
+#prompt(from-w3c: "https://www.w3.org/TR/clreq-gap/#data_formats")[
+  Relevant here are formats related to number, currency, dates, personal names, addresses, and so forth. If the script has its own set of number digits, are there any issues in how they are used? Does the script or language use special format patterns that are problematic (eg. 12,34,000 in India)? What about date/time formats and selection - and are non-Gregorian calendars needed? Do percent signs and other symbols associated with number work correctly, and do numbers need special decorations, (like in Ethiopic or Syriac)? How about the management of personal names, addresses, etc. in typst: are there issues?
+]
 
-== Text alignment & justification
+= #bbl(en: [Line and paragraph layout], zh: [行与段落版式])
+
+== #bbl(en: [Line breaking & hyphenation], zh: [换行与断词连字]) <line-breaking>
+
+#prompt(from-w3c: "https://www.w3.org/TR/clreq-gap/#line_breaking")[
+  Does typst capture the rules about the way text in your script wraps when it hits the end of a line? Does line-breaking wrap whole _words_ at a time, or characters, or something else (such as syllables in Tibetan and Javanese)? What characters should not appear at the end or start of a line, and what should be done to prevent that? Is hyphenation used for your script, or something else? If hyphenation is used, does it work as expected? (Note, this is about line-end hyphenation when text is wrapped, rather than use of the hyphen and related characters as punctuation marks.)
+]
+
+== #bbl(en: [Text alignment & justification], zh: [文本对齐]) <justification>
+
+#prompt(from-w3c: "https://www.w3.org/TR/clreq-gap/#justification")[
+  #babel(
+    en: [
+      When text in a paragraph needs to have flush lines down both sides, does it follow the rules for your script? Does the script need assistance to conform to a grid pattern? Does your script allow punctuation to hang outside the text box at the start or end of a line? Where adjustments are need to make a line flush, how is that done? Do you shrink/stretch space between words and/or letters? Are word baselines stretched, as in Arabic? What about paragraph indents, or the need for logical alignment keywords, such as start/end, rather than left/right? Does the script indent the first line of a paragraph?
+    ],
+    zh: [
+      若一段内的文字需要两端对齐，结果是否符合这种文字的习惯？文字是否需要辅助才能符合网格模式？这种文字允许标点符号在一行头尾悬挂到文本框以外吗？需要对齐某条线时，应当如何操作？正常会伸缩词间距、字间距吗？是否会像阿拉伯文那样拉伸文字基线？段落缩进如何，而逻辑对齐关键字（例如`start`/`end`而非`left`/`right`）又如何？这种文字是否缩进段落首行？
+    ],
+  )
+]
 
 === #bbl(en: [CJK-latin glues stretch only before latin characters])
 
@@ -267,7 +421,18 @@ $ integral f dif x $
 >>> )
 ```
 
-== Text spacing
+== #bbl(en: [Text spacing], zh: [文本的间距调整])
+
+#prompt(from-w3c: "https://www.w3.org/TR/clreq-gap/#spacing")[
+  #babel(
+    en: [
+      This section is concerned with spacing that is adjusted around and between characters on a line in ways other than attempts to fit text to a given width (ie. justification). Some scripts create emphasis or other effects by spacing out the words, letters or syllables in a word. Are there requirements for this script/language that are unsupported? If spacing needs to be applied between letters and numbers, is that possible? What about space associated with punctuation, such as the gap before a colon in French? (For justification related spacing, see @justification.)
+    ],
+    zh: [
+      本节关注要使文本适应指定长度（对齐）时，如何在字符之间和字符周围添加空隙。有些文字通过空出单词、字母、音阶来表达强调等效果。能否满足这种语言文字的需求？若需在字母、数字间加空，能否做到？像法文冒号前间距那种标点符号相关的空隙呢？（关于对齐相关的间距，请见@justification。）
+    ],
+  )
+]
 
 === #bbl(en: [CJK-Latin-spacing not working with raw text])
 
@@ -310,7 +475,18 @@ $ integral f dif x $
 === #bbl(zh: [连续标点会挤压在一起])
 #workaround("https://typst-doc-cn.github.io/guide/FAQ/weird-punct.html")
 
-== Baselines, line-height, etc.
+== #bbl(en: [Baselines, line-height, etc.], zh: [基线、行高等])
+
+#prompt(from-w3c: "https://www.w3.org/TR/clreq-gap/#baselines")[
+  #babel(
+    en: [
+      Does typst support requirements for baseline alignment between mixed scripts and in general? Are there issues related to line height or inter-line spacing, etc.? Are the requirements for baseline or line height in vertical text covered?
+    ],
+    zh: [
+      typst能否对齐多文种的基线？行高、行距等方面有无问题？直排时的基线、行高能否满足要求？
+    ],
+  )
+]
 
 === #bbl(en: [Default line height is too tight for Chinese], zh: [默认行高对中文来说过小])
 
@@ -341,7 +517,18 @@ $ integral f dif x $
 >>> #box[Typst 国王]
 ```
 
-== Lists, counters, etc.
+== #bbl(en: [Lists, counters, etc.], zh: [列表、编号等])
+
+#prompt(from-w3c: "https://www.w3.org/TR/clreq-gap/#lists")[
+  #babel(
+    en: [
+      Are there list or other counter styles in use? If so, what is the format used and can that be achieved? Are the correct separators available for use after list counters? Are there other aspects related to counters and lists that need to be addressed? Are list counters handled correctly in vertical text?
+    ],
+    zh: [
+      是否使用列表或其它编号样式？若是，使用什么格式，能否实现？列表编号后的分隔符是否正确？编号、列表的其它方面还有要解决的吗？直排时列表编号是否正常？
+    ],
+  )
+]
 
 === #bbl(en: [Too wide spacing between heading numbering and title in CJK], zh: [标题的编号后面的空格])
 
@@ -360,23 +547,65 @@ $ integral f dif x $
 >>> = 一、标题
 ```
 
-== Styling initials
+== Styling initials <initials>
 
-= Page & book layout
+#prompt(from-w3c: "https://www.w3.org/TR/clreq-gap/#initials")[
+  Does typst correctly handle special styling of the initial letter of a line or paragraph, such as for drop caps or similar? How about the size relationship between the large letter and the lines alongide? where does the large letter anchor relative to the lines alongside? is it normal to include initial quote marks in the large letter? is the large letter really a syllable? etc. Are all of these things working as expected?
+]
 
-== General page layout & progression
+= #bbl(en: [Page & book layout], zh: [页面与书籍版式])
 
-== Grids & tables
+== #bbl(en: [General page layout & progression], zh: [基本页面版式与装订方向]) <page-layout>
 
-== Footnotes, endnotes, etc.
+#prompt(from-w3c: "https://www.w3.org/TR/clreq-gap/#page_layout")[
+  How are the main text area and ancilliary areas positioned and defined? Are there any special requirements here, such as dimensions in characters for the Japanese kihon hanmen? The book cover for scripts that are read right-to-left scripts is on the right of the spine, rather than the left. Is that provided for? When content can flow vertically and to the left or right, how do you specify the location of objects, text, etc. relative to the flow? For example, keywords `left` and `right` are likely to need to be reversed for pages written in English and page written in Arabic. Do tables and grid layouts work as expected? How do columns work in vertical text? Can you mix block of vertical and horizontal text correctly? Does text scroll in the expected direction? Other topics that belong here include any local requirements for things such as printer marks, tables of contents and indexes. See also @grids-tables.
+]
 
-== Page headers, footers, etc.
+== #bbl(en: [Grids & tables], zh: [网格与表格]) <grids-tables>
 
-== Forms & user interaction
+#prompt(from-w3c: "https://www.w3.org/TR/clreq-gap/#grids_tables")[
+  As a subtopic of page layout, does the script have special requirements for character grids or for tables?
+]
 
-= Bibliography
+== #bbl(en: [Footnotes, endnotes, etc.], zh: [脚注、尾注等]) <footnotes-etc>
 
-== Citing
+#prompt(from-w3c: "https://www.w3.org/TR/clreq-gap/#footnotes_etc")[
+  Does your script have special requirements for footnotes, endnotes or other necessary annotations of this kind in the way needed for your culture? (See @inline-notes for purely inline annotations, such as ruby or warichu. This section is more about annotation systems that separate the reference marks and the content of the notes.)
+]
+
+== #bbl(en: [Page headers, footers, etc.], zh: [页眉、页脚等])
+
+#prompt(from-w3c: "https://www.w3.org/TR/clreq-gap/#headers_footers")[
+  Are there special conventions for page numbering, or the way that running headers and the like are handled?
+]
+
+== #bbl(en: [Forms & user interaction], zh: [表单和用户交互])
+
+#prompt(from-w3c: "https://www.w3.org/TR/clreq-gap/#interaction")[
+  Are vertical form controls well supported? In right-to-left scripts, is it possible to set the base direction for a form field? Is the scroll bar on the correct side? etc. Are there other aspects related to user interaction that need to be addressed?
+]
+
+= #bbl(en: [Bibliography], zh: [参考文献管理])
+
+#prompt[
+  #babel(
+    en: [
+      Is there any difficulty in complying with the Chinese national standard #link("https://std.samr.gov.cn/gb/search/gbDetailed?id=71F772D8055ED3A7E05397BE0A0AB82A")[GB/T 7714—2015 _Information and documentation—Rules for bibliographic references and citations to information resources_] (#link("https://lib.tsinghua.edu.cn/wj/GBT7714-2015.pdf")[PDF])?
+    ],
+    zh: [
+      遵守中国国家标准 #link("https://std.samr.gov.cn/gb/search/gbDetailed?id=71F772D8055ED3A7E05397BE0A0AB82A")[GB/T 7714—2015《信息与文献　参考文献著录规则》]（#link("https://lib.tsinghua.edu.cn/wj/GBT7714-2015.pdf")[PDF]）有无困难？
+    ],
+  )
+]
+
+== #bbl(en: [Citing], zh: [参考文献标注法])
+
+#prompt[
+  #babel(
+    en: [Is it possible to cite a work in the main text using `cite`? Does the result meet expectations?],
+    zh: [能否用`cite`在正文中标注参考文献？结果符合预期吗？],
+  )
+]
 
 === #bbl(en: [Continuous numbering], zh: [参考文献条目中不连续页码显示错误（缺少“,”）])
 
@@ -408,7 +637,14 @@ $ integral f dif x $
 
 #workaround("https://typst-doc-cn.github.io/guide/FAQ/ref-superscript.html")
 
-== Bibliography listing
+== #bbl(en: [Bibliography listing], zh: [参考文献表])
+
+#prompt[
+  #babel(
+    en: [Can `bibliography` generate a bibliography / reference listing at the end of the article? Does each entry have all parts? Does the citation format meet the standard?],
+    zh: [用`bibliography`能否在文末正常生成参考文献表？著录项目完整吗？著录格式符合标准吗？],
+  )
+]
 
 === #bbl(en: [chinese et al.], zh: [修复英文参考文献中的“等”])
 
@@ -445,7 +681,14 @@ $ integral f dif x $
 % 王楠. 在“共产主义视镜”下想象科学 ——“十七年”期间的中国科幻文学与科学话语[D/OL]. 新加坡: 新加坡国立大学, 2016[2025-02-15]. https://scholarbank.nus.edu.sg/handle/10635/132143.
 ```
 
-== Bibliography file
+== #bbl(en: [Bibliography file], zh: [参考文献文件])
+
+#prompt[
+  #babel(
+    en: [Are there difficulties creating files related to bibliography? Including the database of reference entires (Hayagriva `*.yml`, BibTeX `*.bib`) and the #link("https://docs.citationstyles.org/en/stable/specification.html")[Citation Style Language] style `*.csl`.],
+    zh: [准备参考文献相关的文件是否存在困难？包括参考文件数据库（Hayagriva `*.yml`、BibTeX `*.bib`）和 #link("https://docs.citationstyles.org/en/stable/specification.html")[Citation Style Language] 样式 `*.csl`。],
+  )
+]
 
 === #bbl(en: [All (`Misc`?) entries with URL are recognized as `webpage` (in `gb-7714-2015-numeric`?)])
 
@@ -455,9 +698,20 @@ $ integral f dif x $
 
 #workaround("https://typst-doc-cn.github.io/guide/FAQ/bib-csl.html")
 
-= Other
+= #bbl(en: [Other], zh: [杂项])
 
-== Culture-specific features
+== #bbl(en: [Culture-specific features], zh: [文化独有特性])
+
+#prompt(from-w3c: "https://www.w3.org/TR/clreq-gap/#culturespecific")[
+  #babel(
+    en: [
+      Sometimes a script or language does things that are not common outside of its sphere of influence. This is a loose bag of additional items that were not previously mentioned. This section may also be relevant for observations related to locale formats (such as number, date, currency, format support).
+    ],
+    zh: [
+      有时语言文字会其有特殊做法。本节兜底补充，覆盖上文未提及的特殊情况。本节也可讨论本地化格式（如数字、日期、货币）的支持情况。
+    ],
+  )
+]
 
 === #bbl(en: [Proper i18n for figure captions], zh: [`第一章` vs.~`章一`])
 
@@ -471,7 +725,11 @@ $ integral f dif x $
 
 #issue("typst#5102")
 
-== What else?
+== #bbl(en: [What else?], zh: [其它])
+
+#prompt(from-w3c: "https://www.w3.org/TR/clreq-gap/#other")[
+  There are many other modules and specifications which may need review for script-specific requirements. What else is likely to cause problems for worldwide usage of typst, and what requirements need to be addressed to make typst function well locally?
+]
 
 === #bbl(
   en: [Ignore linebreaks between CJK characters in source code],
@@ -488,9 +746,9 @@ $ integral f dif x $
 
 #set heading(numbering: none)
 
-= Addendum
+= #bbl(en: [Addendum], zh: [附录])
 
-== Environment of the examples
+== #bbl(en: [Environment of the examples], zh: [例子的环境信息])
 
 - #bbl(en: [Update date], zh: [更新日期]) \
   #datetime.today().display()
@@ -501,7 +759,7 @@ $ integral f dif x $
 - #bbl(en: [Default fonts], zh: [默认字体]) \
   New Computer Modern, Noto Serif CJK SC
 
-== References
+== #bbl(en: [References], zh: [参考资料])
 
 - #link("https://www.w3.org/TR/clreq/")[Requirements for Chinese Text Layout - 中文排版需求]
 - #link("https://www.w3.org/TR/clreq-gap/")[Chinese Layout Gap Analysis]
@@ -515,14 +773,12 @@ $ integral f dif x $
   - #link("https://www.w3.org/TR/clreq-gap/#prioritization")[Prioritization]
   - Full Chinese/English translation
   - Include resolved issues (for historians)
+  - Improve in-page links and the table of contents.
 
 - Live long
 
   - Documentation
 
-    - Copy explanations of sections, if
-      #link("https://www.w3.org/copyright/software-license-2023/")[the W3C license]
-      permits
     - Contributing guide
 
   - GitHub
