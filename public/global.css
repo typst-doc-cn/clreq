@@ -333,3 +333,12 @@ p[its-locale-filter-list="zh"] {
   margin-left: calc(-.4em - 2px);
   padding-left: .4em;
 }
+
+/* `#prompt` from typ/util.typ */
+article.prompt {
+  font-size: 90%;
+  color: var(--gray-color);
+}
+article.prompt > .license {
+  font-size: 80%;
+}

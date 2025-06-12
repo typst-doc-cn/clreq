@@ -1,0 +1,23 @@
+name: autofix.ci  # needed to securely identify the workflow
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  autofix:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: taiki-e/install-action@v2
+        with:
+          tool: fd-find,typstyle@0.13.3  # typstyle shipped with tinymist v0.13.12
+      - name: Run typstyle
+        run: |
+          typstyle --inplace --column 120 $(fd --extension typ --exclude 'html-bindings*.typ')
+      - uses: autofix-ci/action@635ffb0c9798bd160680f18fd73371e355b85f27
