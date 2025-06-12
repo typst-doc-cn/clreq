@@ -773,7 +773,7 @@ $ integral f dif x $
   - #link("https://www.w3.org/TR/clreq-gap/#prioritization")[Prioritization]
   - Full Chinese/English translation
   - Include resolved issues (for historians)
-  - Improve in-page links and the table of contents.
+  - Improve the table of contents.
 
 - Live long
 

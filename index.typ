@@ -1,4 +1,5 @@
 #import "/typ/templates/html-toolkit.typ": load-html-template, h
+#import "/typ/templates/html-fix.typ": html-fix
 
 /// Wraps the following content with the HTML template.
 #show: load-html-template.with(
@@ -10,6 +11,8 @@
 )
 
 #show: h.main
+
+#show: html-fix
 
 #import "typ/templates/html-toolkit.typ": abbr
 #show "W3C": abbr("W3C", title: "World Wide Web Consortium")

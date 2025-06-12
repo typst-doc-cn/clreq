@@ -1,4 +1,5 @@
 #import "templates/html-toolkit.typ": a, span, article, p
+#import "templates/html-fix.typ": link-in-new-tab
 
 /// Multilingual
 #let _babel(en: [], zh: [], tag: "span") = {
@@ -25,10 +26,6 @@
 /// For headings
 #let bbl = _babel.with(tag: "span")
 
-/// Display the linked URL in a new tab
-///
-/// Usage: `#show link: link-in-new-tab`
-#let link-in-new-tab = it => a(target: "_blank", href: it.dest, it.body)
 
 /// Link to a GitHub issue
 ///
