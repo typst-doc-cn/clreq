@@ -27,3 +27,26 @@ body.toc-sidebar :not(li) > .toc {
 .toc {
   line-height: 1.5;
 }
+
+/* Sync color theme with ../global.css */
+:root {
+  --text: var(--main-color);
+  --bg: var(--main-bg-color);
+
+  --tocnav-normal-text: hsl(0, 0%, 44%);
+  --tocnav-hover-bg: hsl(0, 0%, 97%);
+
+  --tocsidebar-bg: #f7f8f9;
+  --tocsidebar-heading-text: hsla(203, 20%, 40%, 0.7);
+}
+:root.dark {
+  --tocnav-normal-text: hsl(0, 0%, 56%);
+  --tocnav-hover-bg: hsl(0, 0%, 3%);
+
+  --tocsidebar-bg: #333b4e;
+  --tocsidebar-heading-text: hsla(203, 20%, 60%, 0.702);
+}
+/* Fix the conflict of `nav a:hover` and `.toc a:visited` */
+nav.toc a:hover:visited {
+  color: var(--main-hover-color);
+}
