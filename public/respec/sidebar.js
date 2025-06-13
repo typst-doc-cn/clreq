@@ -1,6 +1,7 @@
 /**
  * The following script is copied from W3C/ReSpec under CC0-1.0 license
  * https://github.com/speced/bikeshed/blob/527e9641607d686e5c439f9999d40360607ee792/bikeshed/spec-data/readonly/boilerplate/footer.include
+ * https://www.w3.org/scripts/TR/2021/fixup.js
  */
 
 var collapseSidebarText = '<span aria-hidden="true">←</span> '
@@ -107,8 +108,15 @@ if (toc) {
       (window too small for the MQ to add the margin to body),
       then auto-close the sidebar once you click on something in there. */
   toc.addEventListener('click', function(e) {
-    if(e.target.tagName.toLowerCase() == "a" && document.body.classList.contains('toc-sidebar') && !sidebarMedia.matches) {
-      toggleSidebar(false);
+    if(document.body.classList.contains('toc-sidebar') && !sidebarMedia.matches) {
+      var el = e.target;
+      while (el != toc) { // find closest <a>
+        if (el.tagName.toLowerCase() == "a") {
+          toggleSidebar(false);
+          return;
+        }
+        el = el.parentElement;
+      }
     }
   }, false);
 }

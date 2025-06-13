@@ -9,10 +9,13 @@
 /// - base-url (str): Base URL without a trailing slash
 /// -> content
 #let extra-heads = {
+  // `base.override.css` should be put _after_ `base.css`.
+  // Reason: The former overrides the latter.
   h.link({ }, rel: "stylesheet", href: respec-asset("base.css"))
   h.link({ }, rel: "stylesheet", href: respec-asset("base.override.css"))
 
-  h.script({ }, src: respec-asset("sidebar.js"), defer: "true")
+  // `sidebar.js` should be put after `structure.js`.
+  // Reason: The former add an event listener to `#toc`, but the latter creates a new `#toc` and replaces the original one, discarding all listeners.
   h.script(
     type: "module",
     ```js
@@ -22,6 +25,7 @@
       .text
       .replace("[[structure.js]]", respec-asset("structure.js")),
   )
+  h.script({ }, src: respec-asset("sidebar.js"), defer: "true")
 }
 
 /// The table of contents that will be created by this module
