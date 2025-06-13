@@ -4,6 +4,7 @@ import { fileURLToPath } from "node:url";
 import watch from "glob-watcher";
 
 import { mainHint, ROOT_DIR, typst } from "./cli_util.ts";
+import { assets_server } from "./assets_server.ts";
 
 export const extraArgs = [
   "--diagnostic-format=short",
@@ -19,14 +20,15 @@ export const queryExtraArgs = [
 ];
 
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
-  await main();
+  const watchMode = ["--watch", "-w"].some((sw) => process.argv.includes(sw));
+  await main({ watchMode });
 }
 
-async function main() {
+async function main({ watchMode }: { watchMode: boolean }) {
   await fs.mkdir("dist", { recursive: true });
   await fs.mkdir("target/cache", { recursive: true });
 
-  if (process.argv.includes("--watch") || process.argv.includes("-w")) {
+  if (watchMode) {
     console.log("Watching for changes...");
 
     // We estimate which files could affect the compilation
@@ -35,7 +37,16 @@ async function main() {
       ignorePermissionErrors: true,
     });
     console.clear();
-    typst("index", ["watch", "index.typ", "dist/index.html", ...extraArgs]);
+
+    assets_server.listen(8000, "localhost");
+    typst("index", [
+      "watch",
+      "index.typ",
+      "dist/index.html",
+      "--input",
+      "x-url-base=http://localhost:8000/",
+      ...extraArgs,
+    ]);
 
     glob.on("change", async (_event, path) => {
       console.log(`File changed...`);
@@ -50,7 +61,17 @@ async function main() {
   } else {
     try {
       await renderExamples();
-      typst("index", ["compile", "index.typ", "dist/index.html", ...extraArgs]);
+      await Promise.all([
+        typst("index", [
+          "compile",
+          "index.typ",
+          "dist/index.html",
+          "--input",
+          "x-url-base=/clreq/assets/",
+          ...extraArgs,
+        ]),
+        fs.cp("public", "dist/assets/", { recursive: true }),
+      ]);
       console.log("Compilation completed successfully.");
     } catch (error) {
       console.error("Error during compilation:", error);

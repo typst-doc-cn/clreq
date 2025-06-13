@@ -1,0 +1,394 @@
+/**
+ * The following styles control the Table of Contents
+ * They are selectively copied from W3C/ReSpec under CC0-1.0 license
+ * https://github.com/speced/bikeshed/blob/527e9641607d686e5c439f9999d40360607ee792/bikeshed/spec-data/readonly/boilerplate/stylesheet.include
+ * https://w3.org/StyleSheets/TR/2021/base.css
+ */
+
+/******************************************************************************/
+/*                                  Colors                                    */
+/******************************************************************************/
+
+/* Any --*-text not paired with a --*-bg is assumed to have a transparent bg */
+:root {
+	--text: black;
+	--bg: white;
+
+	/* Absolute URLs due to https://bugs.webkit.org/show_bug.cgi?id=230243 */
+	--unofficial-watermark: url(https://www.w3.org/StyleSheets/TR/2021/logos/UD-watermark-light-unofficial.svg);
+	--draft-watermark: url(https://www.w3.org/StyleSheets/TR/2021/logos/UD-watermark-light-draft.svg);
+
+	--logo-bg: #1a5e9a;
+	--logo-active-bg: #c00;
+	--logo-text: white;
+
+	--tocnav-normal-text: #707070;
+	--tocnav-normal-bg: var(--bg);
+	--tocnav-hover-text: var(--tocnav-normal-text);
+	--tocnav-hover-bg: #f8f8f8;
+	--tocnav-active-text: #c00;
+	--tocnav-active-bg: var(--tocnav-normal-bg);
+
+	--tocsidebar-text: var(--text);
+	--tocsidebar-bg: #f7f8f9;
+	--tocsidebar-shadow: rgba(0,0,0,.1);
+	--tocsidebar-heading-text: hsla(203,20%,40%,.7);
+
+	--toclink-text: var(--text);
+	--toclink-underline: #3980b5;
+	--toclink-visited-text: var(--toclink-text);
+	--toclink-visited-underline: #054572;
+
+	--heading-text: #005a9c;
+
+	--hr-text: var(--text);
+
+	--algo-border: #def;
+
+	--del-text: #AA0000;
+	--del-bg: transparent;
+	--ins-text: #006100;
+	--ins-bg: transparent;
+
+	--a-normal-text: #034575;
+	--a-normal-underline: #707070;
+	--a-visited-text: var(--a-normal-text);
+	--a-visited-underline: #bbb;
+	--a-hover-bg: rgba(75%, 75%, 75%, .25);
+	--a-active-text: #c00;
+	--a-active-underline: #c00;
+
+	--blockquote-border: silver;
+	--blockquote-bg: transparent;
+	--blockquote-text: var(--text);
+
+	--issue-border: #e05252;
+	--issue-bg: #fbe9e9;
+	--issue-text: var(--text);
+	--issueheading-text: #831616;
+
+	--example-border: #e0cb52;
+	--example-bg: #fcfaee;
+	--example-text: var(--text);
+	--exampleheading-text: #574b0f;
+
+	--note-border: #52e052;
+	--note-bg: #e9fbe9;
+	--note-text: var(--text);
+	--noteheading-text: hsl(120, 70%, 22%);
+	--notesummary-underline: silver;
+
+	--advisement-border: orange;
+	--advisement-bg: #fec;
+	--advisement-text: var(--text);
+	--advisementheading-text: #b35f00;
+
+	--amendment-border: #330099;
+	--amendment-bg: #F5F0FF;
+	--amendment-text: var(--text);
+	--amendmentheading-text: #220066;
+
+	--warning-border: red;
+	--warning-bg: hsla(40,100%,50%,0.95);
+	--warning-text: var(--text);
+
+	--def-border: #8ccbf2;
+	--def-bg: #def;
+	--def-text: var(--text);
+	--defrow-border: #bbd7e9;
+
+	--datacell-border: silver;
+
+	--indexinfo-text: #707070;
+
+	--indextable-hover-text: black;
+	--indextable-hover-bg: #f7f8f9;
+
+	--outdatedspec-bg: rgba(0, 0, 0, .5);
+	--outdatedspec-text: black;
+	--outdated-bg: maroon;
+	--outdated-text: white;
+	--outdated-shadow: red;
+
+	--editedrec-bg: darkorange;
+}
+
+
+/******************************************************************************/
+/*                         Front Matter & Navigation                          */
+/******************************************************************************/
+
+
+/** Back to Top / ToC Toggle **************************************************/
+
+	@media print {
+		#toc-nav {
+			display: none;
+		}
+	}
+	@media not print {
+		#toc-nav {
+			position: fixed;
+			z-index: 3;
+			bottom: 0; left: 0;
+			margin: 0;
+			min-width: 1.33em;
+			border-top-right-radius: 2rem;
+			box-shadow: 0 0 2px;
+			font-size: 1.5em;
+		}
+		#toc-nav > a {
+			display: block;
+			white-space: nowrap;
+
+			height: 1.33em;
+			padding: .1em 0.3em;
+			margin: 0;
+
+			box-shadow: 0 0 2px;
+			border: none;
+			border-top-right-radius: 1.33em;
+
+			color: #707070;
+			color: var(--tocnav-normal-text);
+			background: white;
+			background: var(--tocnav-normal-bg);
+		}
+		#toc-nav > a:hover,
+		#toc-nav > a:focus {
+			color: black;
+			color: var(--tocnav-hover-text);
+			background: #f8f8f8;
+			background: var(--tocnav-hover-bg);
+		}
+		#toc-nav > a:active {
+			color: #c00;
+			color: var(--tocnav-active-text);
+			background: white;
+			background: var(--tocnav-active-bg);
+		}
+
+		#toc-nav > #toc-jump,
+		#toc-nav > #toc-toggle {
+			padding-bottom: 2em;
+			margin-bottom: -1.9em;
+		}
+
+		/* statusbar gets in the way on keyboard focus; remove once browsers fix */
+		#toc-nav > a[href="#toc"]:not(:hover):focus:last-child {
+			padding-bottom: 1.5rem;
+		}
+
+		#toc-nav:not(:hover) > a:not(:focus) > span + span {
+			/* Ideally this uses :focus-within on #toc-nav */
+			display: none;
+		}
+		#toc-nav > a > span + span {
+			padding-right: 0.2em;
+		}
+	}
+
+/** ToC Sidebar ***************************************************************/
+
+	/* Floating sidebar */
+	@media screen {
+		body.toc-sidebar #toc {
+			position: fixed;
+			top: 0; bottom: 0;
+			left: 0;
+			width: 23.5em;
+			max-width: 80%;
+			max-width: calc(100% - 2em - 26px);
+			overflow: auto;
+			padding: 0 1em;
+			padding-left: 42px;
+			padding-left: calc(1em + 26px);
+			color: black;
+			color: var(--tocsidebar-text);
+			background: inherit;
+			background-color: #f7f8f9;
+			background-color: var(--tocsidebar-bg);
+			z-index: 1;
+			box-shadow: -.1em 0 .25em rgba(0,0,0,.1) inset;
+			box-shadow: -.1em 0 .25em var(--tocsidebar-shadow) inset;
+		}
+		body.toc-sidebar #toc h2 {
+			margin-top: .8rem;
+			font-variant: small-caps;
+			font-variant: all-small-caps;
+			text-transform: lowercase;
+			font-weight: bold;
+			color: gray;
+			color: hsla(203,20%,40%,.7);
+			color: var(--tocsidebar-heading-text);
+		}
+		body.toc-sidebar #toc-jump:not(:focus) {
+			width: 0;
+			height: 0;
+			padding: 0;
+			position: absolute;
+			overflow: hidden;
+		}
+	}
+	/* Hide main scroller when only the ToC is visible anyway */
+	@media screen and (max-width: 28em) {
+		body.toc-sidebar {
+			overflow: hidden;
+		}
+	}
+
+	/* Sidebar with its own space */
+	@media screen and (min-width: 78em) {
+		body:not(.toc-inline) #toc {
+			position: fixed;
+			top: 0; bottom: 0;
+			left: 0;
+			width: 23.5em;
+			overflow: auto;
+			padding: 0 1em;
+			padding-left: 42px;
+			padding-left: calc(1em + 26px);
+			color: black;
+			color: var(--tocsidebar-text);
+			background: inherit;
+			background-color: #f7f8f9;
+			background-color: var(--tocsidebar-bg);
+			z-index: 1;
+			box-shadow: -.1em 0 .25em rgba(0,0,0,.1) inset;
+			box-shadow: -.1em 0 .25em var(--tocsidebar-shadow) inset;
+		}
+		body:not(.toc-inline) #toc h2 {
+			margin-top: .8rem;
+			font-variant: small-caps;
+			font-variant: all-small-caps;
+			text-transform: lowercase;
+			font-weight: bold;
+			color: gray;
+			color: hsla(203,20%,40%,.7);
+			color: var(--tocsidebar-heading-text);
+		}
+
+		body:not(.toc-inline) {
+			padding-left: 29em;
+		}
+		/* See also Overflow section at the bottom */
+
+		body:not(.toc-inline) #toc-jump:not(:focus) {
+			width: 0;
+			height: 0;
+			padding: 0;
+			position: absolute;
+			overflow: hidden;
+		}
+	}
+	@media screen and (min-width: 90em) {
+		body:not(.toc-inline) {
+			margin: 0 4em;
+		}
+	}
+
+
+/******************************************************************************/
+/*                                  Indices                                   */
+/******************************************************************************/
+
+
+/** Table of Contents *********************************************************/
+
+	.toc a {
+		color: var(--toclink-text);
+		/* More spacing; use padding to make it part of the click target. */
+		padding: 0.1rem 1px 0;
+		/* Larger, more consistently-sized click target */
+		display: block;
+		/* Switch to using border-bottom */
+		text-decoration: none;
+		border-bottom: 3px solid transparent;
+		margin-bottom: -2px;
+	}
+	.toc a:visited {
+		color: black;
+		color: var(--toclink-visited-text);
+	}
+	.toc a:focus,
+	.toc a:hover {
+		background: #f8f8f8;
+		background: rgba(75%, 75%, 75%, .25);
+		background: var(--a-hover-bg);
+		border-bottom-color: #3980b5;
+		border-bottom-color: var(--toclink-underline);
+	}
+	.toc a:visited:focus,
+	.toc a:visited:hover {
+		border-bottom-color: #054572;
+		border-bottom-color: var(--toclink-visited-underline);
+	}
+
+	.toc, .toc ol, .toc ul, .toc li {
+		list-style: none; /* Numbers must be inlined into source */
+		/* because generated content isn't search/selectable and markers can't do multilevel yet */
+		margin:  0;
+		padding: 0;
+	}
+	.toc {
+		line-height: 1.1em; /* consistent spacing */
+	}
+
+	/* ToC not indented until third level, but font style & margins show hierarchy */
+	.toc > li             { font-weight: bold;   }
+	.toc > li li          { font-weight: normal; }
+	.toc > li li li       { font-size:   95%;    }
+	.toc > li li li li    { font-size:   90%;    }
+	.toc > li li li li li { font-size:   85%;    }
+
+	.toc > li             { margin: 1.5rem 0;    }
+	.toc > li li          { margin: 0.3rem 0;    }
+	.toc > li li li       { margin-left: 2rem;   }
+
+	/* Section numbers in a column of their own */
+	.toc .secno {
+		float: left;
+		width: 4rem;
+		white-space: nowrap;
+	}
+	.toc > li li li li .secno {
+		font-size: 85%;
+	}
+	.toc > li li li li li .secno {
+		font-size: 100%;
+	}
+
+	:not(li) > .toc              { margin-left:  5rem; }
+	.toc .secno                  { margin-left: -5rem; }
+	.toc > li li li .secno       { margin-left: -7rem; }
+	.toc > li li li li .secno    { margin-left: -9rem; }
+	.toc > li li li li li .secno { margin-left: -11rem; }
+
+	/* Tighten up indentation in narrow ToCs */
+	@media (max-width: 30em) {
+		:not(li) > .toc              { margin-left:  4rem; }
+		.toc .secno                  { margin-left: -4rem; }
+		.toc > li li li              { margin-left:  1rem; }
+		.toc > li li li .secno       { margin-left: -5rem; }
+		.toc > li li li li .secno    { margin-left: -6rem; }
+		.toc > li li li li li .secno { margin-left: -7rem; }
+	}
+	@media screen and (min-width: 78em) {
+		body:not(.toc-inline) :not(li) > .toc              { margin-left:  4rem; }
+		body:not(.toc-inline) .toc .secno                  { margin-left: -4rem; }
+		body:not(.toc-inline) .toc > li li li              { margin-left:  1rem; }
+		body:not(.toc-inline) .toc > li li li .secno       { margin-left: -5rem; }
+		body:not(.toc-inline) .toc > li li li li .secno    { margin-left: -6rem; }
+		body:not(.toc-inline) .toc > li li li li li .secno { margin-left: -7rem; }
+	}
+	body.toc-sidebar #toc :not(li) > .toc              { margin-left:  4rem; }
+	body.toc-sidebar #toc .toc .secno                  { margin-left: -4rem; }
+	body.toc-sidebar #toc .toc > li li li              { margin-left:  1rem; }
+	body.toc-sidebar #toc .toc > li li li .secno       { margin-left: -5rem; }
+	body.toc-sidebar #toc .toc > li li li li .secno    { margin-left: -6rem; }
+	body.toc-sidebar #toc .toc > li li li li li .secno { margin-left: -7rem; }
+
+	.toc li {
+		clear: both;
+	}
+

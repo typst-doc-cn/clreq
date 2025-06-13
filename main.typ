@@ -30,6 +30,8 @@
   ],
 )
 
+#outline()
+
 #set heading(numbering: "1.1")
 #show heading.where(level: 3): set heading(numbering: none)
 
@@ -773,7 +775,6 @@ $ integral f dif x $
   - #link("https://www.w3.org/TR/clreq-gap/#prioritization")[Prioritization]
   - Full Chinese/English translation
   - Include resolved issues (for historians)
-  - Improve the table of contents.
 
 - Live long
 
