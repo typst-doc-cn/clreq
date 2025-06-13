@@ -10,6 +10,7 @@
     "scripts": {
         "build": "node --experimental-strip-types scripts/compile.ts",
         "dev": "node --experimental-strip-types scripts/compile.ts --watch",
+        "preview": "node --experimental-strip-types scripts/preview_server.ts",
         "check": "node --experimental-strip-types scripts/check_uniq.ts"
     }
 }
