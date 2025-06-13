@@ -116,4 +116,4 @@ The meanings of `<<<` and `>>>` are the same as those in simple examples.
 
 ## License
 
-The code are licensed under Apache 2.0. All rights of rest content are reserved.
+The code are licensed under Apache 2.0 unless otherwise specified. All rights of rest content are reserved.
