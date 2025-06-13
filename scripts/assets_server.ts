@@ -29,7 +29,10 @@ export const assets_server = http.createServer(
           ".css": "text/css",
         };
         const contentType = mimeTypes[ext] ?? "application/octet-stream";
-        res.writeHead(200, { "Content-Type": contentType });
+        res.writeHead(200, {
+          "Content-Type": contentType,
+          "Access-Control-Allow-Origin": "*",
+        });
         res.end(content);
       }
     });
