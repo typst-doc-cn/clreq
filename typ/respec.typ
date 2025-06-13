@@ -26,6 +26,8 @@
       .replace("[[structure.js]]", respec-asset("structure.js")),
   )
   h.script({ }, src: respec-asset("sidebar.js"), defer: "true")
+
+  h.script({ }, src: respec-asset("language.js"), type: "module")
 }
 
 /// The table of contents that will be created by this module
