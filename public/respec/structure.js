@@ -11,11 +11,6 @@
 
 import { addId, html, renameElement } from "./utils.js";
 
-// TODO
-const l10n = {
-  toc: "Contents",
-};
-
 /**
  * @typedef {object} SectionInfo
  * @property {string} secno
@@ -144,7 +139,10 @@ function createTableOfContents(ol) {
     <nav id="toc"></nav>
   `;
   const h2 = html`
-    <h2 class="introductory">${l10n.toc}</h2>
+    <h2 class="introductory">
+      <span lang="en" its-locale-filter-list="en">Contents</span>
+      <span lang="zh-Hans" its-locale-filter-list="zh">目录</span>
+    </h2>
   `;
   nav.append(h2, ol);
   const ref = document.getElementById("toc") ??
