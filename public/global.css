@@ -374,3 +374,8 @@ article.prompt {
 article.prompt > .license {
   font-size: 80%;
 }
+
+/* Small links containing icons; see typ/util.typ */
+.unbreakable {
+  display: inline-block;
+}

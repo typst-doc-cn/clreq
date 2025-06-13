@@ -39,7 +39,7 @@
     repo = "typst/" + repo
   }
 
-  show link: link-in-new-tab
+  show link: link-in-new-tab.with(class: "unbreakable")
   link(
     "https://github.com/" + repo + "/issues/" + num + anchor,
     {
@@ -85,7 +85,7 @@
     [hackable (#human-dest, #note)]
   }
 
-  show link: link-in-new-tab
+  show link: link-in-new-tab.with(class: "unbreakable")
   link(
     dest,
     {

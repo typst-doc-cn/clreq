@@ -5,7 +5,7 @@
 /// Display the linked URL in a new tab
 ///
 /// Usage: `#show link: link-in-new-tab`
-#let link-in-new-tab = it => h.a(target: "_blank", href: it.dest, it.body)
+#let link-in-new-tab(class: none, it) = h.a(target: "_blank", href: it.dest, class: class, it.body)
 
 /// Make references to headings clickable
 ///
