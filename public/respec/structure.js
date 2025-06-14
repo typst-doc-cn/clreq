@@ -1,9 +1,10 @@
 /**
- * Handles producing the ToC and numbering sections across the document.
+ * Handles producing the ToC, numbering sections, and permalinks across the document.
  *
  * Adapted from ReSpec.
  *
  * https://github.com/speced/respec/blob/eaa1596ef5c4207ab350808c1593d3a39600fbed/src/core/structure.js
+ * https://github.com/speced/respec/blob/eaa1596ef5c4207ab350808c1593d3a39600fbed/src/core/id-headers.js
  * https://www.w3.org/Consortium/Legal/2015/copyright-software-and-document
  *
  * @module
@@ -157,6 +158,26 @@ function createTableOfContents(ol) {
   }
 }
 
+/** Add permalinks to headings */
+function addPermalinks() {
+  /** @type {NodeListOf<HTMLElement>} */
+  const headings = document.querySelectorAll("h2, h3, h4, h5, h6");
+  for (const h of headings) {
+    if (h.id) {
+      const permalink = html`
+        <a
+          ref="bookmark"
+          href="#${h.id}"
+          class="permalink"
+          title="Permalink"
+          aria-label="Permalink"
+        ></a>
+      `;
+      h.prepend(permalink);
+    }
+  }
+}
+
 /**
  * @typedef {object} Configuration
  * @property {string} lang can change the generated text (supported: en, fr)
@@ -174,4 +195,6 @@ export function makeToc(conf = {}) {
   if (result) {
     createTableOfContents(result);
   }
+
+  addPermalinks();
 }
