@@ -537,11 +537,10 @@ $ integral f dif x $
 #issue("typst#5778")
 #workaround("https://typst-doc-cn.github.io/guide/FAQ/heading-numbering-space.html")
 
-```example
+```example-page
 >>> #show heading: pad.with(top: -0.75em)
 >>> Current:
-<<<#set heading(numbering: "一、")
->>> #set heading(numbering: (..nums) => "一、")
+#set heading(numbering: "一、")
 = 标题
 
 >>> Expected:
