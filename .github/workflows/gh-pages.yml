@@ -37,7 +37,11 @@ jobs:
           cache: pnpm
       - uses: typst-community/setup-typst@v4
       - name: Install fonts
-        run: sudo apt install fonts-noto-cjk
+        shell: bash
+        run: |
+          sudo apt install fonts-noto-cjk
+          curl -OL https://github.com/typst-doc-cn/guide/releases/download/files/fonts.7z
+          7z x fonts.7z -ofonts
       - run: pnpm install
       - run: pnpm build
       - name: Setup Pages

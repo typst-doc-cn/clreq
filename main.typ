@@ -492,7 +492,7 @@ $ integral f dif x $
 
 === #bbl(en: [Default line height is too tight for Chinese], zh: [默认行高对中文来说过小])
 
-#workaround("https://typst-doc-cn.github.io/guide/FAQ/word-line-spacing.html")
+#workaround("https://typst-doc-cn.github.io/guide/FAQ/par-leading.html#typst-设置")
 
 #babel(
   en: [
@@ -531,6 +531,42 @@ $ integral f dif x $
     ],
   )
 ]
+
+=== #bbl(
+  en: [List and enum markers are not aligned with the baseline of the item's contents],
+  zh: [`list`和`enum`的编号与内容未对齐基线],
+)
+
+#issue("typst#1204")
+#workaround("https://typst-doc-cn.github.io/guide/FAQ/enum-list-marker-fix.html")
+
+#babel(
+  en: [This issue occurs when the marker and the content have different heights. It is common in mixed Chinese-Western text layouts to use different fonts for Chinese and Western characters. As a result, the height of Western (numeric) markers is likely to differ from that of the Chinese content, triggering the issue. ],
+  zh: [这一问题的触发条件是编号和内容的高度不同。而中西混排场景中，中西文经常采用不同字体，导致西文（数字）编号与中文内容很可能不一样高，从而触发问题。],
+)
+
+```example
+#set text(font: (
+  (name: "New Computer Modern", covers: "latin-in-cjk"),
+  "SimSun",
+))
+>>>
+
+>>> Current:
+>>>
++ 鲁镇的酒店的格局，是和别处不同的。
+
+>>>#parbreak()
+>>> Expected:
+>>>
+>>> #[1.] 鲁镇的酒店的格局，是和别处不同的。
+>>>
+>>> Analysis: Their cap heights differs.
+>>>
+>>> #set box(fill: aqua)
+>>> #box[1.]
+>>> #box[鲁镇]
+```
 
 === #bbl(en: [Too wide spacing between heading numbering and title in CJK], zh: [标题的编号后面的空格])
 
