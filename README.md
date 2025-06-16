@@ -25,6 +25,8 @@ Prerequisites:
 
   Then install the fonts to system, or put them under `./fonts/`.
 
+  _Noto Serif CJK SC_ is enough for most contributors. However, if you want to reproduce all examples exactly, please refer to [the script](./scripts/download_fonts.sh).
+
 ## How to add an example
 
 You can add an example to [`main.typ`](./main.typ) by writing a fenced code block with one of the following languages.
