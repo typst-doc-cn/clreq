@@ -246,6 +246,17 @@ main .icon svg {
   display: none;
 }
 
+figure {
+  text-align: center;
+}
+figure > img {
+  width: 40%;
+}
+@media (max-width: 720px) {
+  figure > img {
+    width: 60%;
+  }
+}
 figcaption {
   text-align: center;
 }

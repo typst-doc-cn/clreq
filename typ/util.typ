@@ -76,13 +76,13 @@
   let human-dest = if dest.starts-with("https://typst.app/universe/package/") {
     "universe/" + dest.trim("https://typst.app/universe/package/", at: start)
   } else {
-    dest.trim("https://", at: start).split(".").at(0)
+    dest.trim("https://", at: start).split(".").at(0).trim("typst-", at: start)
   }
 
   let body = if note == none {
-    [hackable (#human-dest)]
+    [fix (#human-dest)]
   } else {
-    [hackable (#human-dest, #note)]
+    [fix (#human-dest, #note)]
   }
 
   show link: link-in-new-tab.with(class: "unbreakable")

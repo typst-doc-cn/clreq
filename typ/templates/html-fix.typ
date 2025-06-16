@@ -1,11 +1,22 @@
 /// A module providing workarounds for HTML features not supported by typst yet
 
-#import "./html-toolkit.typ": h
+#import "./html-toolkit.typ": h, asset-url
 
 /// Display the linked URL in a new tab
 ///
 /// Usage: `#show link: link-in-new-tab`
 #let link-in-new-tab(class: none, it) = h.a(target: "_blank", href: it.dest, class: class, it.body)
+
+/// Externalize images in /public/
+///
+/// Usage: `#show image: external-image`
+#let external-image(it) = {
+  if type(it.source) == str and it.source.starts-with("/public/") {
+    h.img({ }, src: asset-url(it.source.trim("/public", at: start)))
+  } else {
+    it
+  }
+}
 
 /// Make references to headings clickable
 ///
@@ -49,4 +60,9 @@
   body
 }
 
-#let html-fix = make-heading-refs-clickable
+/// A collection of all fixes
+#let html-fix(body) = {
+  show: make-heading-refs-clickable
+  show image: external-image
+  body
+}

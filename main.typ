@@ -61,6 +61,53 @@
 
 #issue("typst#5908")
 
+// Ref: https://www.w3.org/TR/clreq/#writing_modes_in_chinese_composition
+#babel(
+  en: [There are two writing modes in Chinese composition:],
+  zh: [中文有两种行文模式：],
+)
+
+- #babel(
+    en: [*Horizontal writing mode* is the mainstream mode in Chinese Mainland, and is also commonly used for books on natural science in Hong Kong, Macao, Taiwan.],
+    zh: [*横排*是中国大陆的主流方法，港澳台的自然科学类书籍也常用横排。],
+  )
+- #babel(
+    en: [*Vertical writing mode* is the traditional mode for Chinese publications, and still stands as an important cultural characteristic of regions where Traditional Chinese is used.],
+    zh: [*直排*是中文书籍的传统方法，仍是繁体中文通行地区的重要文化标志。],
+  )
+
+#babel(
+  en: [
+    Compared with horizontal writing mode, vertical writing mode not only changes the direction of the text flow, but also adjusts the form, size, and position of punctuation marks (as shown in @fig:vertical-example-ancient and @fig:vertical-example-modern).
+    Additionally, it requires adapting to mixed Chinese-Western text, captions of figures, multi-column layout, and more.
+  ],
+  zh: [
+    与横排相比，直排除了更改行文方向，还会调整标点符号的形态、尺寸、位置（如 @fig:vertical-example-ancient、@fig:vertical-example-modern），此外还需适配中西混排、图表标题、分栏等。
+  ],
+)
+
+#babel(
+  en: [Considering that typst currently struggles even with basic vertical typesetting, we will not cover issues related to vertical writing mode in the following sections.],
+  zh: [鉴于 typst 目前连基础直排也难以实现，下文各节将不再讨论直排相关的问题。],
+)
+
+#figure(
+  image("/public/vertical-example-ancient.jpg"),
+  caption: link(
+    "https://commons.wikimedia.org/w/index.php?title=File:Shanghai_永樂大典卷之二千三百三十七.pdf&page=1",
+    bbl(en: [An ancient example of vertical text], zh: [直排的古代例子]),
+  ),
+) <fig:vertical-example-ancient>
+
+#figure(
+  image("/public/vertical-example-modern.jpg"),
+  caption: link(
+    "https://github.com/w3c/type-samples/issues/56",
+    bbl(en: [A modern example of vertical text], zh: [直排的现代例子]),
+  ),
+) <fig:vertical-example-modern>
+
+
 == Bidirectional text (N/A) <bidi-text>
 
 #prompt(from-w3c: "https://www.w3.org/TR/clreq-gap/#bidi_text")[
@@ -78,20 +125,73 @@
   )
 ]
 
-=== #bbl(en: [Writing non-Latin (e.g.~Chinese) text without a configured font leads to unpredictable font fallback])
+=== #bbl(
+  en: [Writing Chinese without configuring any font leads to messy font fallback],
+  zh: [若不配置字体就写中文，回落出的字体会很混乱],
+)
+
 #issue("typst#5040")
+#issue("typst#5900")
+#workaround("https://typst-doc-cn.github.io/guide/FAQ/install-fonts.html")
+
+#babel(
+  en: [
+    The default main text font in typst does not include Chinese characters.
+    Therefore, when compiling locally, if you write Chinese without configuring any font using `#set text(font: …)`, the fallback result may end up mixing fonts of different writing styles (as shown in @fig:font-fallback-messy), making the text hard to read.
+    Moreover, there is no warning or hint.
+  ],
+  zh: [
+    typst的正文默认字体不含汉字。因此本地编译时，若不用`#set text(font: …)`配置字体就写中文，回落结果可能混合不同风格的字体（如 @fig:font-fallback-messy），难以阅读，且无任何警告或提示。
+  ],
+)
+
+#figure(
+  image("/public/font-fallback-messy.png"),
+  caption: bbl(
+    en: [The result might be a mixture of sans and serif fonts],
+    zh: [结果可能混合了黑体和宋体],
+  ),
+) <fig:font-fallback-messy>
 
 === #bbl(
-  en: [Wrong "monospace" font fallback for CJK characters in raw block],
-  zh: [为什么代码块里面的中文字体显示不正常？],
+  en: [Wrong monospace font fallback for Chinese in raw block],
+  zh: [代码块内汉字回落的等宽字体不正常],
 )
 
 #issue("typst#3385")
 #workaround("https://typst-doc-cn.github.io/guide/FAQ/chinese-in-raw.html")
 
+#babel(
+  en: [This issue continues the above issue.],
+  zh: [这一问题接续上一问题。],
+)
+
+#babel(
+  en: [
+    Apart from the main text, typst presets another font for `raw` code blocks, which does not include Chinese characters either.
+    Currently, this setting takes precedence over the main text font you specified, forcing you to re-declare the Chinese font by `#show raw: set text(font: …)`.
+  ],
+  zh: [
+    在正文之外，typst对`raw`代码块预设了另一字体，同样不含汉字。该设置目前优先于你指定的正文字体，导致必须用`#show raw: set text(font: …)`再次指定中文字体。
+  ],
+)
+
 === #bbl(en: [Language-dependant font configuration], zh: [按语言设置字体])
 
 #issue("typst#794")
+
+#babel(
+  en: [For punctuation marks such as quotation marks (see @quotations), Chinese and Western scripts share the same Unicode code points, but require different glyph forms. Therefore, their fonts must be set respectively. ],
+  zh: [对于引号（见 @quotations）等标点符号，中西文在Unicode中共用码位#issue("w3c/clreq#534")，但要求不同形态，故必须分开设置字体。],
+)
+
+```example
+>>> Current: \
+我说：“T'Pol 是‘虚构’人物！”
+
+>>> Expected: \
+>>> 我说：“#text(font: "New Computer Modern")[T'Pol] 是‘虚构’人物！”
+```
 
 == #bbl(en: [Font rendering & font styles], zh: [字体渲染与字体风格]) <font-render>
 
@@ -108,21 +208,44 @@
   )
 ]
 
-=== #bbl(en: [Chinese rendering error])
-
-#issue("typst#5900")
-
-=== #bbl(en: [Size per font])
+=== #bbl(en: [Size per font], zh: [按字体设置字号])
 
 #issue("typst#6295")
 
-=== #bbl(en: [Compiler not rendering Chinese/CJK fonts])
+#babel(
+  en: [It is common to use different fonts for Chinese and Western characters, and the visual sizes of different fonts may need to be fine-tuned for alignment.],
+  zh: [中西文经常采用不同字体，而不同字体的视觉大小可能需要微调对齐。],
+)
 
-#issue("typst#6054")
+```example
+>>> Current: \
+共10人
 
-=== #bbl(en: [Support variable fonts])
+>>> Expected: \
+>>> 共#text(1.1em)[10]人
+```
+
+=== #bbl(en: [Variable font], zh: [可变字体])
 
 #issue("typst#185")
+#issue("typst#6054")
+#workaround("https://github.com/typst/typst/discussions/2508")
+
+#babel(
+  en: [Variable fonts offer more creative possibilities and have higher storage efficiency. Given the vast number of Chinese characters, designing and storing traditional static fonts can be challenging — for example, a static Noto Sans CJK OTF/TTC is often \~100 MB. This makes variable fonts especially valuable for the Chinese language.],
+  zh: [可变字体的创意可能性更多，并且存储效率更高。汉字数量庞大，设计、存储传统不可变字体都相对困难——例如不可变思源黑体一般有 \~100 MB，所以可变字体对中文有独特价值。],
+)
+
+```example
+>>> Current: \
+>>> #set text(weight: "extralight")
+<<<#set text(font: "Source Han Sans SC VF")
+可变字体
+
+>>> Expected: \
+>>> #set text(weight: "regular")
+>>> 可变字体
+```
 
 == Context-based shaping and positioning (N/A)
 
@@ -801,6 +924,7 @@ $ integral f dif x $
 - #link("https://www.w3.org/TR/clreq/")[Requirements for Chinese Text Layout - 中文排版需求]
 - #link("https://www.w3.org/TR/clreq-gap/")[Chinese Layout Gap Analysis]
 - #link("https://typst-doc-cn.github.io/guide/FAQ.html")[FAQ 常见问题 | Typst Doc CN 中文社区导航]
+- #link("https://std.samr.gov.cn/hb/search/stdHBDetailed?id=8B1827F23645BB19E05397BE0A0AB44A#")[CY/T 154—2017《中文出版物夹用英文的编辑规范》]
 
 == To be done
 
