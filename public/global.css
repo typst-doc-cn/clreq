@@ -390,3 +390,14 @@ article.prompt > .license {
 .unbreakable {
   display: inline-block;
 }
+
+/* `#unichar` from typ/util.typ */
+/* Inspired by clreq `.uname` and Wikipedia [[Template:Unichar]] */
+.unichar .code-point {
+  font-family: monospace;
+  font-size: 0.8em;
+  letter-spacing: 0.03em;
+}
+.unichar .small-caps {
+  font-variant-caps: small-caps;
+}

@@ -1,4 +1,4 @@
-#import "typ/util.typ": babel, bbl, issue, workaround, prompt
+#import "typ/util.typ": babel, bbl, issue, workaround, prompt, unichar
 #import "typ/show-example.typ": render-examples
 #show: render-examples
 
@@ -273,11 +273,30 @@
   )
 ]
 
-=== #bbl(en: [Fake text weight and style (synthesized bold and italic)], zh: [中文没有加粗或斜体])
+=== #bbl(en: [Fake (synthesized) bold], zh: [伪粗体])
 
 #issue("typst#394")
-#workaround("https://typst-doc-cn.github.io/guide/FAQ/chinese-bold.html", note: "bold")
-#workaround("https://typst-doc-cn.github.io/guide/FAQ/chinese-skew.html", note: "skew")
+#workaround("https://typst.app/universe/package/cuti")
+#workaround("https://typst-doc-cn.github.io/guide/FAQ/chinese-bold.html")
+
+#babel(
+  en: [Classic Chinese fonts often have only one level of text weight. Therefore, fake bold is crucial in practice.],
+  zh: [传统中文字体通常只有单级字重，所以伪粗体在实用中很关键。],
+)
+
+```example
+>>> Current: \
+>>> #[
+#set text(font: "SimSun")
+想做出*最好的*灯泡。
+>>> ]
+
+>>> Expected: \
+>>> #set text(font: "SimSun")
+>>> #import "@preview/cuti:0.3.0": show-cn-fakebold
+>>> #show: show-cn-fakebold
+>>> 想做出*最好的*灯泡。
+```
 
 == Case & other character transforms (N/A)
 
@@ -328,12 +347,30 @@
 ]
 
 === #bbl(
-  en: [`covers: "latin-in-cjk"` does not cover apostrophes and quotation marks],
-  zh: [引号的字体不对 / 引号的宽度不对],
+  en: [Quotation marks should have different widths for Chinese and Western text],
+  zh: [中西文引号的宽度应当不同],
 )
 
 #issue("typst#5858")
 #workaround("https://typst-doc-cn.github.io/guide/FAQ/smartquote-font.html")
+
+#babel(
+  en: [Both Chinese and Western quotation marks (and apostrophes) use the same Unicode code points:],
+  zh: [中西文的引号（及撇号）都使用相同Unicode码位：],
+)
+#"‘’“”".clusters().map(unichar).map(list.item).join()
+#babel(
+  en: [But punctuation in Chinese is usually supposed to be wider than that in Western languages. This cannot be achieved automatically yet.],
+  zh: [但中文的标点通常应该比西文的宽。当前这还无法自动实现。],
+)
+
+```example
+>>> Current: \
+我说：“T'Pol 是‘虚构’人物！”
+
+>>> Expected: \
+>>> 我说：“#text(font: "New Computer Modern")[T'Pol] 是‘虚构’人物！”
+```
 
 == #bbl(en: [Emphasis & highlighting], zh: [强调与突出显示])
 
@@ -348,11 +385,19 @@
   )
 ]
 
-=== #bbl(en: [Underline breaks when mixing Chinese and English], zh: [中英文下划线错位])
+=== #bbl(en: [Underline breaks when mixing Chinese and Western text], zh: [中西文下划线错位])
 
 #issue("typst#1210")
 #issue("typst#1716", anchor: "#issuecomment-1855739446")
 #workaround("https://typst-doc-cn.github.io/guide/FAQ/underline-misplace.html")
+
+#babel(
+  en: [
+    Unlike the Latin alphabet, Chinese characters have no concept of ascenders and descenders. Therefore, underlines in Chinese should be drawn completely below the glyphs.
+    Additionally, it is common to use different fonts for Chinese and Western characters, creating more difficulties in aligning the underline.
+  ],
+  zh: [与拉丁字母不同，汉字没有升降部的概念，所以中文的下划线应当完全在字符之下。此外，中西文常用不同字体，导致下划线更难对齐。],
+)
 
 ```example
 >>> Current: \
@@ -395,7 +440,7 @@
 
 #issue("typst#1489")
 
-=== #bbl(en: [warichu])
+=== #bbl(en: [warichu], zh: [割注])
 
 #issue("typst#193", note: [mentioned])
 
@@ -432,7 +477,7 @@
   )
 ]
 
-=== #bbl(en: [CJK-latin glues stretch only before latin characters])
+=== #bbl(en: [CJK-latin glues stretch only before latin characters], zh: [中西间距只在拉丁字母之前拉伸])
 
 #issue("typst#6062")
 
@@ -446,7 +491,7 @@
 >>> #block(width: 3em)[第 1 回成段]
 ```
 
-=== #bbl(en: [Strict grid for CJK, hopefully via glue])
+=== #bbl(en: [Strict grid aligned in both horizontal and vertical axes], zh: [严格纵横对齐的网格])
 
 #issue("typst#4404")
 
@@ -466,12 +511,12 @@
 >>> ]
 ```
 
-=== #bbl(en: [CJK brackets at the beginning of paragraph])
+=== #bbl(en: [Brackets at the beginning of paragraph], zh: [段首的方括号])
 
 #issue("typst#4011")
 
 === #bbl(
-  en: [CJK punctuation at the start of paragraphs are not adjusted sometimes],
+  en: [Parenthetical indication punctuation marks at the start of paragraphs are not adjusted sometimes],
   zh: [段首的夹注符号有时不会调整间距],
 )
 
@@ -530,7 +575,10 @@ $ integral f dif x $
 #workaround("https://typst-doc-cn.github.io/guide/FAQ/character-intersperse.html")
 #workaround("https://typst.app/universe/package/tricorder")
 
-#babel(zh: [均排是指让几个汉字占固定宽度并均匀分布。])
+#babel(
+  en: [Even inter-character spacing means letting several Chinese characters to occupy a fixed width and be evenly distributed.],
+  zh: [均排是指让几个汉字占固定宽度并均匀分布。],
+)
 
 ```example
 >>> Current:
@@ -619,7 +667,7 @@ $ integral f dif x $
 
 #babel(
   en: [
-    Unlike the Latin alphabet, Chinese characters have no concept of ascending and descending parts.
+    Unlike the Latin alphabet, Chinese characters have no concept of ascenders and descenders.
     So even though the numerical values of the leading are the same, the visual spacing of Chinese is smaller than that of Western text.
   ],
   zh: [

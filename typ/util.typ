@@ -1,3 +1,5 @@
+#import "@preview/unichar:0.3.0": codepoint
+
 #import "templates/html-toolkit.typ": a, span, article, p
 #import "templates/html-fix.typ": link-in-new-tab
 
@@ -107,6 +109,24 @@
     },
   )
 }
+
+/// A formatted description of the Unicode character for a given codepoint
+///
+/// Usage: `unichar("‘")
+#let unichar(code) = span(
+  class: "unichar",
+  {
+    let c = codepoint(code)
+
+    show smallcaps: span.with(class: "small-caps")
+
+    span(class: "code-point")[U+#lower(c.id)]
+    [~]
+    raw(str.from-unicode(c.code))
+    [ ]
+    smallcaps(lower(c.name))
+  },
+)
 
 /// Introduction of a section
 ///
