@@ -19,12 +19,24 @@ jobs:
           node-version: 22
           cache: pnpm
       - uses: typst-community/setup-typst@v4
+      - name: Restore cached fonts
+        uses: actions/cache@v4
+        id: cache
+        with:
+          path: |
+            fonts/
+          key: |
+            fonts-${{ hashFiles('scripts/download_fonts.sh') }}
+            fonts-
+      - uses: taiki-e/install-action@v2
+        if: steps.cache.outputs.cache-hit != 'true'
+        with:
+          tool: ripgrep
       - name: Install fonts
         shell: bash
+        if: steps.cache.outputs.cache-hit != 'true'
         run: |
-          sudo apt install fonts-noto-cjk
-          curl -OL https://github.com/typst-doc-cn/guide/releases/download/files/fonts.7z
-          7z x fonts.7z -ofonts
+          bash scripts/download_fonts.sh
       - run: pnpm install
       - run: pnpm build
       - uses: actions/upload-artifact@v4

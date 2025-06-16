@@ -238,12 +238,12 @@
 
 ```example
 >>> Current: \
->>> #set text(weight: "extralight")
-<<<#set text(font: "Source Han Sans SC VF")
+>>> #[
+#set text(font: "Source Han Serif SC VF")
 可变字体
+>>> ]
 
 >>> Expected: \
->>> #set text(weight: "regular")
 >>> 可变字体
 ```
 
