@@ -19,8 +19,8 @@
   h.script(
     type: "module",
     ```js
-    import { makeToc } from "[[structure.js]]"
-    makeToc({ maxTocLevel: 2 })
+    import { run } from "[[structure.js]]"
+    run({ maxTocLevel: 2 })
     ```
       .text
       .replace("[[structure.js]]", respec-asset("structure.js")),

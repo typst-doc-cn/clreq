@@ -179,13 +179,118 @@ function addPermalinks() {
 }
 
 /**
+ * Configuration of levels, sorted.
+ * @type {Record<string, {paint: string, human: string}>}
+ */
+const PRIORITY_CONFIG = {
+  tbd: { paint: "eeeeee", human: "To be done" },
+  na: { paint: "008000", human: "Not applicable" },
+  ok: { paint: "008000", human: "OK" },
+  advanced: { paint: "ffe4b5", human: "Advanced" },
+  basic: { paint: "ffa500", human: "Basic" },
+  broken: { paint: "ff0000", human: "Broken" },
+};
+
+/**
+ * Calculate priority levels for all sections, and insert levels in them
+ * @param {Section[]} sections The section tree
+ * @param {HTMLElement[] | null} siblings
+ */
+function insertPriorityLevel(sections, siblings = null) {
+  if (sections.length === 0) {
+    return;
+  }
+
+  // If not given, fill with the default
+  if (siblings === null) {
+    const parent = sections[0].header.parentElement;
+    console.assert(
+      sections.every((s) => s.header.parentElement === parent),
+      "All subsections under the same section should have the same parent element",
+    );
+    /** @type {HTMLElement[]} */
+    siblings = Array.from(parent.children);
+  }
+
+  /** The start index of each section */
+  const startIndices = sections.map((s) => siblings.indexOf(s.header));
+  console.assert(
+    startIndices.every((i) => i !== -1),
+    "failed to one or more sections in siblings",
+    sections.filter((s) => siblings.indexOf(s.header) === -1),
+    siblings,
+  );
+
+  sections.forEach((sec, i) => {
+    const start = startIndices[i];
+    const end = startIndices.at(i + 1);
+
+    const levels = siblings.slice(start, end).flatMap((el) => {
+      /** @type {HTMLElement[]} */
+      const tags = Array.from(el.querySelectorAll("[data-priority-level]"));
+      return tags.map((t) => t.dataset.priorityLevel);
+    });
+
+    // if leaf section
+    if (sec.subsections.length === 0) {
+      console.assert(
+        levels.length <= 1,
+        `at most one priority level could be annotated in leaf sections, but found ${levels}: ${sec.title}`,
+        sec,
+      );
+    } else if (levels.length > 0) {
+      // Calculate `worst` and `report`
+      const ordering = Object.keys(PRIORITY_CONFIG);
+      const worst = PRIORITY_CONFIG[
+        ordering[
+          Math.max(...levels.map((l) => ordering.indexOf(l)))
+        ]
+      ];
+      const counts = levels.reduce(
+        (last, l) => last.set(l, last.get(l) + 1),
+        new Map(ordering.reverse().map((l) => [l, 0])),
+      );
+      const report = Array.from(
+        counts.entries().filter(([_level, n]) => n > 0).map(([level, n]) =>
+          `${n} ${PRIORITY_CONFIG[level].human}`
+        ),
+      ).join(", ");
+
+      // Find the first non prompt element
+      let pos = sec.header;
+      while (
+        pos.nextElementSibling !== undefined &&
+        pos.nextElementSibling.classList.contains("prompt")
+      ) {
+        pos = pos.nextElementSibling;
+      }
+
+      // Write levels after `pos`
+      const p = html`
+        <p>
+          <span
+            style="background: #${worst
+          .paint}; display: inline-block; width: 0.8em; height: 0.8em; margin: 0.25em; vertical-align: -15%;"
+          ></span>
+          ${worst.human} — ${report}.
+        </p>
+      `;
+      pos.insertAdjacentElement("afterend", p);
+
+      // Insert recursively
+      insertPriorityLevel(sec.subsections, siblings.slice(start, end));
+    }
+  });
+}
+
+/**
  * @typedef {object} Configuration
  * @property {string} lang can change the generated text (supported: en, fr)
  * @property {number} maxTocLevel only generate a TOC so many levels deep
  *
  * @param {Configuration} conf
  */
-export function makeToc(conf = {}) {
+export function run(conf = {}) {
   if ("maxTocLevel" in conf === false) {
     conf.maxTocLevel = Infinity;
   }
@@ -197,4 +302,6 @@ export function makeToc(conf = {}) {
   }
 
   addPermalinks();
+
+  insertPriorityLevel(sectionTree);
 }
