@@ -49,6 +49,11 @@
 )
 
 
+/// `f: U → V`, `x: U | none` ⇒ `optional-map(f, x): V | none`
+/// https://doc.rust-lang.org/stable/std/option/enum.Option.html#method.map
+#let optional-map(f, x) = if x == none { none } else { f(x) }
+
+
 /// Adds the language `example`, etc. to `raw` that can be used to render code examples side-by-side with an automatic preview.
 ///
 /// Please refer to https://github.com/Mc-Zen/tidy/releases/latest/download/tidy-guide.pdf#tidy-render-examples() for more info.
@@ -99,7 +104,7 @@
       #metadata((id: id, content: full-executed)) <external-example>
     ]
     set text(4em / 3)
-    layout-external-example(raw(displayed, block: true, lang: "typ"), id)
+    layout-external-example(optional-map(raw.with(block: true, lang: "typ"), displayed), id)
   }
 
   // Bibliography example, compiled by scripts/compile.ts.

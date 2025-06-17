@@ -607,11 +607,33 @@ $ integral f dif x $
   )
 ]
 
-=== #bbl(en: [CJK-Latin-spacing not working with raw text])
+=== #bbl(en: [CJK-Latin-spacing not working around `raw`], zh: [`raw`两边缺少中西间距])
 
 #issue("typst#2702")
+#workaround("https://typst-doc-cn.github.io/guide/FAQ/chinese-space.html")
 
-=== #bbl(en: [Punctuation compression does not work with `#show`])
+```example
+>>> Current: \
+汉字`(code)`汉字
+
+>>> Expected: \
+>>> 汉字#h(0.25em)`(code)`#h(0.25em)汉字
+```
+
+=== #bbl(en: [CJK-Latin-spacing not working around inline equations], zh: [行内公式两边缺少中西间距])
+
+#issue("typst#2703")
+#workaround("https://typst-doc-cn.github.io/guide/FAQ/chinese-space.html")
+
+```example
+>>> Current: \
+汉字$A$汉字
+
+>>> Expected: \
+>>> 汉字#h(0.25em)$A$#h(0.25em)汉字
+```
+
+=== #bbl(en: [Punctuation compression is interrupted by `#show`], zh: [`#show`会打断标点挤压])
 
 #issue("typst#5474")
 
@@ -632,21 +654,9 @@ $ integral f dif x $
 >>> 噫）．嘘）．唏
 ```
 
-=== #bbl(en: [CJK-Latin-spacing not working with inline equation], zh: [行内公式与中文之间没有自动空格])
-
-#issue("typst#2703")
-#workaround("https://typst-doc-cn.github.io/guide/FAQ/chinese-space.html")
-
-```example
->>> Current: \
-汉字$A$汉字
-
->>> Expected: \
->>> 汉字#h(0.25em)$A$#h(0.25em)汉字
-```
-
-=== #bbl(zh: [连续标点会挤压在一起])
-#workaround("https://typst-doc-cn.github.io/guide/FAQ/weird-punct.html")
+// === #bbl(zh: [连续标点会挤压在一起])
+// #workaround("https://typst-doc-cn.github.io/guide/FAQ/weird-punct.html")
+// This issue has not been reproduced yet.
 
 == #bbl(en: [Baselines, line-height, etc.], zh: [基线、行高等])
 
@@ -739,10 +749,15 @@ $ integral f dif x $
 >>> #box[鲁镇]
 ```
 
-=== #bbl(en: [Too wide spacing between heading numbering and title in CJK], zh: [标题的编号后面的空格])
+=== #bbl(en: [Too wide spacing between heading numbering and title], zh: [标题编号与内容之间的空隙过宽])
 
 #issue("typst#5778")
 #workaround("https://typst-doc-cn.github.io/guide/FAQ/heading-numbering-space.html")
+
+#babel(
+  en: [In Chinese, the chapter number and its title are typically separated by the secondary comma #unichar("、"). Unlike the dot `.` used in formats like `1. Title`, no extra space should follow the `、` in examples such as `一、标题`. However, typst puts a hard-coded 0.3-em space here.],
+  zh: [中文通常习惯用顿号 #unichar("、") 分隔章号和标题。与`1. Title`这种格式中的`.`不同，`一、标题`中的`、`后不应再插入空格。然而 typst 在这里硬编码插入了宽 0.3 em 的空格。],
+)
 
 ```example-page
 >>> #show heading: pad.with(top: -0.75em)
@@ -806,7 +821,21 @@ $ integral f dif x $
   )
 ]
 
-== #bbl(en: [Citing], zh: [参考文献标注法])
+#babel(
+  en: [GB/T 7714—2015 specifies the following three citation styles. Each style uses a dedicated citing format in the main text, and the bibliography list at the end also arranges differently. However, the rules on recording each individual work are identical.],
+  zh: [GB/T 7714—2015 规定了以下三种标注方法。各方法采用不同的正文引注样式，末尾参考文献表的排布方式也不尽相同；不过，每项文献的著录规则完全相同。],
+)
+
+- numeric 顺序编码
+- author-date 著者-出版年
+- note 注释/脚注
+
+#babel(
+  en: [The first style is the most widely used. The following sections will refer to this method unless otherwise specified.],
+  zh: [第一种方法应用最广。下文默认指这种方法。],
+)
+
+== #bbl(en: [Citing], zh: [参考文献引注])
 
 #prompt[
   #babel(
@@ -815,14 +844,14 @@ $ integral f dif x $
   )
 ]
 
-=== #bbl(en: [Continuous numbering], zh: [参考文献条目中不连续页码显示错误（缺少“,”）])
-
-#issue("hayagriva#189", note: [mentioned])
-#workaround("https://typst-doc-cn.github.io/guide/FAQ/bib-missing-page-delimiter.html")
-
-=== #bbl(zh: [引用编号的数字高于括号])
+=== #bbl(en: [Citation numbers are flying over their brackets], zh: [引用编号的数字高于括号])
 
 #workaround("https://typst-doc-cn.github.io/guide/FAQ/cite-flying.html")
+
+#babel(
+  en: [The style `gb-7714-2015-numeric` formats a citation with a number enclosed in square brackets (e.g., `[1]`) and render them in superscript. However, some fonts only provide dedicated superscript glyphs for numbers, not for brackets. This can cause misalignment, with the numbers appearing higher than the brackets in the superscript.],
+  zh: [`gb-7714-2015-numeric`样式会用括号包裹引用编号（例：`[1]`）并上标。不过有些字体只给数字提供了专用上标版本，而括号未提供。这导致上标时未对齐，数字显得比括号高。],
+)
 
 ````example-page
 >>> Current: \
@@ -841,31 +870,94 @@ $ integral f dif x $
 #bibliography(bytes(bib), style: "gb-7714-2015-numeric")
 ````
 
-=== #bbl(zh: [引用参考文献时，如何共存上标和非上标形式])
+=== #bbl(en: [Compression of continuous citation numbers], zh: [压缩连续的引用编号])
+
+#issue("hayagriva#189", note: [mentioned])
+
+#babel(
+  en: [Compression should start from two citations., but the current threshold is three.],
+  zh: [压缩应从两篇文献开始，而目前是从三篇开始。],
+)
+
+````example-page
+>>> Current: \
+两篇@a @b \
+三篇@a @b @c
+
+>>> Expected: \
+>>> 两篇#super[[1--2]] \
+>>> 三篇@a @b @c
+>>> #show bibliography: none
+#let bib = (
+  "abc".clusters().map(n => "@misc{[n], title = {Title}}".replace("[n]", n)).sum()
+)
+#bibliography(bytes(bib), style: "gb-7714-2015-numeric")
+````
+
+=== #bbl(en: [Superscript and non-superscript forms should coexist], zh: [共存上标和非上标形式])
 
 #workaround("https://typst-doc-cn.github.io/guide/FAQ/ref-superscript.html")
+
+#babel(
+  en: [Bothe the superscript and non-superscript forms are needed in practice.],
+  zh: [实际中，上标、非上标两种引用形式都需要。],
+)
+
+````example-page
+>>> Expected: \
+<<< 孔乙己@key，另见文献~#parencite(<key>)。
+>>> 孔乙己#super[[1]]，另见文献#h(0.25em)#[[1]]。
+````
 
 == #bbl(en: [Bibliography listing], zh: [参考文献表])
 
 #prompt[
   #babel(
-    en: [Can `bibliography` generate a bibliography / reference listing at the end of the article? Does each entry have all parts? Does the citation format meet the standard?],
-    zh: [用`bibliography`能否在文末正常生成参考文献表？著录项目完整吗？著录格式符合标准吗？],
+    en: [Can `bibliography` generate a bibliography / reference listing at the end of the article or the page? Does each entry have all parts? Does the citation format meet the standard?],
+    zh: [用`bibliography`能否在文末或页脚正常生成参考文献表？著录项目完整吗？著录格式符合标准吗？],
   )
 ]
 
-=== #bbl(en: [chinese et al.], zh: [修复英文参考文献中的“等”])
+=== #bbl(en: [Use `et al.` for English and `等` for Chinese], zh: [英文用`et al.`，中文用`等`])
 
+#issue("citationberg#5")
 #issue("hayagriva#291")
+#issue("nju-lug/modern-nju-thesis#3")
+#issue("csimide/SEU-Typst-Template#1")
 #workaround("https://typst-doc-cn.github.io/guide/FAQ/bib-etal-lang.html")
+#workaround("https://typst.app/universe/package/modern-nju-thesis")
 
-=== #bbl(en: [CJK sorting is based on unicode code points])
+#babel(
+  en: [It is extremely common to cite both Chinese and English works in an article. For multi-author literature, some authors may be omitted. In such cases, we should use `et al.` for English and `等` for Chinese.],
+  zh: [一篇文章同时引用中英文献极其常见。多著者文献可能省略部分作者，这时英文应加`et al.`，中文应加`等`。],
+)
 
-#issue("hayagriva#259")
-
-=== #bbl(en: [`gb-7714-2015-note` show incorrectly])
-
-#issue("hayagriva#189", note: [mentioned])
+```example-bib
+@article{吴伟仁2017,
+  title = {“嫦娥4号”月球背面软着陆任务设计},
+  author = {{吴伟仁} and {王琼} and {唐玉华} and {于国斌} and {刘继忠} and {张玮} and {宁远明} and {卢亮亮}},
+  date = {2017-01},
+  journaltitle = {深空探测学报},
+  volume = {4},
+  number = {2},
+  pages = {111--117},
+  doi = {10.15982/j.issn.2095-7777.2017.02.002},
+  langid = {chinese}
+}
+% 吴伟仁, 王琼, 唐玉华, 等.“嫦娥4号”月球背面软着陆任务设计[J/OL]. 深空探测学报, 2017, 4(2): 111-117. DOI:10.15982/j.issn.2095-7777.2017.02.002.
+@article{su2025,
+  title = {South {{Pole}}–{{Aitken}} Massive Impact 4.25 Billion Years Ago Revealed by {{Chang}}'e-6 Samples},
+  author = {Su, Bin and Chen, Yi and Wang, Zeling and Zhang, Di and Chen, Haojie and Gou, Sheng and Yue, Zongyu and Liu, Yanhong and Yuan, Jiangyan and Tang, Guoqiang and Guo, Shun and Li, Qiuli and Lin, Yang-Ting and Li, Xian-Hua and Wu, Fu-Yuan},
+  date = {2025-03-20},
+  journaltitle = {National Science Review},
+  shortjournal = {Natl. Sci. Rev.},
+  pages = {nwaf103},
+  issn = {2095-5138},
+  doi = {10.1093/nsr/nwaf103},
+  langid = {english},
+}
+% SU B, CHEN Y, WANG Z, et al. South Pole–Aitken Massive Impact 4.25 Billion Years Ago Revealed by #text(font: "New Computer Modern")[Chang’e-6] Samples[J/OL]. National Science Review, 2025: nwaf103. DOI:10.1093/nsr/nwaf103.
+```
 
 === #bbl(
   en: [Some entries in thesis and report bibliography items are not shown],
@@ -889,6 +981,74 @@ $ integral f dif x $
 % 王楠. 在“共产主义视镜”下想象科学 ——“十七年”期间的中国科幻文学与科学话语[D/OL]. 新加坡: 新加坡国立大学, 2016[2025-02-15]. https://scholarbank.nus.edu.sg/handle/10635/132143.
 ```
 
+=== #bbl(
+  en: [Discontinuous page numbers are displayed incorrectly, missing a comma],
+  zh: [不连续页码显示错误，缺少逗号],
+)
+
+#workaround("https://typst-doc-cn.github.io/guide/FAQ/bib-missing-page-delimiter.html")
+
+```example-bib
+@phdthesis{alterego,
+  type = {{超高校级学位论文}},
+  title = {{基于图书室的笔记本电脑的 Alter Ego 系统}},
+  author = {不二咲, 千尋},
+  year = {2010},
+  address = {某地},
+  school = {私立希望ヶ峰学園},
+  publisher = {私立希望ヶ峰学園},
+  pages = {1--3, 5},
+}
+% 不二咲千尋. 基于图书室的笔记本电脑的 Alter Ego 系统[D]. 某地: 私立希望ヶ峰学園, 2010: 1–3, 5.
+```
+
+=== #bbl(
+  en: [Chinese works should be ordered by the pinyin or strokes of the authors for `gb-7714-2015-author-date`],
+  zh: [采用`gb-7714-2015-author-date`时，中文文献应按著者汉语拼音字顺或笔画笔顺排列],
+)
+
+#issue("hayagriva#259")
+
+#babel(
+  en: [The style `gb-7714-2015-author-date` currently sorts works by Unicode code points. However, according to the standard, when using this style, the cited works should first be grouped by scripts, then arranged by author names and publication dates. For Chinese works, they may be ordered by either pinyin or strokes.],
+  zh: [目前`gb-7714-2015-author-date`样式按Unicode码位排序。而标准规定，采用这种样式时，各篇文献首先按文种集中，然后按著者字顺和出版年排列，其中中文文献可按著者汉语拼音字顺或笔画笔顺排列。],
+)
+
+=== #bbl(en: [`gb-7714-2015-note` is totally broken], zh: [`gb-7714-2015-note`完全无法使用])
+
+#issue("hayagriva#189", note: [mentioned])
+
+- #bbl(
+    en: [The references need only be listed in the footnotes, and should not be repeated at the end of the article.],
+    zh: [文献只需在脚注列出，无需在文末重复。],
+  )
+
+- #bbl(
+    en: [If the same work is cited multiple times, then its footnote should be repeated in most cases.],
+    zh: [若一篇文献被重复引用，则大多数情况下，相应脚注也应重复。],
+  )
+
+````example-page
+>>> = Current
+孔乙己@key \
+上大人@key
+
+#let bib = ```bib
+@misc{key,
+  author = {Author},
+  title = {Title},
+  date = {2025-06-17},
+}
+```.text
+#bibliography(bytes(bib), style: "gb-7714-2015-note")
+````
+
+```example-page
+>>> = Expected
+>>> 孔乙己#footnote[AUTHOR. Title[Z]. 2025.] \
+>>> 上大人#footnote[AUTHOR. Title[Z]. 2025.]
+```
+
 == #bbl(en: [Bibliography file], zh: [参考文献文件])
 
 #prompt[
@@ -898,13 +1058,37 @@ $ integral f dif x $
   )
 ]
 
-=== #bbl(en: [All (`Misc`?) entries with URL are recognized as `webpage` (in `gb-7714-2015-numeric`?)])
+=== #bbl(en: [`@standard` is not correctly interpreted], zh: [`@standard`被错误解释])
 
 #issue("hayagriva#312")
 
-=== #bbl(zh: [指定参考文献 CSL 后，报错“failed to load CSL style”])
+#babel(
+  en: [`@standard` is the `[S]` type in GB/T 7714—2015. It is #link("https://docs.citationstyles.org/en/stable/specification.html#appendix-iii-types")[a regular type in CSL], and a non-standard type in BibTeX (but accepted by biber). However, typst interprets it as `@misc` (`[Z]`) or `@webpage` (`[EB]`).],
+  zh: [`@standard`是 GB/T 7714—2015 里的`[S]`类型文献。它#link("https://docs.citationstyles.org/en/stable/specification.html#appendix-iii-types")[在 CSL 中是个正常类型]，不过并非 BibTeX 的标准类型（但 biber 支持）。然而 typst 将它解释为`@misc`（`[Z]`）或`@webpage`（`[EB]`）。],
+)
+
+```example-bib
+@standard{DASH,
+  title = {Information Technology — {{Dynamic}} Adaptive Streaming over {{HTTP}} ({{DASH}}) — {{Part}} 1: {{Media}} Presentation Description and Segment Formats},
+  author = {{ISO/IEC}},
+  date = {2022-08},
+  number = {ISO/IEC 23009-1:2022(E)},
+  publisher = {International Organization for Standardization},
+  url = {https://www.iso.org/standard/83314.html},
+  pubstate = {Published},
+  version = {5},
+}
+% ISO/IEC. Information Technology — Dynamic Adaptive Streaming over HTTP (DASH) — Part 1: Media Presentation Description and Segment Formats[S/OL]. International Organization for Standardization, 2022. https://www.iso.org/standard/83314.html. Published.
+```
+
+=== #bbl(en: [Failed to load some CSL styles], zh: [无法加载某些 CSL 样式])
 
 #workaround("https://typst-doc-cn.github.io/guide/FAQ/bib-csl.html")
+
+#babel(
+  en: [The compiler does not support the CSL-M standard yet, nor is it compatible with some extensions of citeproc-js.],
+  zh: [编译器暂不支持 CSL-M 标准，也不兼容 citeproc-js 的一些扩展。],
+)
 
 = #bbl(en: [Other], zh: [杂项])
 
@@ -969,10 +1153,22 @@ $ integral f dif x $
 
 == #bbl(en: [References], zh: [参考资料])
 
-- #link("https://www.w3.org/TR/clreq/")[Requirements for Chinese Text Layout - 中文排版需求]
-- #link("https://www.w3.org/TR/clreq-gap/")[Chinese Layout Gap Analysis]
+- W3C documents
+
+  - #link("https://www.w3.org/TR/clreq/")[Requirements for Chinese Text Layout - 中文排版需求]
+  - #link("https://www.w3.org/TR/clreq-gap/")[Chinese Layout Gap Analysis]
+
 - #link("https://typst-doc-cn.github.io/guide/FAQ.html")[FAQ 常见问题 | Typst Doc CN 中文社区导航]
-- #link("https://std.samr.gov.cn/hb/search/stdHBDetailed?id=8B1827F23645BB19E05397BE0A0AB44A#")[CY/T 154—2017《中文出版物夹用英文的编辑规范》]
+
+- Standards
+
+  - #link("https://std.samr.gov.cn/gb/search/gbDetailed?id=71F772D8055ED3A7E05397BE0A0AB82A")[GB/T 7714—2015《信息与文献　参考文献著录规则》_Information and documentation—Rules for bibliographic references and citations to information resources_] (#link("https://lib.tsinghua.edu.cn/wj/GBT7714-2015.pdf")[PDF])
+  - #link("https://std.samr.gov.cn/gb/search/gbDetailed?id=71F772D7FE25D3A7E05397BE0A0AB82A")[GB/T 15834—2011《标点符号用法》_General rules for punctuation_] (#link("http://www.moe.gov.cn/jyb_sjzl/ziliao/A19/201001/W020190128580990138234.pdf")[PDF])
+  - #link("https://std.samr.gov.cn/hb/search/stdHBDetailed?id=8B1827F23645BB19E05397BE0A0AB44A")[CY/T 154—2017《中文出版物夹用英文的编辑规范》_Rules for editing Chinese publications interpolated with English_] (#link("https://www.nppa.gov.cn/xxgk/fdzdgknr/hybz/202210/P020221004608768453140.pdf")[PDF])
+
+- Reference implementations
+
+  - #link("https://ctan.org/pkg/biblatex-gb7714-2015")[`biblatex-gb7714-2015`], #bbl(zh: [符合 GB/T 7714—2015 标准的 biblatex 参考文献样式], en: [A BibLaTeX implementation of the GB/T 7714—2015 bibliography style for Chinese users]) (#link("https://texdoc.org/serve/biblatex-gb7714-2015/0")[TeXdoc PDF])
 
 == To be done
 
