@@ -247,7 +247,10 @@ main .icon svg {
 }
 
 figure {
+  margin-left: auto;
+  margin-right: auto;
   text-align: center;
+  overflow-x: auto;
 }
 figure > img {
   width: 40%;

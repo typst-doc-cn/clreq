@@ -11,7 +11,7 @@
  */
 
 import { log, typst } from "./cli_util.ts";
-import { queryExtraArgs } from "./compile.ts";
+import { precompileExtraArgs } from "./compile.ts";
 
 const issues: { "repo-num": string; note: string }[] = JSON.parse(
   await typst("query", [
@@ -19,7 +19,7 @@ const issues: { "repo-num": string; note: string }[] = JSON.parse(
     "main.typ",
     "<issue>",
     "--field=value",
-    ...queryExtraArgs,
+    ...precompileExtraArgs,
   ]),
 );
 

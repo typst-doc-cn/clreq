@@ -21,6 +21,7 @@
 #show: html-fix
 
 #show "W3C": h.abbr("W3C", title: "World Wide Web Consortium")
+#show figure.where(kind: table): set figure.caption(position: top)
 
 #h.h1[
   #h.span(style: "display: inline-block;")[

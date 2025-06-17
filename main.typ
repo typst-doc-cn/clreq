@@ -1,8 +1,11 @@
 #import "typ/util.typ": babel, bbl, issue, workaround, prompt, unichar
+#import "typ/prioritization.typ": level, level-table
 #import "typ/show-example.typ": render-examples
 #show: render-examples
 
 #babel(en: [Chinese Layout Gap Analysis for Typst.], zh: [分析 Typst 与中文排版的差距。])
+
+= #bbl(en: [Introduction], zh: [导语])
 
 #babel(
   en: [
@@ -14,6 +17,17 @@
     Typst 是一款基于标记的排版软件，这份文档描述了它在中文支持方面的差距，特别是#link("https://www.w3.org/TR/clreq/")[排版]和#link("https://std.samr.gov.cn/gb/search/gbDetailed?id=71F772D8055ED3A7E05397BE0A0AB82A")[参考文献著录]。本文会检查 typst 编译器是否支持所需功能，并介绍可能的临时解决方案。
   ],
 )
+
+#babel(
+  en: [This document also attempts to prioritize the gaps in terms of the impact on Chinese end authors. The prioritization is indicated by colour, as shown in @fig:level-table.],
+  zh: [根据对中文最终作者的影响程度，本文还尝试给这些差距排出优先顺序。优先级用颜色表示，如 @fig:level-table 所示。],
+)
+
+#figure(
+  level-table,
+  caption: bbl(en: [Priority levels], zh: [优先级]),
+  kind: table,
+) <fig:level-table>
 
 #babel(
   en: [
@@ -53,7 +67,7 @@
   )
 ]
 
-=== #bbl(en: [Vertical Writing Mode], zh: [直排])
+=== #level.advanced #bbl(en: [Vertical Writing Mode], zh: [直排])
 
 #issue("typst#5908")
 
@@ -121,7 +135,7 @@
   )
 ]
 
-=== #bbl(
+=== #level.advanced #bbl(
   en: [Writing Chinese without configuring any font leads to messy font fallback],
   zh: [若不配置字体就写中文，回落出的字体会很混乱],
 )
@@ -149,7 +163,7 @@
   ),
 ) <fig:font-fallback-messy>
 
-=== #bbl(
+=== #level.advanced #bbl(
   en: [Wrong monospace font fallback for Chinese in raw block],
   zh: [代码块内汉字回落的等宽字体不正常],
 )
@@ -172,7 +186,7 @@
   ],
 )
 
-=== #bbl(en: [Language-dependant font configuration], zh: [按语言设置字体])
+=== #level.basic #bbl(en: [Language-dependant font configuration], zh: [按语言设置字体])
 
 #issue("typst#794")
 
@@ -204,7 +218,7 @@
   )
 ]
 
-=== #bbl(en: [Size per font], zh: [按字体设置字号])
+=== #level.advanced #bbl(en: [Size per font], zh: [按字体设置字号])
 
 #issue("typst#6295")
 
@@ -221,7 +235,7 @@
 >>> 共#text(1.1em)[10]人
 ```
 
-=== #bbl(en: [Variable font], zh: [可变字体])
+=== #level.advanced #bbl(en: [Variable font], zh: [可变字体])
 
 #issue("typst#185")
 #issue("typst#6054")
@@ -269,7 +283,7 @@
   )
 ]
 
-=== #bbl(en: [Fake (synthesized) bold], zh: [伪粗体])
+=== #level.basic #bbl(en: [Fake (synthesized) bold], zh: [伪粗体])
 
 #issue("typst#394")
 #workaround("https://typst.app/universe/package/cuti")
@@ -342,7 +356,7 @@
   )
 ]
 
-=== #bbl(
+=== #level.basic #bbl(
   en: [Quotation marks should have different widths for Chinese and Western text],
   zh: [中西文引号的宽度应当不同],
 )
@@ -381,7 +395,7 @@
   )
 ]
 
-=== #bbl(en: [Underline breaks when mixing Chinese and Western text], zh: [中西文下划线错位])
+=== #level.advanced #bbl(en: [Underline breaks when mixing Chinese and Western text], zh: [中西文下划线错位])
 
 #issue("typst#1210")
 #issue("typst#1716", anchor: "#issuecomment-1855739446")
@@ -432,11 +446,11 @@
   )
 ]
 
-=== #bbl(en: [Add support for ruby (CJK, e.g., furigana for Japanese)], zh: [支持标注拼音])
+=== #level.advanced #bbl(en: [Add support for ruby (CJK, e.g., furigana for Japanese)], zh: [支持标注拼音])
 
 #issue("typst#1489")
 
-=== #bbl(en: [warichu], zh: [割注])
+=== #level.advanced #bbl(en: [warichu], zh: [割注])
 
 #issue("typst#193", note: [mentioned])
 
@@ -473,7 +487,7 @@
   )
 ]
 
-=== #bbl(en: [CJK-latin glues stretch only before latin characters], zh: [中西间距只在拉丁字母之前拉伸])
+=== #level.advanced #bbl(en: [CJK-latin glues stretch only before latin characters], zh: [中西间距只在拉丁字母之前拉伸])
 
 #issue("typst#6062")
 
@@ -487,7 +501,7 @@
 >>> #block(width: 3em)[第 1 回成段]
 ```
 
-=== #bbl(en: [Strict grid aligned in both horizontal and vertical axes], zh: [严格纵横对齐的网格])
+=== #level.advanced #bbl(en: [Strict grid aligned in both horizontal and vertical axes], zh: [严格纵横对齐的网格])
 
 #issue("typst#4404")
 
@@ -507,11 +521,11 @@
 >>> ]
 ```
 
-=== #bbl(en: [Brackets at the beginning of paragraph], zh: [段首的方括号])
+=== #level.tbd #bbl(en: [Brackets at the beginning of paragraph], zh: [段首的方括号])
 
 #issue("typst#4011")
 
-=== #bbl(
+=== #level.advanced #bbl(
   en: [Parenthetical indication punctuation marks at the start of paragraphs are not adjusted sometimes],
   zh: [段首的夹注符号有时不会调整间距],
 )
@@ -536,7 +550,7 @@
 >>> #h(1.5em)《新生》#h(-0.5em)的出版之期接近了……
 ```
 
-=== #bbl(
+=== #level.basic #bbl(
   en: [Paragraph should be able to contain tight lists and block-level equations],
   zh: [如何避免公式、图表等块元素的下一行缩进],
 )
@@ -566,7 +580,7 @@ $ integral f dif x $
 >>> 此处应当仍在段内，不该缩进。
 ```
 
-=== #bbl(en: [Even inter-character spacing], zh: [均排])
+=== #level.advanced #bbl(en: [Even inter-character spacing], zh: [均排])
 
 #workaround("https://typst-doc-cn.github.io/guide/FAQ/character-intersperse.html")
 #workaround("https://typst.app/universe/package/tricorder")
@@ -603,7 +617,7 @@ $ integral f dif x $
   )
 ]
 
-=== #bbl(en: [CJK-Latin-spacing not working around `raw`], zh: [`raw`两边缺少中西间距])
+=== #level.advanced #bbl(en: [CJK-Latin-spacing not working around `raw`], zh: [`raw`两边缺少中西间距])
 
 #issue("typst#2702")
 #workaround("https://typst-doc-cn.github.io/guide/FAQ/chinese-space.html")
@@ -616,7 +630,7 @@ $ integral f dif x $
 >>> 汉字#h(0.25em)`(code)`#h(0.25em)汉字
 ```
 
-=== #bbl(en: [CJK-Latin-spacing not working around inline equations], zh: [行内公式两边缺少中西间距])
+=== #level.advanced #bbl(en: [CJK-Latin-spacing not working around inline equations], zh: [行内公式两边缺少中西间距])
 
 #issue("typst#2703")
 #workaround("https://typst-doc-cn.github.io/guide/FAQ/chinese-space.html")
@@ -629,7 +643,7 @@ $ integral f dif x $
 >>> 汉字#h(0.25em)$A$#h(0.25em)汉字
 ```
 
-=== #bbl(en: [Punctuation compression is interrupted by `#show`], zh: [`#show`会打断标点挤压])
+=== #level.basic #bbl(en: [Punctuation compression is interrupted by `#show`], zh: [`#show`会打断标点挤压])
 
 #issue("typst#5474")
 
@@ -667,7 +681,7 @@ $ integral f dif x $
   )
 ]
 
-=== #bbl(en: [Default line height is too tight for Chinese], zh: [默认行高对中文来说过小])
+=== #level.basic #bbl(en: [Default line height is too tight for Chinese], zh: [默认行高对中文来说过小])
 
 #workaround("https://typst-doc-cn.github.io/guide/FAQ/par-leading.html#typst-设置")
 
@@ -709,7 +723,7 @@ $ integral f dif x $
   )
 ]
 
-=== #bbl(
+=== #level.basic #bbl(
   en: [List and enum markers are not aligned with the baseline of the item's contents],
   zh: [`list`和`enum`的编号与内容未对齐基线],
 )
@@ -745,7 +759,7 @@ $ integral f dif x $
 >>> #box[鲁镇]
 ```
 
-=== #bbl(en: [Too wide spacing between heading numbering and title], zh: [标题编号与内容之间的空隙过宽])
+=== #level.basic #bbl(en: [Too wide spacing between heading numbering and title], zh: [标题编号与内容之间的空隙过宽])
 
 #issue("typst#5778")
 #workaround("https://typst-doc-cn.github.io/guide/FAQ/heading-numbering-space.html")
@@ -840,7 +854,7 @@ $ integral f dif x $
   )
 ]
 
-=== #bbl(en: [Citation numbers are flying over their brackets], zh: [引用编号的数字高于括号])
+=== #level.basic #bbl(en: [Citation numbers are flying over their brackets], zh: [引用编号的数字高于括号])
 
 #workaround("https://typst-doc-cn.github.io/guide/FAQ/cite-flying.html")
 
@@ -866,7 +880,7 @@ $ integral f dif x $
 #bibliography(bytes(bib), style: "gb-7714-2015-numeric")
 ````
 
-=== #bbl(en: [Compression of continuous citation numbers], zh: [压缩连续的引用编号])
+=== #level.basic #bbl(en: [Compression of continuous citation numbers], zh: [压缩连续的引用编号])
 
 #issue("hayagriva#189", note: [mentioned])
 
@@ -890,7 +904,7 @@ $ integral f dif x $
 #bibliography(bytes(bib), style: "gb-7714-2015-numeric")
 ````
 
-=== #bbl(en: [Superscript and non-superscript forms should coexist], zh: [共存上标和非上标形式])
+=== #level.broken #bbl(en: [Superscript and non-superscript forms should coexist], zh: [共存上标和非上标形式])
 
 #workaround("https://typst-doc-cn.github.io/guide/FAQ/ref-superscript.html")
 
@@ -914,7 +928,7 @@ $ integral f dif x $
   )
 ]
 
-=== #bbl(en: [Use `et al.` for English and `等` for Chinese], zh: [英文用`et al.`，中文用`等`])
+=== #level.broken #bbl(en: [Use `et al.` for English and `等` for Chinese], zh: [英文用`et al.`，中文用`等`])
 
 #issue("citationberg#5")
 #issue("hayagriva#291")
@@ -955,7 +969,7 @@ $ integral f dif x $
 % SU B, CHEN Y, WANG Z, et al. South Pole–Aitken Massive Impact 4.25 Billion Years Ago Revealed by #text(font: "New Computer Modern")[Chang’e-6] Samples[J/OL]. National Science Review, 2025: nwaf103. DOI:10.1093/nsr/nwaf103.
 ```
 
-=== #bbl(
+=== #level.broken #bbl(
   en: [Some entries in thesis and report bibliography items are not shown],
   zh: [参考文献学位论文条目`[D]`后不显示“地点: 学校名称, 年份.”],
 )
@@ -977,7 +991,7 @@ $ integral f dif x $
 % 王楠. 在“共产主义视镜”下想象科学 ——“十七年”期间的中国科幻文学与科学话语[D/OL]. 新加坡: 新加坡国立大学, 2016[2025-02-15]. https://scholarbank.nus.edu.sg/handle/10635/132143.
 ```
 
-=== #bbl(
+=== #level.basic #bbl(
   en: [Discontinuous page numbers are displayed incorrectly, missing a comma],
   zh: [不连续页码显示错误，缺少逗号],
 )
@@ -998,7 +1012,7 @@ $ integral f dif x $
 % 不二咲千尋. 基于图书室的笔记本电脑的 Alter Ego 系统[D]. 某地: 私立希望ヶ峰学園, 2010: 1–3, 5.
 ```
 
-=== #bbl(
+=== #level.advanced #bbl(
   en: [Chinese works should be ordered by the pinyin or strokes of the authors for `gb-7714-2015-author-date`],
   zh: [采用`gb-7714-2015-author-date`时，中文文献应按著者汉语拼音字顺或笔画笔顺排列],
 )
@@ -1010,7 +1024,7 @@ $ integral f dif x $
   zh: [目前`gb-7714-2015-author-date`样式按Unicode码位排序。而标准规定，采用这种样式时，各篇文献首先按文种集中，然后按著者字顺和出版年排列，其中中文文献可按著者汉语拼音字顺或笔画笔顺排列。],
 )
 
-=== #bbl(en: [`gb-7714-2015-note` is totally broken], zh: [`gb-7714-2015-note`完全无法使用])
+=== #level.advanced #bbl(en: [`gb-7714-2015-note` is totally broken], zh: [`gb-7714-2015-note`完全无法使用])
 
 #issue("hayagriva#189", note: [mentioned])
 
@@ -1054,7 +1068,7 @@ $ integral f dif x $
   )
 ]
 
-=== #bbl(en: [`@standard` is not correctly interpreted], zh: [`@standard`被错误解释])
+=== #level.basic #bbl(en: [`@standard` is not correctly interpreted], zh: [`@standard`被错误解释])
 
 #issue("hayagriva#312")
 
@@ -1077,7 +1091,7 @@ $ integral f dif x $
 % ISO/IEC. Information Technology — Dynamic Adaptive Streaming over HTTP (DASH) — Part 1: Media Presentation Description and Segment Formats[S/OL]. International Organization for Standardization, 2022. https://www.iso.org/standard/83314.html. Published.
 ```
 
-=== #bbl(en: [Failed to load some CSL styles], zh: [无法加载某些 CSL 样式])
+=== #level.advanced #bbl(en: [Failed to load some CSL styles], zh: [无法加载某些 CSL 样式])
 
 #workaround("https://typst-doc-cn.github.io/guide/FAQ/bib-csl.html")
 
@@ -1101,15 +1115,15 @@ $ integral f dif x $
   )
 ]
 
-=== #bbl(en: [Proper i18n for figure captions], zh: [`第一章` vs.~`章一`])
+=== #level.tbd #bbl(en: [Proper i18n for figure captions], zh: [`第一章` vs.~`章一`])
 
 #issue("typst#2485", note: [mentioned])
 
-=== #bbl(zh: [figure 的 caption 如何实现双语])
+=== #level.tbd #bbl(zh: [figure 的 caption 如何实现双语])
 
 #workaround("https://typst-doc-cn.github.io/guide/FAQ/dual_language_caption.html")
 
-=== #bbl(en: [Section name should be after section number in reference in Chinese])
+=== #level.tbd #bbl(en: [Section name should be after section number in reference in Chinese])
 
 #issue("typst#5102")
 
@@ -1119,7 +1133,7 @@ $ integral f dif x $
   There are many other modules and specifications which may need review for script-specific requirements. What else is likely to cause problems for worldwide usage of typst, and what requirements need to be addressed to make typst function well locally?
 ]
 
-=== #bbl(
+=== #level.advanced #bbl(
   en: [Ignore linebreaks between CJK characters in source code],
   zh: [写中文文档时，如何去掉源码中换行导致的空格],
 )
@@ -1128,7 +1142,7 @@ $ integral f dif x $
 #workaround("https://typst-doc-cn.github.io/guide/FAQ/chinese-remove-space.html")
 #workaround("https://typst.app/universe/package/cjk-unbreak")
 
-=== #bbl(zh: [关闭 webapp 的拼写检查])
+=== #level.advanced #bbl(zh: [关闭 webapp 的拼写检查])
 
 #workaround("https://typst-doc-cn.github.io/guide/FAQ/webapp-spellcheck.html")
 
@@ -1171,7 +1185,6 @@ $ integral f dif x $
 - Content
 
   - Illustrations / minimal examples
-  - #link("https://www.w3.org/TR/clreq-gap/#prioritization")[Prioritization]
   - Full Chinese/English translation
   - Include resolved issues (for historians)
 

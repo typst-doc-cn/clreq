@@ -12,7 +12,7 @@ export const extraArgs = [
   `--font-path=${ROOT_DIR}/fonts`,
 ];
 
-export const queryExtraArgs = [
+export const precompileExtraArgs = [
   // To allow the first query before compilation, tell that the cache is not ready yet.
   "--input",
   "cache-ready=false",
@@ -51,16 +51,16 @@ async function main({ watchMode }: { watchMode: boolean }) {
     glob.on("change", async (_event, path) => {
       console.log(`File changed...`);
       try {
-        await renderExamples();
+        await precompile();
         console.log(mainHint("Recompiled successfully."));
       } catch (error) {
         console.error("Error during recompilation:", error);
       }
     });
-    await renderExamples();
+    await precompile();
   } else {
     try {
-      await renderExamples();
+      await precompile();
       await Promise.all([
         typst("index", [
           "compile",
@@ -80,6 +80,13 @@ async function main({ watchMode }: { watchMode: boolean }) {
 }
 
 /**
+ * The main entrypoint of precompilation.
+ */
+async function precompile() {
+  return await Promise.all([renderExamples(), renderPrioritization()]);
+}
+
+/**
  * Render examples from the main.typ file and compile them into SVG files.
  */
 async function renderExamples() {
@@ -89,7 +96,7 @@ async function renderExamples() {
       "main.typ",
       "<external-example>",
       "--field=value",
-      ...queryExtraArgs,
+      ...precompileExtraArgs,
     ]),
   );
 
@@ -111,4 +118,48 @@ async function renderExamples() {
   };
 
   await Promise.all(examples.map(compileExample));
+}
+
+/**
+ * Render prioritization.level-table into an SVG.
+ */
+async function renderPrioritization(): Promise<void> {
+  const output = "target/cache/prioritization.level-table.svg";
+  const dep = "typ/prioritization.typ";
+
+  // compiled = output exists and newer than dep
+  // TODO: Improve cache
+  const compiled = await fs.stat(output)
+    .then(async (outStat) => {
+      const depStat = await fs.stat(dep).catch(() => null);
+      if (!depStat) return false;
+      return outStat.mtime > depStat.mtime;
+    })
+    .catch(() => false);
+  if (compiled) {
+    return;
+  }
+
+  const svg = await typst("priority", [
+    "compile",
+    "-",
+    "-",
+    "--format=svg",
+    `--root=${ROOT_DIR}`,
+    ...precompileExtraArgs,
+  ], {
+    stdin: `
+#set page(height: auto, width: auto, margin: 0.5em, fill: none)
+#import "/typ/prioritization.typ": level-table
+#level-table
+`.trim(),
+  });
+
+  // Support dark theme
+  const final = svg.replaceAll(
+    / (fill|stroke)="#000000"/g,
+    ' $1="currentColor"',
+  );
+
+  await fs.writeFile(output, final);
 }
