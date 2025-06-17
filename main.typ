@@ -2,10 +2,6 @@
 #import "typ/show-example.typ": render-examples
 #show: render-examples
 
-#html.elem("h1")[
-  #link("https://www.w3.org/TR/clreq/")[clreq]-#link("https://www.w3.org/TR/clreq-gap/")[gap] for typst
-]
-
 #babel(en: [Chinese Layout Gap Analysis for Typst.], zh: [分析 Typst 与中文排版的差距。])
 
 #babel(

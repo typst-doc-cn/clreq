@@ -20,7 +20,15 @@
 #show outline: respec.toc
 #show: html-fix
 
-#import "typ/templates/html-toolkit.typ": abbr
-#show "W3C": abbr("W3C", title: "World Wide Web Consortium")
+#show "W3C": h.abbr("W3C", title: "World Wide Web Consortium")
+
+#h.h1[
+  #h.span(style: "display: inline-block;")[
+    #link("https://www.w3.org/TR/clreq/")[clreq]-#link("https://www.w3.org/TR/clreq-gap/")[gap] for typst
+  ]
+  #h.span(style: "display: inline-block; font-weight: normal; font-size: 1rem; color: var(--gray-color);")[
+    #datetime.today().display(), typst v#sys.version
+  ]
+]
 
 #include "main.typ"

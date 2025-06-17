@@ -349,6 +349,10 @@ figcaption {
   color: var(--main-color);
   background: var(--nav-bg-color);
 }
+h1 {
+  /* left room for #lang-switch */
+  margin-right: 5rem;
+}
 #lang-switch > *:hover,
 #lang-switch > *.selected {
   box-shadow: 0 2px 8px var(--gray-color);
