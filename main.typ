@@ -1185,7 +1185,7 @@ $ integral f dif x $
 #level.tbd
 #issue("typst#2485", note: [mentioned])
 
-=== #bbl(zh: [figure 的 caption 如何实现双语])
+=== #bbl(en: [Bilingual figure captions], zh: [figure 的 caption 如何实现双语])
 
 #level.tbd
 #workaround("https://typst-doc-cn.github.io/guide/FAQ/dual_language_caption.html")
@@ -1232,6 +1232,14 @@ $ integral f dif x $
 
 - #bbl(en: [Compiler], zh: [编译器]) \
   typst v#sys.version
+
+#if "github" in sys.inputs {
+  let github = json(bytes(sys.inputs.github))
+  [
+    - #bbl(en: [Document version], zh: [文档版本]) \
+      commit #link(github.commit_url, github.name) (#link(github.run_url)[log])
+  ]
+}
 
 - #bbl(en: [Default fonts], zh: [默认字体]) \
   New Computer Modern, Noto Serif CJK SC
