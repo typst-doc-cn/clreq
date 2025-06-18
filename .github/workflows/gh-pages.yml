@@ -20,6 +20,9 @@ concurrency:
   group: "pages"
   cancel-in-progress: false
 
+env:
+  GITHUB_PAGES_BASE: "/${{ github.event.repository.name }}/"
+
 jobs:
   build-gh-pages:
     runs-on: ubuntu-latest

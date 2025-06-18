@@ -1,4 +1,5 @@
 import { dirname } from "node:path";
+import { env } from "node:process";
 import { fileURLToPath } from "node:url";
 
 export const ROOT_DIR = dirname(dirname(fileURLToPath(import.meta.url)));
@@ -21,7 +22,7 @@ export const extraArgs = {
     "--input",
     "mode=build",
     "--input",
-    "x-url-base=/clreq/",
+    `x-url-base=${env.GITHUB_PAGES_BASE ?? "/clreq/"}`,
     ...envArgs,
   ],
   dev: [
