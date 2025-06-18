@@ -31,7 +31,7 @@ export function typst(
     proc.stderr.on("data", (data) => {
       const text: string = data.toString("utf-8");
       if (
-        args[0] == "query" &&
+        args[0] === "query" &&
         (text.includes(": elem was ignored during paged export") ||
           text.includes("html-bindings-h.typ:"))
         // `warning` might be colored, so it is not reliable
