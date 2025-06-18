@@ -234,12 +234,8 @@ function insertPriorityLevel(
         (last, l) => last.set(l, last.get(l) + 1),
         new Map(ordering.reverse().map((l) => [l, 0])),
       );
-      const report = Array.from(
-        // @ts-ignore
-        counts.entries().filter(([_level, n]) => n > 0).map(([level, n]) =>
-          `${n} ${PRIORITY_CONFIG[level].human}`
-        ),
-      ).join(", ");
+      const report = Array.from(counts.entries()).filter(([_level, n]) => n > 0)
+        .map(([level, n]) => `${n} ${PRIORITY_CONFIG[level].human}`).join(", ");
 
       // Find the first non prompt element
       let pos = sec.header;
