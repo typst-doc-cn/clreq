@@ -3,11 +3,7 @@
 /// Usage: Put `#level.ok`, etc. after a heading.
 
 #import "templates/html-toolkit.typ": h, to-html
-
-/// If cache is ready, use `target/cache/prioritization.level-table.svg`.
-/// Otherwise, draw the table.
-/// -> bool
-#let cache-ready = sys.inputs.at("cache-ready", default: "true") == "true"
+#import "mode.typ": cache-ready, cache-dir
 
 /// Configuration of levels, copied from clreq-gap.
 #let config = (
@@ -20,8 +16,11 @@
 )
 
 /// The table explaining priority levels.
+///
+/// If cache is ready, use the cached `prioritization.level-table.svg`.
+/// Otherwise, draw the table.
 #let level-table = if cache-ready {
-  to-html(xml("../target/cache/prioritization.level-table.svg").first())
+  to-html(xml(cache-dir + "prioritization.level-table.svg").first())
 } else {
   let level = config
     .pairs()

@@ -4,6 +4,10 @@
  * https://www.w3.org/scripts/TR/2021/fixup.js
  */
 
+// @ts-nocheck
+
+export default function () {
+
 var collapseSidebarText = '<span aria-hidden="true">←</span> '
                         + '<span>Collapse Sidebar</span>';
 var expandSidebarText   = '<span aria-hidden="true">→</span> '
@@ -133,4 +137,6 @@ for (var i = 0; i < numTables; i++) {
   wrapper.className = 'overlarge';
   table.parentNode.insertBefore(wrapper, table);
   wrapper.appendChild(table);
+}
+
 }

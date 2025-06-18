@@ -10,26 +10,31 @@
  * @module
  */
 
-import { addId, html, renameElement } from "./utils.js";
+import { addId, html, renameElement } from "./utils.ts";
+
+interface Section {
+  header: HTMLElement;
+  title: string;
+  subsections: Section[];
+}
 
 /**
- * @typedef {object} SectionInfo
- * @property {string} secno
- * @property {string} title
- *
  * Scans sections and generate ordered list element + ID-to-anchor-content dictionary.
- * @param {Section[]} sections the target element to find child sections
- * @param {number} maxTocLevel
+ * @param sections the target element to find child sections
  */
-function scanSections(sections, maxTocLevel, { level = 1 } = {}) {
+function scanSections(
+  sections: Section[],
+  maxTocLevel: number,
+  { level = 1 } = {},
+): HTMLElement | null {
   if (sections.length === 0) {
     return null;
   }
 
-  /** @type {HTMLElement} */
+  // @ts-ignore
   const ol = html`
     <ol class="toc"></ol>
-  `;
+  ` as HTMLElement;
   for (const section of sections) {
     if (level <= maxTocLevel) {
       const id = section.header.id;
@@ -46,37 +51,23 @@ function scanSections(sections, maxTocLevel, { level = 1 } = {}) {
   return ol;
 }
 
-/**
- * @typedef {object} Section
- * @property {Element} header
- * @property {string} title
- * @property {Section[]} subsections
- *
- * @param {Element} parent
- * @returns {Section[]}
- */
-function getSectionTree(parent) {
-  /** @type {NodeListOf<HTMLElement>} */
-  const headings = parent.querySelectorAll("h2, h3, h4, h5, h6");
-  /** @type {Section[]} */
-  const sections = [];
+function getSectionTree(parent: Element): Section[] {
+  const headings = parent.querySelectorAll<HTMLElement>("h2, h3, h4, h5, h6");
+  const sections: Section[] = [];
 
   /**
    * A map from section levels to the last section encountered at the level.
    *
    * The level is counting from 2.
-   *
-   * @type {Map<number, Section>}
    */
-  const lastSectionAtLevel = new Map();
+  const lastSectionAtLevel = new Map<number, Section>();
 
   for (const heading of headings) {
     const level = parseInt(heading.tagName[1], 10);
-    const title = heading.textContent;
+    const title = heading.textContent as string;
     addId(heading, null, title);
 
-    /** @type {Section} */
-    const section = {
+    const section: Section = {
       header: heading,
       title,
       subsections: [],
@@ -101,26 +92,21 @@ function getSectionTree(parent) {
   return sections;
 }
 
-/**
- * @param {Element} header
- * @param {string} id
- */
-function createTocListItem(header, id) {
+function createTocListItem(header: Element, id: string): HTMLElement {
   const anchor = html`
     <a href="${`#${id}`}" class="tocxref" />
-  `;
+  ` as HTMLElement;
   anchor.append(...header.cloneNode(true).childNodes);
   filterHeader(anchor);
   return html`
     <li class="tocline">${anchor}</li>
-  `;
+  ` as HTMLElement;
 }
 
 /**
  * Replaces any child <a> and <dfn> with <span>.
- * @param {HTMLElement} h
  */
-function filterHeader(h) {
+function filterHeader(h: HTMLElement): void {
   h.querySelectorAll("a").forEach((anchor) => {
     const span = renameElement(anchor, "span");
     span.className = "formerLink";
@@ -132,10 +118,7 @@ function filterHeader(h) {
   });
 }
 
-/**
- * @param {HTMLElement} ol
- */
-function createTableOfContents(ol) {
+function createTableOfContents(ol: HTMLElement): void {
   const nav = html`
     <nav id="toc"></nav>
   `;
@@ -159,9 +142,8 @@ function createTableOfContents(ol) {
 }
 
 /** Add permalinks to headings */
-function addPermalinks() {
-  /** @type {NodeListOf<HTMLElement>} */
-  const headings = document.querySelectorAll("h2, h3, h4, h5, h6");
+function addPermalinks(): void {
+  const headings = document.querySelectorAll<HTMLElement>("h2, h3, h4, h5, h6");
   for (const h of headings) {
     if (h.id) {
       const permalink = html`
@@ -180,9 +162,8 @@ function addPermalinks() {
 
 /**
  * Configuration of levels, sorted.
- * @type {Record<string, {paint: string, human: string}>}
  */
-const PRIORITY_CONFIG = {
+const PRIORITY_CONFIG: Record<string, { paint: string; human: string }> = {
   tbd: { paint: "eeeeee", human: "To be done" },
   na: { paint: "008000", human: "Not applicable" },
   ok: { paint: "008000", human: "OK" },
@@ -193,23 +174,24 @@ const PRIORITY_CONFIG = {
 
 /**
  * Calculate priority levels for all sections, and insert levels in them
- * @param {Section[]} sections The section tree
- * @param {HTMLElement[] | null} siblings
+  @param sections The section tree
  */
-function insertPriorityLevel(sections, siblings = null) {
+function insertPriorityLevel(
+  sections: Section[],
+  siblings: HTMLElement[] | null = null,
+): void {
   if (sections.length === 0) {
     return;
   }
 
   // If not given, fill with the default
   if (siblings === null) {
-    const parent = sections[0].header.parentElement;
+    const parent = sections[0].header.parentElement as HTMLElement;
     console.assert(
       sections.every((s) => s.header.parentElement === parent),
       "All subsections under the same section should have the same parent element",
     );
-    /** @type {HTMLElement[]} */
-    siblings = Array.from(parent.children);
+    siblings = Array.from(parent.children) as HTMLElement[];
   }
 
   /** The start index of each section */
@@ -226,10 +208,11 @@ function insertPriorityLevel(sections, siblings = null) {
     const end = startIndices.at(i + 1);
 
     const levels = siblings.slice(start, end).flatMap((el) => {
-      /** @type {HTMLElement[]} */
-      const tags = Array.from(el.querySelectorAll("[data-priority-level]"));
+      const tags = Array.from(
+        el.querySelectorAll<HTMLElement>("[data-priority-level]"),
+      );
       return tags.map((t) => t.dataset.priorityLevel);
-    });
+    }) as string[];
 
     // if leaf section
     if (sec.subsections.length === 0) {
@@ -247,10 +230,12 @@ function insertPriorityLevel(sections, siblings = null) {
         ]
       ];
       const counts = levels.reduce(
+        // @ts-ignore
         (last, l) => last.set(l, last.get(l) + 1),
         new Map(ordering.reverse().map((l) => [l, 0])),
       );
       const report = Array.from(
+        // @ts-ignore
         counts.entries().filter(([_level, n]) => n > 0).map(([level, n]) =>
           `${n} ${PRIORITY_CONFIG[level].human}`
         ),
@@ -259,10 +244,10 @@ function insertPriorityLevel(sections, siblings = null) {
       // Find the first non prompt element
       let pos = sec.header;
       while (
-        pos.nextElementSibling !== undefined &&
+        pos.nextElementSibling !== null &&
         pos.nextElementSibling.classList.contains("prompt")
       ) {
-        pos = pos.nextElementSibling;
+        pos = pos.nextElementSibling as HTMLElement;
       }
 
       // Write levels after `pos`
@@ -274,7 +259,7 @@ function insertPriorityLevel(sections, siblings = null) {
           ></span>
           ${worst.human} — ${report}.
         </p>
-      `;
+      ` as HTMLElement;
       pos.insertAdjacentElement("afterend", p);
 
       // Insert recursively
@@ -283,20 +268,13 @@ function insertPriorityLevel(sections, siblings = null) {
   });
 }
 
-/**
- * @typedef {object} Configuration
- * @property {string} lang can change the generated text (supported: en, fr)
- * @property {number} maxTocLevel only generate a TOC so many levels deep
- *
- * @param {Configuration} conf
- */
-export function run(conf = {}) {
-  if ("maxTocLevel" in conf === false) {
-    conf.maxTocLevel = Infinity;
-  }
-
+interface Configuration {
+  /** only generate a TOC so many levels deep */
+  maxTocLevel?: number;
+}
+export function createStructure(conf: Configuration = {}): void {
   const sectionTree = getSectionTree(document.body);
-  const result = scanSections(sectionTree, conf.maxTocLevel);
+  const result = scanSections(sectionTree, conf.maxTocLevel ?? Infinity);
   if (result) {
     createTableOfContents(result);
   }

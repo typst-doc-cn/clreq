@@ -2,11 +2,7 @@
 #import "@preview/jumble:0.0.1": sha1, bytes-to-hex
 
 #import "templates/html-toolkit.typ": img, div, div-frame
-
-/// If cache is ready, use files in `target/cache/`.
-/// Otherwise, skip these files.
-/// -> bool
-#let cache-ready = sys.inputs.at("cache-ready", default: "true") == "true"
+#import "mode.typ": cache-ready, cache-dir
 
 
 /// -> str
@@ -38,13 +34,15 @@
 
 /// Layout an external example
 ///
+/// Drop the preview if the cache is not ready yet.
+///
 /// - code (content): a `raw` element containing the displayed code
 /// - id (str): ID of the executed code
 /// -> content
 #let layout-external-example(code, id) = layout-example(
   code,
   if cache-ready {
-    image("../target/cache/{id}.svg".replace("{id}", id))
+    image(cache-dir + "{id}.svg".replace("{id}", id))
   },
 )
 

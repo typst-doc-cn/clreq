@@ -10,16 +10,16 @@
  * ```
  */
 
-import { log, typst } from "./cli_util.ts";
-import { precompileExtraArgs } from "./compile.ts";
+import { extraArgs } from "./config.ts";
+import { typst } from "./typst.ts";
 
 const issues: { "repo-num": string; note: string }[] = JSON.parse(
-  await typst("query", [
+  await typst([
     "query",
     "main.typ",
     "<issue>",
     "--field=value",
-    ...precompileExtraArgs,
+    ...extraArgs.pre,
   ]),
 );
 
@@ -38,5 +38,5 @@ if (duplicates.length > 0) {
   );
   process.exit(1);
 } else {
-  console.log(log("All issues are unique.", "check"));
+  console.log("All issues are unique.");
 }

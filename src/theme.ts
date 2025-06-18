@@ -1,11 +1,12 @@
-const themeToggle = document.getElementById("theme-toggle");
-/** @type {HTMLDivElement[]} */
-const themeSelections = Array.from(themeToggle.querySelectorAll('div.theme-icon'));
+type Theme = 'auto' | 'light' | 'dark';
+
+const themeToggle = document.getElementById("theme-toggle") as HTMLElement;
+const themeSelections: HTMLDivElement[] = Array.from(themeToggle.querySelectorAll('div.theme-icon'));
 
 // Load saved theme preference or default to auto (sync system)
 if (typeof localStorage !== "undefined") {
   const theme = localStorage.getItem("theme") ?? 'auto';
-  applyTheme(theme);
+  applyTheme(theme as Theme);
 }
 
 // Theme toggle functionality
@@ -16,11 +17,7 @@ themeToggle.addEventListener("click", () => {
   applyTheme(theme);
 });
 
-
-/**
- * @param {'auto' | 'light' | 'dark'} theme 
- */
-function applyTheme(theme) {
+function applyTheme(theme: Theme): void {
   // Change the page’s theme
   const resolved = theme === 'auto' ? getSystemTheme() : theme;
   if (resolved === "dark") {
@@ -38,10 +35,7 @@ function applyTheme(theme) {
   localStorage.setItem("theme", theme);
 }
 
-/**
- * @returns {'dark' | 'light'}
- */
-function getSystemTheme() {
+function getSystemTheme(): 'dark' | 'light' {
   // We cannot use `&&` here, due to the limitation of typst v0.13.
   const match = !(!window.matchMedia ||
     !window.matchMedia("(prefers-color-scheme: dark)").matches);
