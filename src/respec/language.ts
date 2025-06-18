@@ -8,20 +8,14 @@
  * https://www.w3.org/Consortium/Legal/copyright-software
  */
 
-import { html } from "./utils.js";
+import { html } from "./utils.ts";
 
-/**
- * @typedef {'zh' | 'en' | 'all'} Language
- */
+type Language = "zh" | "en" | "all";
 
 const $root = document.documentElement;
-/** @type {HTMLElement} */
-const $main = $root.querySelector("main");
+const $main = $root.querySelector("main") as HTMLElement;
 
-/**
- * @param {Language} lang
- */
-function setRoot(lang) {
+function setRoot(lang: Language): void {
   $root.lang = lang === "all" ? "zh-CN" : lang;
 
   // Update styles
@@ -32,17 +26,13 @@ function setRoot(lang) {
   }
 }
 
-/**
- * @param {Language} lang
- */
-function filterElements(lang) {
+function filterElements(lang: Language): void {
   /**
    * Multilingual elements created with `#babel` and `#bbl` in typst,
    * or dynamically created by other scripts.
-   * @type {HTMLElement[]}
    */
   const babelElements = Array.from(
-    $root.querySelectorAll("[its-locale-filter-list]"),
+    $root.querySelectorAll<HTMLElement>("[its-locale-filter-list]"),
   );
 
   for (const el of babelElements) {
@@ -52,15 +42,12 @@ function filterElements(lang) {
   }
 }
 
-/**
- * @param {Language} lang
- */
-function applyLanguage(lang) {
+function applyLanguage(lang: Language): void {
   setRoot(lang);
   filterElements(lang);
 }
 
-export function createLanguageSwitch() {
+export function createLanguageSwitch(): void {
   const menu = html`
     <aside id="lang-switch">
       <button data-lang="zh" lang="zh">中文</button>
@@ -69,15 +56,15 @@ export function createLanguageSwitch() {
     </aside>
   `;
   menu.addEventListener("click", (e) => {
-    /** @type {HTMLElement} */
-    const option = e.target.closest("[data-lang]");
+    // @ts-ignore
+    const option = e.target.closest("[data-lang]") as HTMLElement;
     if (option) {
-      /** @type {Language} */
-      const lang = option.dataset.lang;
+      const lang = option.dataset.lang as Language;
       applyLanguage(lang);
 
       // Update `.selected`
       Array.from(menu.children).forEach((o) => {
+        // @ts-ignore
         if (o.dataset.lang === lang) {
           o.classList.add("selected");
         } else {

@@ -4,6 +4,8 @@
  * https://www.w3.org/scripts/TR/2021/fixup.js
  */
 
+// @ts-nocheck
+
 export default function () {
 
 var collapseSidebarText = '<span aria-hidden="true">←</span> '

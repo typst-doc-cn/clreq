@@ -12,17 +12,21 @@
 /**
  * A simple html template tag replacement for hyperHTML
  *
- * @param {TemplateStringsArray} strings - Template string array.
- * @param  {...string | Element | DocumentFragment} values - Values to interpolate into the template.
- * @returns {Element | DocumentFragment} - The resulting DOM element or fragment.
+ * @param strings - Template string array.
+ * @param values - Values to interpolate into the template.
+ * @returns - The resulting DOM element or fragment.
  */
-export function html(strings, ...values) {
+export function html(
+  strings: TemplateStringsArray,
+  ...values: (string | Element | DocumentFragment)[]
+): Element | DocumentFragment {
   let str = "";
   for (let i = 0; i < strings.length; i++) {
     str += strings[i];
     if (i < values.length) {
       const value = values[i];
       if (value instanceof Element || value instanceof DocumentFragment) {
+        // @ts-ignore
         str += value.outerHTML;
       } else {
         str += value;
@@ -32,6 +36,7 @@ export function html(strings, ...values) {
   const template = document.createElement("template");
   template.innerHTML = str.trim();
   return template.content.children.length === 1
+    // @ts-ignore
     ? template.content.firstElementChild
     : template.content;
 }
@@ -39,17 +44,23 @@ export function html(strings, ...values) {
 /**
  * Creates and sets an ID to an element (elem) using a specific prefix if
  * provided, and a specific text if given.
- * @param {HTMLElement} elem element
- * @param {string} pfx prefix
- * @param {string} txt text
- * @param {boolean} noLC do not convert to lowercase
- * @returns {string} generated (or existing) id for element
+ * @param elem element
+ * @param pfx prefix
+ * @param txt text
+ * @param noLC do not convert to lowercase
+ * @returns generated (or existing) id for element
  */
-export function addId(elem, pfx = "", txt = "", noLC = false) {
+export function addId(
+  elem: HTMLElement,
+  pfx: string | null = "",
+  txt = "",
+  noLC = false,
+): string {
   if (elem.id) {
     return elem.id;
   }
   if (!txt) {
+    // @ts-ignore
     txt = (elem.title ? elem.title : elem.textContent).trim();
   }
   let id = noLC ? txt : txt.toLowerCase();
@@ -84,18 +95,16 @@ export function addId(elem, pfx = "", txt = "", noLC = false) {
 
 /**
  * Changes name of a DOM Element
- * @param {Element} elem element to rename
- * @param {String} newName new element name
- * @param {Object} options
- * @param {boolean} options.copyAttributes
+ * @param elem element to rename
+ * @param newName new element name
  *
- * @returns {Element} new renamed element
+ * @returns new renamed element
  */
 export function renameElement(
-  elem,
-  newName,
+  elem: Element,
+  newName: string,
   options = { copyAttributes: true },
-) {
+): Element {
   if (elem.localName === newName) return elem;
   const newElement = elem.ownerDocument.createElement(newName);
   // copy attributes

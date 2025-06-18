@@ -1,4 +1,4 @@
 import "./global.css";
-import "./theme.js";
+import "./theme.ts";
 
 import "./respec/mod.ts";
