@@ -8,9 +8,14 @@
         "glob-watcher": "^6.0.0"
     },
     "scripts": {
-        "build": "node --experimental-strip-types scripts/compile.ts",
+        "build": "tsc && vite build && node --experimental-strip-types scripts/compile.ts",
         "dev": "node --experimental-strip-types scripts/compile.ts --watch",
-        "preview": "node --experimental-strip-types scripts/preview_server.ts",
+        "preview": "vite preview --base=/clreq/",
         "check": "node --experimental-strip-types scripts/check_uniq.ts"
+    },
+    "devDependencies": {
+        "@types/node": "^24.0.3",
+        "typescript": "~5.8.3",
+        "vite": "^6.3.5"
     }
 }

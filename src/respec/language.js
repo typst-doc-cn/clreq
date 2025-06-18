@@ -19,14 +19,6 @@ const $root = document.documentElement;
 const $main = $root.querySelector("main");
 
 /**
- * Multilingual elements created with `#babel` and `#bbl` in typst.
- * @type {HTMLElement[]}
- */
-const babelElements = Array.from(
-  $root.querySelectorAll("[its-locale-filter-list]"),
-);
-
-/**
  * @param {Language} lang
  */
 function setRoot(lang) {
@@ -44,6 +36,15 @@ function setRoot(lang) {
  * @param {Language} lang
  */
 function filterElements(lang) {
+  /**
+   * Multilingual elements created with `#babel` and `#bbl` in typst,
+   * or dynamically created by other scripts.
+   * @type {HTMLElement[]}
+   */
+  const babelElements = Array.from(
+    $root.querySelectorAll("[its-locale-filter-list]"),
+  );
+
   for (const el of babelElements) {
     const match = lang === "all" ||
       el.getAttribute("its-locale-filter-list") === lang;
@@ -59,7 +60,7 @@ function applyLanguage(lang) {
   filterElements(lang);
 }
 
-function createLanguageSwitch() {
+export function createLanguageSwitch() {
   const menu = html`
     <aside id="lang-switch">
       <button data-lang="zh" lang="zh">中文</button>
@@ -88,5 +89,3 @@ function createLanguageSwitch() {
 
   $main.append(menu);
 }
-
-createLanguageSwitch();

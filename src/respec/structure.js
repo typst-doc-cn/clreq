@@ -285,12 +285,11 @@ function insertPriorityLevel(sections, siblings = null) {
 
 /**
  * @typedef {object} Configuration
- * @property {string} lang can change the generated text (supported: en, fr)
  * @property {number} maxTocLevel only generate a TOC so many levels deep
  *
  * @param {Configuration} conf
  */
-export function run(conf = {}) {
+export function createStructure(conf = {}) {
   if ("maxTocLevel" in conf === false) {
     conf.maxTocLevel = Infinity;
   }

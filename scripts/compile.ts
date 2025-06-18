@@ -1,21 +1,37 @@
 import fs from "node:fs/promises";
 import { fileURLToPath } from "node:url";
 
+import { createServer } from "vite";
 import watch from "glob-watcher";
 
 import { mainHint, ROOT_DIR, typst } from "./cli_util.ts";
-import { assets_server } from "./assets_server.ts";
 
-export const extraArgs = [
+const extraArgs = [
   "--diagnostic-format=short",
   "--features=html",
   `--font-path=${ROOT_DIR}/fonts`,
 ];
 
-export const precompileExtraArgs = [
-  // To allow the first query before compilation, tell that the cache is not ready yet.
+const ASSETS_SERVER_PORT = 5173;
+
+// See typ/mode.typ
+export const preExtraArgs = [
   "--input",
-  "cache-ready=false",
+  "mode=pre",
+  ...extraArgs,
+];
+const buildExtraArgs = [
+  "--input",
+  "mode=build",
+  "--input",
+  "x-url-base=/clreq/",
+  ...extraArgs,
+];
+const devExtraArgs = [
+  "--input",
+  "mode=dev",
+  "--input",
+  `x-url-base=http://localhost:${ASSETS_SERVER_PORT}/`,
   ...extraArgs,
 ];
 
@@ -38,15 +54,8 @@ async function main({ watchMode }: { watchMode: boolean }) {
     });
     console.clear();
 
-    assets_server.listen(8000, "localhost");
-    typst("index", [
-      "watch",
-      "index.typ",
-      "dist/index.html",
-      "--input",
-      "x-url-base=http://localhost:8000/",
-      ...extraArgs,
-    ]);
+    await serveAssets();
+    typst("index", ["watch", "index.typ", "dist/index.html", ...devExtraArgs]);
 
     glob.on("change", async (_event, path) => {
       console.log(`File changed...`);
@@ -61,16 +70,11 @@ async function main({ watchMode }: { watchMode: boolean }) {
   } else {
     try {
       await precompile();
-      await Promise.all([
-        typst("index", [
-          "compile",
-          "index.typ",
-          "dist/index.html",
-          "--input",
-          "x-url-base=/clreq/assets/",
-          ...extraArgs,
-        ]),
-        fs.cp("public", "dist/assets/", { recursive: true }),
+      await typst("index", [
+        "compile",
+        "index.typ",
+        "dist/index.html",
+        ...buildExtraArgs,
       ]);
       console.log("Compilation completed successfully.");
     } catch (error) {
@@ -96,7 +100,7 @@ async function renderExamples() {
       "main.typ",
       "<external-example>",
       "--field=value",
-      ...precompileExtraArgs,
+      ...preExtraArgs,
     ]),
   );
 
@@ -146,7 +150,7 @@ async function renderPrioritization(): Promise<void> {
     "-",
     "--format=svg",
     `--root=${ROOT_DIR}`,
-    ...precompileExtraArgs,
+    ...preExtraArgs,
   ], {
     stdin: `
 #set page(height: auto, width: auto, margin: 0.5em, fill: none)
@@ -162,4 +166,15 @@ async function renderPrioritization(): Promise<void> {
   );
 
   await fs.writeFile(output, final);
+}
+
+/** Start the vite dev server. */
+async function serveAssets() {
+  const server = await createServer({
+    server: {
+      port: ASSETS_SERVER_PORT,
+    },
+  });
+  await server.listen();
+  server.printUrls();
 }
