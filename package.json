@@ -5,15 +5,17 @@
     "type": "module",
     "description": "Chinese Layout Gap Analysis for Typst",
     "dependencies": {
+        "concurrently": "^9.1.2",
         "glob-watcher": "^6.0.0"
     },
     "scripts": {
-        "build": "tsc && vite build && node --experimental-strip-types scripts/compile.ts",
-        "dev": "node --experimental-strip-types scripts/compile.ts --watch",
+        "build": "tsc && vite build && node --experimental-strip-types scripts/build.ts",
+        "dev": "node --experimental-strip-types scripts/dev.ts",
         "preview": "vite preview --base=/clreq/",
         "check": "node --experimental-strip-types scripts/check_uniq.ts"
     },
     "devDependencies": {
+        "@types/glob-watcher": "^5.0.5",
         "@types/node": "^24.0.3",
         "typescript": "~5.8.3",
         "vite": "^6.3.5"

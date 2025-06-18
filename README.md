@@ -12,7 +12,7 @@ Chinese Layout Gap Analysis for Typst.
 pnpm build # ⇒ dist/index.html
 
 # Recompile on changes
-pnpm dev # ⇒ http://localhost:3000
+pnpm dev --open # ⇒ http://localhost:3000
 ```
 
 Prerequisites:
