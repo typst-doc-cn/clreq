@@ -3,8 +3,12 @@
 import "./base.css";
 import "./base.override.css";
 
+import "./language.css";
 import { createLanguageSwitch } from "./language.ts";
+
+import "./structure.css";
 import { createStructure } from "./structure.ts";
+
 import sidebar from "./sidebar.ts";
 
 // The order of the following matters.

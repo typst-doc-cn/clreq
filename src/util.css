@@ -1,0 +1,31 @@
+/**
+ * Companion of typ/util.typ.
+ */
+
+/* `#prompt` */
+article.prompt {
+  font-size: 90%;
+  color: var(--gray-color);
+
+  > .license {
+    font-size: 80%;
+  }
+}
+
+/* Small links containing icons */
+.unbreakable {
+  display: inline-block;
+}
+
+/* `#unichar` */
+/* Inspired by clreq `.uname` and Wikipedia [[Template:Unichar]] */
+.unichar {
+  .code-point {
+    font-family: monospace;
+    font-size: 0.8em;
+    letter-spacing: 0.03em;
+  }
+  .small-caps {
+    font-variant-caps: small-caps;
+  }
+}

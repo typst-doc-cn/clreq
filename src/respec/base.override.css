@@ -50,18 +50,3 @@ body.toc-sidebar :not(li) > .toc {
 nav.toc a:hover:visited {
   color: var(--main-hover-color);
 }
-
-/* Permalink, public/respec/structure.js */
-/* https://github.com/speced/respec/blob/eaa1596ef5c4207ab350808c1593d3a39600fbed/src/styles/respec.css.js#L148-L169 */
-a.permalink {
-  margin-left: -0.5em;
-  width: 1em;
-}
-a.permalink:not(:hover) {
-  text-decoration: none;
-  color: var(--gray-color);
-  opacity: 0.5;
-}
-a.permalink::before {
-  content: "§";
-}

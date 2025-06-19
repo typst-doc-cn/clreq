@@ -1,0 +1,58 @@
+/**
+ * Multilingual, adapted from clreq.
+ * https://github.com/w3c/clreq/blob/2526efd3a66daa35d453784f9200cb20c6cfff1d/local.css#L132-L152
+ */
+
+#lang-switch {
+  position: fixed;
+  z-index: 10000;
+  top: 100px;
+  right: 10px;
+
+  > * {
+    display: block;
+    margin: 0.3em;
+    width: 5em;
+    padding: 2px 5px;
+    border: 1px solid var(--gray-color);
+    border-radius: 8px;
+    color: var(--main-color);
+    background: var(--nav-bg-color);
+  }
+
+  > *:hover,
+  > *.selected {
+    box-shadow: 0 2px 8px var(--gray-color);
+  }
+  > *:active {
+    background: var(--accent-dark);
+    transition: outline 0.1s;
+  }
+}
+h1 {
+  /* left room for #lang-switch */
+  margin-right: 5rem;
+}
+
+#lang-switch > [data-lang="zh"] {
+  background: rgb(249, 195, 129);
+}
+.dark #lang-switch > [data-lang="zh"] {
+  background: rgb(140, 88, 30);
+}
+
+:root:not(.monolingual) {
+  /* https://github.com/w3c/clreq/blob/2526efd3a66daa35d453784f9200cb20c6cfff1d/local.css#L179-L205 */
+  [its-locale-filter-list="zh"] {
+    border-left: 3px solid rgba(248, 138, 5, 0.5);
+  }
+  span[its-locale-filter-list="zh"] {
+    display: inline-block;
+    margin-left: 0.3em;
+    padding-left: 0.3em;
+  }
+  p[its-locale-filter-list="zh"] {
+    margin-left: calc(-0.4em - 2px);
+    padding-left: 0.4em;
+  }
+}
