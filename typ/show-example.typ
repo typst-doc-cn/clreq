@@ -9,6 +9,7 @@
 /// -> str
 #let GENERAL-PREAMBLE = ```typ
 #set text(
+  lang: "zh", // required for localization
   font: ((name: "New Computer Modern", covers: "latin-in-cjk"), "Noto Serif CJK SC"),
   // Make it reproducible.
   fallback: false,

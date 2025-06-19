@@ -496,7 +496,22 @@
   Relevant here are formats related to number, currency, dates, personal names, addresses, and so forth. If the script has its own set of number digits, are there any issues in how they are used? Does the script or language use special format patterns that are problematic (eg. 12,34,000 in India)? What about date/time formats and selection - and are non-Gregorian calendars needed? Do percent signs and other symbols associated with number work correctly, and do numbers need special decorations, (like in Ethiopic or Syriac)? How about the management of personal names, addresses, etc. in typst: are there issues?
 ]
 
-#level.tbd
+=== #bbl(en: [Numbers in Chinese], zh: [中文数字])
+
+#level.ok
+
+```example
+>>> Current & Expected:
+>>>
+#numbering("一", 299792458)
+
+#numbering("壹", 299792458)
+```
+
+#babel(
+  en: [Natively supported. Mentioned here to prevent future people from reimplementing it.],
+  zh: [内置支持。为避免又有人不知道而重复开发，提及一下。],
+)
 
 = #bbl(en: [Line and paragraph layout], zh: [行与段落版式])
 
@@ -1004,6 +1019,11 @@ $ integral f dif x $
   zh: [一篇文章同时引用中英文献极其常见。多著者文献可能省略部分作者，这时英文应加`et al.`，中文应加`等`。],
 )
 
+#babel(
+  en: [Currently, `#set text(lang: …)` can select `et al.` (en) or `等` (zh) for all entries, but it is not possible to set each entry individually.],
+  zh: [当前可用`#set text(lang: …)`统一选择`et al.`（en）与`等`（zh），但无法逐文献设置。],
+)
+
 ```example-bib
 @article{吴伟仁2017,
   title = {“嫦娥4号”月球背面软着陆任务设计},
@@ -1183,20 +1203,59 @@ $ integral f dif x $
   )
 ]
 
-=== #bbl(en: [Proper i18n for figure captions], zh: [`第一章` vs.~`章一`])
+=== #bbl(
+  en: [For references to headings, the supplement should not be put before the number],
+  zh: [引用章节时，名称不该在编号之前],
+)
 
-#level.tbd
-#issue("typst#2485", note: [mentioned])
+#level.broken
+#issue("typst#5102")
+#issue("typst#2485", anchor: "#issuecomment-2097524535", note: [mentioned])
 
-=== #bbl(en: [Bilingual figure captions], zh: [figure 的 caption 如何实现双语])
+#babel(
+  en: [When referencing chapters and sections in Chinese, it is standard to write `第一章` or `2.1小节`, while forms like `小节2.1` are rarely used, and `章一` is virtually nonexistent. Therefore, the `supplement` parameter of `ref` or `heading` is useless for Chinese, making it inevitable to use `#show ref: it => …`.],
+  zh: [引用章节时，中文通常写`第一章`或`2.1小节`，而几乎不写`小节2.1`，更不会写`章一`。因此，中文无法使用`ref`或`heading`的`supplement`参数，必须`#show ref: it => …`。],
+)
 
-#level.tbd
+#bbl(en: [Literal meanings:], zh: [字面含义：])
+
+- ✅ `第一章`—— number one chapter
+- ✅ `2.1小节`—— 2.1 tiny section
+- 😟 `小节2.1`—— tiny section 2.1
+- ❌ `章一`—— chapter one
+
+```example-page
+>>> = Current
+>>> #counter(heading).update(2)
+#set heading(numbering: "1.1")
+== 标题 <sec>
+见@sec。
+
+>>> #heading(numbering: none)[Expected]
+>>> #counter(heading).update(2)
+>>> == 标题
+>>> 见 2.1 小节。
+```
+
+#babel(
+  en: [Besides, defining a show rule to replace `ref` with `link(it.element.location(), …)` will cause other problems, such as difficulty in coloring `link` and `ref` separately.],
+  zh: [此外，若在 show 规则中用`link(it.element.location(), …)`替代`ref`，又会引发其它问题，例如难以给`link`、`ref`分别上色。],
+)
+
+=== #bbl(en: [Bilingual figure captions], zh: [双语插图标题])
+
+#level.advanced
 #workaround("https://typst-doc-cn.github.io/guide/FAQ/dual_language_caption.html")
 
-=== #bbl(en: [Section name should be after section number in reference in Chinese])
-
-#level.tbd
-#issue("typst#5102")
+```example-page
+>>> Expected:
+>>> #align(center)[
+>>>   #rect(inset: 1em)[Example \ Image]
+>>>
+>>>   图 1 #h(0.5em) 标题 \
+>>>   Figure 1 #h(0.5em) Caption
+>>> ]
+```
 
 == #bbl(en: [What else?], zh: [其它])
 
