@@ -40,7 +40,6 @@ body {
   font-family: var(--vp-font-family-base);
   margin: 0;
   padding: 0;
-  text-align: justify;
   background: var(--main-bg-color);
   background-size: 100% 600px;
   word-wrap: break-word;
