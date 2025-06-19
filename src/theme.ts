@@ -36,8 +36,7 @@ function applyTheme(theme: Theme): void {
 }
 
 function getSystemTheme(): 'dark' | 'light' {
-  // We cannot use `&&` here, due to the limitation of typst v0.13.
-  const match = !(!window.matchMedia ||
-    !window.matchMedia("(prefers-color-scheme: dark)").matches);
+  const match = window.matchMedia &&
+    window.matchMedia("(prefers-color-scheme: dark)").matches;
   return match ? "dark" : "light";
 }
