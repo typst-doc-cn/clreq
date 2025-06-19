@@ -47,3 +47,37 @@
     background: lightgray;
   }
 }
+
+/* Load data attrs reserved by `reserve-text-fill` */
+.example [data-fill] {
+  color: var(--data-fill);
+}
+.dark .example {
+  /**
+   * Check all possible colors by executing the following in the browser console:
+   *   [...new Set($$("[data-fill]").map((e) => e.dataset.fill))].sort()
+   * Then improve the contrast ratio:
+   *   https://webaim.org/resources/contrastchecker/?bcolor=212737
+   */
+  [data-fill="#1d6c76"] {
+    color: #36bfce;
+  }
+  [data-fill="#298e0d"] {
+    color: #38be13;
+  }
+  [data-fill="#4b69c6"] {
+    color: #92a5dd;
+  }
+  [data-fill="#818181"] {
+    color: #ababab;
+  }
+  [data-fill="#8b41b1"] {
+    color: #c497d8;
+  }
+  [data-fill="#b60157"] {
+    color: #fe90c7;
+  }
+  [data-fill="#d73a49"] {
+    color: #e5858d;
+  }
+}

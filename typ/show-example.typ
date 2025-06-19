@@ -1,6 +1,7 @@
 #import "@preview/tidy:0.4.3": show-example as tidy-example
 #import "@preview/jumble:0.0.1": sha1, bytes-to-hex
 
+#import "templates/html-fix.typ": reserve-text-fill
 #import "templates/html-toolkit.typ": img, div, div-frame
 #import "mode.typ": cache-ready, cache-dir
 
@@ -26,7 +27,10 @@
 #let layout-example(code, preview, ..sink) = div(
   class: "example",
   {
-    code
+    {
+      show text: reserve-text-fill
+      code
+    }
     div-frame(preview, class: "preview")
   },
 )

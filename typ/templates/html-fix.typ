@@ -7,6 +7,21 @@
 /// Usage: `#show link: link-in-new-tab`
 #let link-in-new-tab(class: none, it) = h.a(target: "_blank", href: it.dest, class: class, it.body)
 
+/// Reserve the `fill` of `text` in HTML data attrs and CSS vars
+///
+/// Usage: `#show text: reserver-text-fill`
+///
+/// Inspired by zebraw.
+/// https://github.com/hongjr03/typst-zebraw/blob/99028bf9eebe89cf0b07764e3775a4ea8aa5b5c4/src/html.typ#L21-L35
+#let reserve-text-fill(it) = {
+  if text.fill == black {
+    it // Ignore default color
+  } else {
+    let fill = text.fill.to-hex()
+    h.span(it, data-fill: fill, style: "--data-fill:" + fill)
+  }
+}
+
 /// Externalize images in /public/
 ///
 /// Usage: `#show image: external-image`
