@@ -103,7 +103,7 @@
 )
 
 #figure(
-  image("/public/vertical-example-ancient.jpg"),
+  image("/public/vertical-example-ancient.jpg", alt: "《永樂大典》The Yongle Encyclopedia"),
   caption: link(
     "https://commons.wikimedia.org/w/index.php?title=File:Shanghai_永樂大典卷之二千三百三十七.pdf&page=1",
     bbl(en: [An ancient example of vertical text], zh: [直排的古代例子]),
@@ -111,7 +111,10 @@
 ) <fig:vertical-example-ancient>
 
 #figure(
-  image("/public/vertical-example-modern.jpg"),
+  image(
+    "/public/vertical-example-modern.jpg",
+    alt: "Straight and wavy lines alongside vertical text 直排行间的专名号与书名号",
+  ),
   caption: link(
     "https://github.com/w3c/type-samples/issues/56",
     bbl(en: [A modern example of vertical text], zh: [直排的现代例子]),
@@ -160,7 +163,7 @@
 )
 
 #figure(
-  image("/public/font-fallback-messy.png"),
+  image("/public/font-fallback-messy.png", alt: "“为什么字体这么奇怪”, literally “Why is the font so strange”"),
   caption: bbl(
     en: [The result might be a mixture of sans and serif fonts],
     zh: [结果可能混合了黑体和宋体],

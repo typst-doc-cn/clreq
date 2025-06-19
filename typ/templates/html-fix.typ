@@ -27,7 +27,11 @@
 /// Usage: `#show image: external-image`
 #let external-image(it) = {
   if type(it.source) == str and it.source.starts-with("/public/") {
-    h.img({ }, src: asset-url(it.source.trim("/public", at: start)))
+    h.img(
+      { },
+      src: asset-url(it.source.trim("/public", at: start)),
+      ..if it.alt != none { (alt: it.alt, title: it.alt) },
+    )
   } else {
     it
   }
