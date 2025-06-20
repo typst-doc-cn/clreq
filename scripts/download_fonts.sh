@@ -12,7 +12,7 @@ if ! typst fonts --font-path . | rg --quiet '^Noto Serif CJK SC$'; then
 fi
 
 if ! typst fonts --font-path . | rg --quiet '^Noto Color Emoji$'; then
-  curl --location --remote-name https://cdn.jsdelivr.net/fontsource/fonts/noto-color-emoji@latest/emoji-400-normal.ttf
+  curl --location --remote-name https://github.com/googlefonts/noto-emoji/raw/main/fonts/NotoColorEmoji.ttf
 fi
 
 # Source Han Serif SC VF
