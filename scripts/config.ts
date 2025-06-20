@@ -22,7 +22,9 @@ export const extraArgs = {
     "--input",
     "mode=build",
     "--input",
-    `x-url-base=${env.GITHUB_PAGES_BASE ?? "/clreq/"}`,
+    `x-url-base=${
+      env.NETLIFY === "true" ? "/" : (env.GITHUB_PAGES_BASE ?? "/clreq/")
+    }`,
     ...envArgs,
   ],
   dev: [

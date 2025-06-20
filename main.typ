@@ -1295,11 +1295,11 @@ $ integral f dif x $
 - #bbl(en: [Compiler], zh: [编译器]) \
   typst v#sys.version
 
-#if "github" in sys.inputs {
-  let github = json(bytes(sys.inputs.github))
+#if "git" in sys.inputs {
+  let git = json(bytes(sys.inputs.git))
   [
     - #bbl(en: [Document version], zh: [文档版本]) \
-      commit #link(github.commit_url, github.name) (#link(github.run_url)[log])
+      #link(git.commit_url)[commit #git.name] (#link(git.log_url)[log])
   ]
 }
 
