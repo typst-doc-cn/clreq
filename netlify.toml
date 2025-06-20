@@ -1,7 +1,6 @@
 [build]
 command = """
 curl -L --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/cargo-bins/cargo-binstall/main/install-from-binstall-release.sh | bash && \
-# `cargo binstall` not works here \
 cargo-binstall typst-cli ripgrep && \
 \
 curl -OL https://www.7-zip.org/a/7z2409-linux-x64.tar.xz && \
@@ -13,3 +12,4 @@ bash scripts/download_fonts.sh && \
 pnpm install && \
 pnpm build
 """
+# `cargo binstall` not works here
