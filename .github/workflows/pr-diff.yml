@@ -1,0 +1,54 @@
+name: Comment about the difference on PR
+
+on:
+  pull_request_target:
+    types:
+      - opened
+      - ready_for_review
+
+jobs:
+  comment:
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ github.token }}
+    permissions:
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Generate the comment
+        shell: python
+        run: |
+          from pathlib import Path
+          from urllib.parse import urlencode
+
+          pr_number = "${{ github.event.pull_request.number }}"
+
+          ref = "https://typst-doc-cn.github.io/clreq/"
+          pr = f"https://deploy-preview-{pr_number}--clreq-gap-typst.netlify.app/"
+
+          base_text = "https://services.w3.org/htmldiff?"
+          base_pixel = "https://pianomister.github.io/diffsite/?"
+
+          diff_text = base_text + urlencode({"doc1": ref, "doc2": pr})
+          diff_pixel = base_pixel + urlencode({"url1": ref, "url2": pr})
+
+          comment = f"""
+          ### Diff between [#{pr_number}]({pr}) and [main]({ref})
+
+          - [text diff]({diff_text})
+          - [pixel diff]({diff_pixel})
+
+          [Feedback](https://github.com/typst-doc-cn/clreq/discussions/9)
+          """.strip()
+
+          Path("comment.md").write_text(comment, encoding="utf-8")
+
+      - name: Write the summary
+        run: |
+          cat comment.md >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Comment on the pull request
+        run: gh pr comment ${{ github.event.pull_request.number }} --body-file comment.md
+        env:
+          GH_TOKEN: ${{ github.token }}
