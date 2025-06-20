@@ -604,8 +604,8 @@
 ```
 
 === #bbl(
-  en: [Paragraph should be able to contain tight lists and block-level equations],
-  zh: [如何避免公式、图表等块元素的下一行缩进],
+  en: [Unexpected indentation after figures, lists and block equations],
+  zh: [图表、列表、块级公式后异常缩进],
 )
 
 #level.basic
@@ -613,8 +613,8 @@
 #workaround("https://typst-doc-cn.github.io/guide/FAQ/block-equation-in-paragraph.html")
 
 #babel(
-  en: [Chinese publications usually apply 2-em wide first-line indents.],
-  zh: [中文出版品上，段首缩排以两个汉字的空间为标准。],
+  en: [Figures, lists and block equations will break the paragraph, causing the following text to start a new paragraph. This becomes visually noticeable when a first-line indent is applied. In Chinese, it is common practice to use a 2-em first-line indent, making this issue particularly apparent.],
+  zh: [图表、列表、块级公式会终结段落，导致后文另起一段。若设置了首行缩进，换段会很明显。而中文出版物普遍设置首行缩进两字，导致这一问题尤为突出。],
 )
 
 ```example
@@ -1077,15 +1077,30 @@ $ integral f dif x $
 ```
 
 === #bbl(
-  en: [Some entries in thesis and report bibliography items are not shown],
-  zh: [参考文献学位论文条目`[D]`后不显示“地点: 学校名称, 年份.”],
+  en: [`institution` and `school` are not shown],
+  zh: [`institution`机构名称和`school`学校名称不显示],
 )
 
 #level.broken
 #issue("hayagriva#112")
 #workaround("https://typst-doc-cn.github.io/guide/FAQ/bib-missing-school.html")
 
+#babel(
+  en: [`institution` and `school` are not recognized as aliases of `publisher`, and typst does not understand `institute` in CSL either. The `school` field is conventionally associated with `@thesis` (`[D]`), and the `institute` field with `@report` (`[R]`). These fields should be placed between the location and the date after `[D]`/`[R]`.],
+  zh: [`institution`机构名称和`school`学校名称未被识别成`publisher`的别名，typst 亦不支持解析 CSL 中的 `institution`。`school`字段常用于学位论文`@thesis`（`[D]`），`institute`字段常用于报告`@report`（`[R]`），它们应显示在`[D]`/`[R]`后的地点与日期之间。],
+)
+
 ```example-bib
+@report{report,
+  author = {Robert Swearingen},
+  title = {Morphology and syntax of British sailors’ English},
+  series = {Technical Report},
+  number = {249},
+  institution = {Profanity Institute},
+  address = {New York},
+  year = {1985},
+}
+% SWEARINGEN R. #text(font: "New Computer Modern")[Morphology and syntax of British sailors’ English] [R]. 249. New York: Profanity Institute, 1985.
 @thesis{王楠2016,
   title = {在“共产主义视镜”下想象科学——“十七年”期间的中国科幻文学与科学话语},
   author = {王楠},
@@ -1290,7 +1305,7 @@ $ integral f dif x $
 
 === #bbl(
   en: [Ignore linebreaks between CJK characters in source code],
-  zh: [写中文文档时，如何去掉源码中换行导致的空格],
+  zh: [忽略源码中CJK字符间的换行],
 )
 
 #level.advanced
@@ -1298,15 +1313,37 @@ $ integral f dif x $
 #workaround("https://typst-doc-cn.github.io/guide/FAQ/chinese-remove-space.html")
 #workaround("https://typst.app/universe/package/cjk-unbreak")
 
+```example
+>>> Current: \
+测试一下，
+效果怎么样。
+
+>>> Expected: \
+>>> 测试一下，效果怎么样。
+```
+
+#babel(
+  en: [This issue is marked as advanced, because not all people want this behaviour.],
+  zh: [这一问题算作 Advanced，因为并非所有人都想要这种行为。],
+)
+
 === #bbl(en: [Disable the spell checker of webapp], zh: [关闭 webapp 的拼写检查])
 
 #level.advanced
 #workaround("https://typst-doc-cn.github.io/guide/FAQ/webapp-spellcheck.html")
 
 #babel(
-  en: [The spell checker embedded in the webapp does not support Chinese, marking all lines as misspelled.],
-  zh: [webapp 内嵌的拼写检查器不支持中文，每一行都会被标为拼写错误。],
+  en: [The spell checker embedded in the webapp does not support Chinese, marking all characters as misspelled, as shown in @fig:webapp-misspell.],
+  zh: [webapp 内嵌的拼写检查器不支持中文，每个字都会被标为拼写错误，如 @fig:webapp-misspell。],
 )
+
+#figure(
+  image(
+    "/public/webapp-misspell.png",
+    alt: "我要給阿Q做正傳，已經不止一兩年了。但一面要做，一面又往回想，這足見我不是一個“立言”的人，因為從來不朽之筆，須傳不朽之人，於是人以文傳，文以人傳——究竟誰靠誰傳，漸漸的不甚瞭然起來，而終於歸接到傳阿Q，仿佛思想裏有鬼似的。",
+  ),
+  caption: bbl(en: [94 spelling mistakes], zh: [94个拼写错误]),
+) <fig:webapp-misspell>
 
 #set heading(numbering: none)
 
@@ -1333,29 +1370,27 @@ $ integral f dif x $
 
 == #bbl(en: [References], zh: [参考资料])
 
-- W3C documents
+- #bbl(en: [W3C documents], zh: [W3C 文档])
 
   - #link("https://www.w3.org/TR/clreq/")[Requirements for Chinese Text Layout - 中文排版需求]
   - #link("https://www.w3.org/TR/clreq-gap/")[Chinese Layout Gap Analysis]
 
 - #link("https://typst-doc-cn.github.io/guide/FAQ.html")[FAQ 常见问题 | Typst Doc CN 中文社区导航]
 
-- Standards
+- #bbl(en: [Standards], zh: [标准])
 
   - #link("https://std.samr.gov.cn/gb/search/gbDetailed?id=71F772D8055ED3A7E05397BE0A0AB82A")[GB/T 7714—2015《信息与文献　参考文献著录规则》_Information and documentation—Rules for bibliographic references and citations to information resources_] (#link("https://lib.tsinghua.edu.cn/wj/GBT7714-2015.pdf")[PDF])
   - #link("https://std.samr.gov.cn/gb/search/gbDetailed?id=71F772D7FE25D3A7E05397BE0A0AB82A")[GB/T 15834—2011《标点符号用法》_General rules for punctuation_] (#link("http://www.moe.gov.cn/jyb_sjzl/ziliao/A19/201001/W020190128580990138234.pdf")[PDF])
   - #link("https://std.samr.gov.cn/hb/search/stdHBDetailed?id=8B1827F23645BB19E05397BE0A0AB44A")[CY/T 154—2017《中文出版物夹用英文的编辑规范》_Rules for editing Chinese publications interpolated with English_] (#link("https://www.nppa.gov.cn/xxgk/fdzdgknr/hybz/202210/P020221004608768453140.pdf")[PDF])
 
-- Reference implementations
+- #bbl(en: [Reference implementations], zh: [参考实现])
 
   - #link("https://ctan.org/pkg/biblatex-gb7714-2015")[`biblatex-gb7714-2015`], #bbl(zh: [符合 GB/T 7714—2015 标准的 biblatex 参考文献样式], en: [A BibLaTeX implementation of the GB/T 7714—2015 bibliography style for Chinese users]) (#link("https://texdoc.org/serve/biblatex-gb7714-2015/0")[TeXdoc PDF])
 
-== To be done
+== #bbl(en: [To be done], zh: [待办])
 
 - Content
 
-  - Illustrations / minimal examples
-  - Full Chinese/English translation
   - Include resolved issues (for historians)
 
 - Live long
