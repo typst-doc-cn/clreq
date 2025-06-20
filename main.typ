@@ -995,6 +995,31 @@ $ integral f dif x $
 >>> 孔乙己#super[[1]]，另见文献#h(0.25em)#[[1]]。
 ````
 
+=== #bbl(en: [Cite with page numbers], zh: [带页码引用])
+
+#level.advanced
+#workaround("https://forum.typst.app/t/how-to-cite-with-a-page-number-in-gb-t-7714-2015-style/1501/4")
+
+````example-page
+>>> Current: \
+初次@a[260] \
+再次@a[326--329] @b @c @d
+
+>>> Expected: \
+>>> 初次#super[[1]260] \
+>>> 再次#super[[1]326--329] @b @c @d
+>>> #show bibliography: none
+#let bib = (
+  "abcd".clusters().map(n => "@misc{[n], title = {Title}}".replace("[n]", n)).sum()
+)
+#bibliography(bytes(bib), style: "gb-7714-2015-numeric")
+````
+
+#babel(
+  en: [This issue is marked as advanced, because citing with page number is not common. According to GB/T 7714—2015 §10.1.3, in most cases, page numbers should be recorded in the bibliography list. Citing with page number is only necessary when the work is cited multiple times with different page numbers.],
+  zh: [这一问题算作 Advanced，因为带页码引用并不常见。根据 GB/T 7714—2015 §10.1.3，大多数情况下页码应当记录在参考文献表中；只有多次引用同一文献的不同页码时，才需在引用处标注页码。],
+)
+
 == #bbl(en: [Bibliography listing], zh: [参考文献表])
 
 #prompt[
@@ -1062,7 +1087,7 @@ $ integral f dif x $
 
 ```example-bib
 @thesis{王楠2016,
-  title = {在“共产主义视镜”下想象科学 ——“十七年”期间的中国科幻文学与科学话语},
+  title = {在“共产主义视镜”下想象科学——“十七年”期间的中国科幻文学与科学话语},
   author = {王楠},
   date = {2016-08-05},
   institution = {新加坡国立大学},
@@ -1071,7 +1096,7 @@ $ integral f dif x $
   urldate = {2025-02-15},
   langid = {chinese}
 }
-% 王楠. 在“共产主义视镜”下想象科学 ——“十七年”期间的中国科幻文学与科学话语[D/OL]. 新加坡: 新加坡国立大学, 2016[2025-02-15]. https://scholarbank.nus.edu.sg/handle/10635/132143.
+% 王楠. 在“共产主义视镜”下想象科学——“十七年”期间的中国科幻文学与科学话语[D/OL]. 新加坡: 新加坡国立大学, 2016[2025-02-15]. https://scholarbank.nus.edu.sg/handle/10635/132143.
 ```
 
 === #bbl(
