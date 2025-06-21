@@ -42,9 +42,22 @@ function filterElements(lang: Language): void {
   }
 }
 
-function applyLanguage(lang: Language): void {
+function applyLanguage(lang: Language, menu: HTMLElement): void {
   setRoot(lang);
   filterElements(lang);
+
+  // Update selection
+  Array.from(menu.children).forEach((o) => {
+    // @ts-ignore
+    if (o.dataset.lang === lang) {
+      o.classList.add("selected");
+    } else {
+      o.classList.remove("selected");
+    }
+  });
+
+  // Save for future loads
+  localStorage.setItem("lang", lang);
 }
 
 export function createLanguageSwitch(): void {
@@ -54,25 +67,23 @@ export function createLanguageSwitch(): void {
       <button data-lang="en" lang="en">English</button>
       <button class="selected" data-lang="all" lang="en">All</button>
     </aside>
-  `;
+  ` as HTMLElement;
   menu.addEventListener("click", (e) => {
     // @ts-ignore
     const option = e.target.closest("[data-lang]") as HTMLElement;
     if (option) {
       const lang = option.dataset.lang as Language;
-      applyLanguage(lang);
-
-      // Update `.selected`
-      Array.from(menu.children).forEach((o) => {
-        // @ts-ignore
-        if (o.dataset.lang === lang) {
-          o.classList.add("selected");
-        } else {
-          o.classList.remove("selected");
-        }
-      });
+      applyLanguage(lang, menu);
     }
   });
+
+  // Load saved language preference
+  if (typeof localStorage !== "undefined") {
+    const lang = localStorage.getItem("lang");
+    if (lang !== null) {
+      applyLanguage(lang as Language, menu);
+    }
+  }
 
   $main.append(menu);
 }
