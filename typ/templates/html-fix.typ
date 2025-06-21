@@ -45,16 +45,16 @@
 #let make-heading-refs-clickable(body) = {
   // https://github.com/Glomzzz/typsite/blob/c5f99270eff92cfdad58bbf4a78ea127d1aed310/resources/root/lib.typ#L184-L229
   show heading: it => {
-    let label = it.at("label", default: none)
-    if label == none {
+    if it.numbering == none {
       it
     } else {
-      // Add id to headings in html
       html.elem(
         "h" + str(it.level + 1),
-        attrs: (id: str(label)),
+        // Add id to headings in html if there exists a label
+        attrs: if it.at("label", default: none) != none { (id: str(it.label)) } else { (:) },
         {
-          counter(heading).display(it.numbering)
+          // Wrap the numbering with a class
+          h.span(counter(heading).display(it.numbering), class: "secno")
           [ ]
           it.body
         },
