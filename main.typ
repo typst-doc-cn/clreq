@@ -340,7 +340,21 @@
   Most languages are now supported by Unicode, but there are still occasional issues. In particular, there may be issues related to ordering of characters, or competing encodings (as in Myanmar), or standardisation of variation selectors or the encoding model (as in Mongolian). Are there any character repertoire issues preventing use of this script in typst? Do variation selectors need attention? Are there any other encoding-related issues?
 ]
 
-#level.tbd
+=== #bbl(en: [Ideographic variation sequence disappears at end of line], zh: [行末的表意文字异体字序列无效])
+
+#level.advanced
+#issue("typst#5319")
+#issue("typst#5785")
+
+#babel(
+  en: [#link("https://www.unicode.org/ivd/")[Ideographic Variation Sequence (IVS)] is a mechanism for plain text #link("https://www.unicode.org/versions/Unicode16.0.0/core-spec/chapter-23/#G19053")[specified by Unicode] to change the glyph to be used to display a character. For more information, please refer to #link("https://unicode.org/faq/vs.html")[the FAQ on Unicode.org].],
+  zh: [#link("https://www.unicode.org/ivd/")[表意文字异体字序列（ideographic variation sequence, IVS）]是 #link("https://www.unicode.org/versions/Unicode16.0.0/core-spec/chapter-23/#G19053")[Unicode 定义]的一种纯文本机制，可以更换某个字符显示用的异体字字形。更多信息请参考 #link("https://unicode.org/faq/vs.html")[Unicode.org 上的常见问题]。],
+)
+
+#babel(
+  en: [This issue is marked as advanced, because IVS is rarely used and can be replaced by settings such as `#set text(lang: …, region: …)`.],
+  zh: [这一问题算作 Advanced，因为 IVS 很少用，并且可用`#set text(lang: …, region: …)`等设置替代。],
+)
 
 == Grapheme/word segmentation & selection
 
@@ -348,7 +362,7 @@
   This is about how text is divided into graphemes, words, sentences, etc., and behaviour associated with that. Are there special requirements for the following operations: forwards/backwards deletion, cursor movement & selection, character counts, searching & matching, text insertion, line-breaking, justification, case conversions, sorting? Are words separated by spaces, or other characters? Are there special requirements when double-clicking or triple-clicking on the text? Are words hyphenated? (Some of the answers to these questions may be picked up in other sections, such as @line-breaking, or @initials.)
 ]
 
-#level.tbd
+#level.ok
 
 = #bbl(en: [Punctuation & inline features], zh: [标点符号及其它行内特性])
 
@@ -844,7 +858,7 @@ $ integral f dif x $
 == Styling initials <initials>
 
 #prompt(from-w3c: "https://www.w3.org/TR/clreq-gap/#initials")[
-  Does typst correctly handle special styling of the initial letter of a line or paragraph, such as for drop caps or similar? How about the size relationship between the large letter and the lines alongide? where does the large letter anchor relative to the lines alongside? is it normal to include initial quote marks in the large letter? is the large letter really a syllable? etc. Are all of these things working as expected?
+  Does typst correctly handle special styling of the initial letter of a line or paragraph, such as for drop caps or similar? How about the size relationship between the large letter and the lines alongside? where does the large letter anchor relative to the lines alongside? is it normal to include initial quote marks in the large letter? is the large letter really a syllable? etc. Are all of these things working as expected?
 ]
 
 #level.tbd
@@ -854,7 +868,7 @@ $ integral f dif x $
 == #bbl(en: [General page layout & progression], zh: [基本页面版式与装订方向]) <page-layout>
 
 #prompt(from-w3c: "https://www.w3.org/TR/clreq-gap/#page_layout")[
-  How are the main text area and ancilliary areas positioned and defined? Are there any special requirements here, such as dimensions in characters for the Japanese kihon hanmen? The book cover for scripts that are read right-to-left scripts is on the right of the spine, rather than the left. Is that provided for? When content can flow vertically and to the left or right, how do you specify the location of objects, text, etc. relative to the flow? For example, keywords `left` and `right` are likely to need to be reversed for pages written in English and page written in Arabic. Do tables and grid layouts work as expected? How do columns work in vertical text? Can you mix block of vertical and horizontal text correctly? Does text scroll in the expected direction? Other topics that belong here include any local requirements for things such as printer marks, tables of contents and indexes. See also @grids-tables.
+  How are the main text area and ancillary areas positioned and defined? Are there any special requirements here, such as dimensions in characters for the Japanese kihon hanmen? The book cover for scripts that are read right-to-left scripts is on the right of the spine, rather than the left. Is that provided for? When content can flow vertically and to the left or right, how do you specify the location of objects, text, etc. relative to the flow? For example, keywords `left` and `right` are likely to need to be reversed for pages written in English and page written in Arabic. Do tables and grid layouts work as expected? How do columns work in vertical text? Can you mix block of vertical and horizontal text correctly? Does text scroll in the expected direction? Other topics that belong here include any local requirements for things such as printer marks, tables of contents and indexes. See also @grids-tables.
 ]
 
 #level.tbd
@@ -985,7 +999,7 @@ $ integral f dif x $
 #workaround("https://typst-doc-cn.github.io/guide/FAQ/ref-superscript.html")
 
 #babel(
-  en: [Bothe the superscript and non-superscript forms are needed in practice.],
+  en: [Both the superscript and non-superscript forms are needed in practice.],
   zh: [实际中，上标、非上标两种引用形式都需要。],
 )
 
