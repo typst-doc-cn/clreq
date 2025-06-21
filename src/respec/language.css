@@ -19,10 +19,24 @@
     color: var(--main-color);
     background: var(--nav-bg-color);
   }
+  :root:not(.monolingual) & > [data-lang="zh"]::before {
+    position: absolute;
+    top: 0.65em;
+
+    content: "";
+    display: block;
+    width: 3px;
+    height: 1em;
+    background-color: rgba(248, 138, 5, 0.5);
+  }
 
   > *:hover,
   > *.selected {
     box-shadow: 0 2px 8px var(--gray-color);
+  }
+  > .selected {
+    color: var(--accent);
+    font-weight: bold;
   }
   > *:active {
     background: var(--accent-dark);
@@ -32,13 +46,6 @@
 h1 {
   /* left room for #lang-switch */
   margin-right: 5rem;
-}
-
-#lang-switch > [data-lang="zh"] {
-  background: rgb(249, 195, 129);
-}
-.dark #lang-switch > [data-lang="zh"] {
-  background: rgb(140, 88, 30);
 }
 
 :root:not(.monolingual) {
