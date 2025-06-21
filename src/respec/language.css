@@ -9,36 +9,42 @@
   top: 100px;
   right: 10px;
 
+  display: grid;
+  row-gap: 0.3em;
+  width: 4.5em;
+
   > * {
     display: block;
-    margin: 0.3em;
-    width: 5em;
-    padding: 2px 5px;
+    padding: 2px 0.8em;
     border: 1px solid var(--gray-color);
     border-radius: 8px;
     color: var(--main-color);
     background: var(--nav-bg-color);
   }
   :root:not(.monolingual) & > [data-lang="zh"]::before {
-    position: absolute;
-    top: 0.65em;
-
     content: "";
-    display: block;
+    display: inline-block;
+
+    position: relative;
     width: 3px;
+    margin-right: -3px;
+    right: calc(1.5px + 0.3em);
+
     height: 1em;
+    top: 2px;
+
     background-color: rgba(248, 138, 5, 0.5);
   }
 
-  > *:hover,
-  > *.selected {
+  > :hover,
+  > .checked {
     box-shadow: 0 2px 8px var(--gray-color);
   }
-  > .selected {
+  > .checked {
     color: var(--accent);
     font-weight: bold;
   }
-  > *:active {
+  > :active {
     background: var(--accent-dark);
     transition: outline 0.1s;
   }

@@ -50,9 +50,11 @@ function applyLanguage(lang: Language, menu: HTMLElement): void {
   Array.from(menu.children).forEach((o) => {
     // @ts-ignore
     if (o.dataset.lang === lang) {
-      o.classList.add("selected");
+      o.classList.add("checked");
+      o.ariaChecked = "true";
     } else {
-      o.classList.remove("selected");
+      o.classList.remove("checked");
+      o.ariaChecked = "false";
     }
   });
 
@@ -63,9 +65,9 @@ function applyLanguage(lang: Language, menu: HTMLElement): void {
 export function createLanguageSwitch(): void {
   const menu = html`
     <aside id="lang-switch">
-      <button data-lang="zh" lang="zh">中文</button>
+      <button data-lang="all" lang="en">All</button>
       <button data-lang="en" lang="en">English</button>
-      <button class="selected" data-lang="all" lang="en">All</button>
+      <button data-lang="zh" lang="zh">中文</button>
     </aside>
   ` as HTMLElement;
   menu.addEventListener("click", (e) => {
