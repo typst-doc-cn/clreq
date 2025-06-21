@@ -408,6 +408,21 @@
 >>> 我说：“#text(font: "New Computer Modern")[T'Pol] 是‘虚构’人物！”
 ```
 
+#note(
+  summary: bbl(en: [Note: The input method of quotation marks], zh: [注：引号的输入方法]),
+  {
+    babel(
+      en: [Chinese characters are not directly mapped to keys on the keyboards because there are too many of them. Instead, people press a sequence of keys on an ordinary QWERTY keyboard, and let IME (Input Methods Editors, a software built into the computer) convert them into one or more Chinese characters. Please refer to #link("https://unicode.org/faq/font_keyboard.html#Inputting_Chinese")[FAQ about inputting Chinese chracters on Unicode.org] for more details.],
+      zh: [汉字非常多，所以不会直接映射到键盘上。人们会在普通 QWERTY 键盘上按几个键，让输入法（input methods editors, IME，电脑内置的软件）转换成一个或一串汉字。细节请参考 #link("https://unicode.org/faq/font_keyboard.html#Inputting_Chinese")[Unicode.org 上关于输入汉字的常见问题]。],
+    )
+
+    babel(
+      en: [Thanks to IME, in Chinese writing, it is easy and typical to input opening and closing quotation marks (`‘’“”` listed above), while people hardly input straight ASCII quotes (`'"`) and convert automatically using the #link("https://typst.app/docs/reference/text/smartquote/")[`smartquote`] feature. #workaround("https://typst-doc-cn.github.io/guide/FAQ/smartquote-font.html") relies on this distinction from Western writing.],
+      zh: [由于输入法，写中文时很容易输入配对的引号（以上列出的`‘’“”`），通常也这样输入。人们很少输入 ASCII 直引号（`'"`）再利用#link("https://typst.app/docs/reference/text/smartquote/")[`smartquote`]自动转换。#workaround("https://typst-doc-cn.github.io/guide/FAQ/smartquote-font.html") 依赖这种中西差异。],
+    )
+  },
+)
+
 == #bbl(en: [Emphasis & highlighting], zh: [强调与突出显示])
 
 #prompt(from-w3c: "https://www.w3.org/TR/clreq-gap/#emphasis")[
