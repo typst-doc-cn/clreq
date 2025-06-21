@@ -29,7 +29,7 @@ ol#summary {
     display: flex;
     flex-direction: column;
 
-    padding-left: 0.5em;
+    padding-left: 1em;
     padding-right: 0.5em;
 
     color: var(--toclink-text);
@@ -53,7 +53,19 @@ ol#summary {
       margin-top: auto;
     }
 
+    > :first-child {
+      text-indent: 0.8em hanging;
+      margin-left: -1em;
+
+      > .secno {
+        display: inline-block;
+        width: 0.8em;
+      }
+    }
+
     > .dots {
+      margin-left: -0.25em;
+
       display: flex;
       flex-wrap: wrap-reverse;
 
