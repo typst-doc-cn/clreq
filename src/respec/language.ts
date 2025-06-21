@@ -77,13 +77,22 @@ export function createLanguageSwitch(): void {
     }
   });
 
-  // Load saved language preference
-  if (typeof localStorage !== "undefined") {
-    const lang = localStorage.getItem("lang");
-    if (lang !== null) {
-      applyLanguage(lang as Language, menu);
-    }
-  }
+  applyLanguage(
+    (localStorage.getItem("lang") as Language | null) ?? getSystemLanguage(),
+    menu,
+  );
 
   $main.append(menu);
+}
+
+function getSystemLanguage(): Language {
+  const languages = navigator.languages ?? [navigator.language];
+
+  for (const langFull of languages) {
+    const lang = langFull.split("-")[0].toLowerCase();
+
+    if (lang === "zh") return "zh";
+    if (lang === "en") return "en";
+  }
+  return "all";
 }
