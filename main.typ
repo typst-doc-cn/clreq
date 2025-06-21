@@ -1355,6 +1355,7 @@ $ integral f dif x $
   image(
     "/public/webapp-misspell.png",
     alt: "我要給阿Q做正傳，已經不止一兩年了。但一面要做，一面又往回想，這足見我不是一個“立言”的人，因為從來不朽之筆，須傳不朽之人，於是人以文傳，文以人傳——究竟誰靠誰傳，漸漸的不甚瞭然起來，而終於歸接到傳阿Q，仿佛思想裏有鬼似的。",
+    width: 80%,
   ),
   caption: bbl(en: [94 spelling mistakes], zh: [94个拼写错误]),
 ) <fig:webapp-misspell>

@@ -31,6 +31,7 @@
       { },
       src: asset-url(it.source.trim("/public", at: start)),
       ..if it.alt != none { (alt: it.alt, title: it.alt) },
+      ..if type(it.width) == relative { (style: "width:" + repr(it.width.ratio)) },
     )
   } else {
     it
