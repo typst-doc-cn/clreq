@@ -1349,6 +1349,11 @@ $ integral f dif x $
 
 = #bbl(en: [Addendum], zh: [附录])
 
+== #bbl(en: [Summary], zh: [概要])
+
+#import "typ/respec.typ": summary
+#summary
+
 == #bbl(en: [Environment of the examples], zh: [例子的环境信息])
 
 - #bbl(en: [Update date], zh: [更新日期]) \

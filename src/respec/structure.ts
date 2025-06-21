@@ -118,10 +118,10 @@ function filterHeader(h: HTMLElement): void {
   });
 }
 
-function createTableOfContents(ol: HTMLElement): void {
+function createTableOfContents(ol: HTMLElement): HTMLElement {
   const nav = html`
     <nav id="toc"></nav>
-  `;
+  ` as HTMLElement;
   const h2 = html`
     <h2 class="introductory">
       <span lang="en" its-locale-filter-list="en">Contents</span>
@@ -139,6 +139,8 @@ function createTableOfContents(ol: HTMLElement): void {
       ref.after(nav);
     }
   }
+
+  return nav;
 }
 
 /** Add permalinks to headings */
@@ -160,10 +162,16 @@ function addPermalinks(): void {
   }
 }
 
+interface PriorityLevel {
+  paint: string;
+  human: string;
+}
+type LevelName = "tbd" | "na" | "ok" | "advanced" | "basic" | "broken";
+
 /**
  * Configuration of levels, sorted.
  */
-const PRIORITY_CONFIG: Record<string, { paint: string; human: string }> = {
+const PRIORITY_CONFIG: Record<LevelName, PriorityLevel> = {
   tbd: { paint: "eeeeee", human: "To be done" },
   na: { paint: "008000", human: "Not applicable" },
   ok: { paint: "008000", human: "OK" },
@@ -173,16 +181,63 @@ const PRIORITY_CONFIG: Record<string, { paint: string; human: string }> = {
 };
 
 /**
+ * Collect all priority levels in `element`.
+ */
+function collectPriorityLevels(elements: HTMLElement[]): LevelName[] {
+  return elements.flatMap((el) => {
+    const tags = Array.from(
+      el.querySelectorAll<HTMLElement>("[data-priority-level]"),
+    );
+    return tags.map((t) => t.dataset.priorityLevel as LevelName);
+  });
+}
+
+/**
+ * Calculate statistics of priority levels
+ *
+ * The returned `counts` will sorted from the most important to the least important according to `PRIORITY_CONFIG`.
+ * If `levels` is empty, return `null`
+ */
+function countPriorityLevels(
+  levels: LevelName[],
+): { worst: PriorityLevel; report: string } | null {
+  if (levels.length === 0) {
+    return null;
+  }
+
+  // Calculate `worst` and `report`
+  const ordering = Object.keys(PRIORITY_CONFIG) as LevelName[];
+  const worst = PRIORITY_CONFIG[
+    ordering[
+      Math.max(...levels.map((l) => ordering.indexOf(l)))
+    ]
+  ];
+
+  const counts: Map<LevelName, number> = levels.reduce(
+    (last, l) => last.set(l, (last.get(l) as number) + 1),
+    new Map(ordering.reverse().map((l) => [l, 0])),
+  );
+  const report = Array.from(counts.entries()).filter(([_level, n]) => n > 0)
+    .map(([level, n]) => `${n} ${PRIORITY_CONFIG[level].human}`).join(", ");
+
+  return { worst, report };
+}
+
+/**
  * Calculate priority levels for all sections, and insert levels in them
-  @param sections The section tree
+ * @param sections The section tree
+ * @returns Top sections’ levels if this is the top level
  */
 function insertPriorityLevel(
   sections: Section[],
   siblings: HTMLElement[] | null = null,
-): void {
+): Map<HTMLElement, LevelName[]> | undefined {
   if (sections.length === 0) {
     return;
   }
+
+  /** Whether the current iteration is the top level */
+  const isTop = siblings === null;
 
   // If not given, fill with the default
   if (siblings === null) {
@@ -203,16 +258,14 @@ function insertPriorityLevel(
     siblings,
   );
 
+  const topSectionLevels = new Map<HTMLElement, LevelName[]>();
+
+  // Insert levels recursively, and save `topSectionLevels`
   sections.forEach((sec, i) => {
     const start = startIndices[i];
     const end = startIndices.at(i + 1);
 
-    const levels = siblings.slice(start, end).flatMap((el) => {
-      const tags = Array.from(
-        el.querySelectorAll<HTMLElement>("[data-priority-level]"),
-      );
-      return tags.map((t) => t.dataset.priorityLevel);
-    }) as string[];
+    const levels = collectPriorityLevels(siblings.slice(start, end));
 
     // if leaf section
     if (sec.subsections.length === 0) {
@@ -222,20 +275,11 @@ function insertPriorityLevel(
         sec,
       );
     } else if (levels.length > 0) {
-      // Calculate `worst` and `report`
-      const ordering = Object.keys(PRIORITY_CONFIG);
-      const worst = PRIORITY_CONFIG[
-        ordering[
-          Math.max(...levels.map((l) => ordering.indexOf(l)))
-        ]
-      ];
-      const counts = levels.reduce(
-        // @ts-ignore
-        (last, l) => last.set(l, last.get(l) + 1),
-        new Map(ordering.reverse().map((l) => [l, 0])),
-      );
-      const report = Array.from(counts.entries()).filter(([_level, n]) => n > 0)
-        .map(([level, n]) => `${n} ${PRIORITY_CONFIG[level].human}`).join(", ");
+      if (isTop) {
+        topSectionLevels.set(sec.header, levels);
+      }
+
+      const { worst, report } = countPriorityLevels(levels)!;
 
       // Find the first non prompt element
       let pos = sec.header;
@@ -262,6 +306,58 @@ function insertPriorityLevel(
       insertPriorityLevel(sec.subsections, siblings.slice(start, end));
     }
   });
+
+  if (topSectionLevels.size > 0) {
+    return topSectionLevels;
+  }
+}
+
+/**
+ * Draw top sections’ levels at `ol#summary`.
+ */
+function createSummary(
+  topSectionLevels: Map<HTMLElement, LevelName[]>,
+): void {
+  // return
+  const ol = document.querySelector<HTMLOListElement>("ol#summary")!;
+
+  for (const [sec, levels] of topSectionLevels) {
+    console.assert(levels.length > 0);
+
+    // Draw dots
+    const ordering = Object.keys(PRIORITY_CONFIG) as LevelName[];
+    const sortedLevels = [...levels].sort((a, b) => {
+      return ordering.indexOf(b) - ordering.indexOf(a);
+    });
+
+    const dots = html`
+      <p class="dots" />
+    `;
+    sortedLevels.forEach((level) => {
+      const { paint } = PRIORITY_CONFIG[level];
+      const dot = html`
+        <span style="background: #${paint}" class="dot" />
+      ` as HTMLElement;
+      dots.appendChild(dot);
+    });
+
+    // Save elements
+    const secWrapper = html`
+      <slot><p /></slot>
+    ` as HTMLElement;
+    secWrapper.firstElementChild!.append(...sec.cloneNode(true).childNodes);
+
+    // `row` is <li>, and `inner` is `<a>`
+    const row = createTocListItem(secWrapper, sec.id);
+    const inner = row.firstChild!;
+
+    inner.appendChild(dots);
+    inner.appendChild(html`
+      <p class="report">${countPriorityLevels(levels)!.report}</p>
+    `);
+
+    ol.appendChild(row);
+  }
 }
 
 interface Configuration {
@@ -277,5 +373,6 @@ export function createStructure(conf: Configuration = {}): void {
 
   addPermalinks();
 
-  insertPriorityLevel(sectionTree);
+  const topSectionLevels = insertPriorityLevel(sectionTree)!;
+  createSummary(topSectionLevels);
 }
