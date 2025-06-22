@@ -34,8 +34,9 @@
 /// - repo-num (str): Repo and issue number, e.g., `"typst#193"`, `"hayagriva#189"`
 /// - anchor (str): Anchor in the page, e.g., `"#issuecomment-1855739446"`
 /// - note (content): Annotation
+/// - closed (bool): State of the issue
 /// -> content
-#let issue(repo-num, anchor: "", note: auto) = {
+#let issue(repo-num, anchor: "", note: auto, closed: false) = {
   let (repo, num) = repo-num.split("#")
   if not repo.contains("/") {
     repo = "typst/" + repo
@@ -66,7 +67,7 @@
       } else { [~(#note)] }
     },
   )
-  [#metadata((repo-num: repo-num, note: repr(note))) <issue>]
+  [#metadata((repo: repo, num: num, note: repr(note), closed: closed)) <issue>]
 }
 
 /// Link to a workaround

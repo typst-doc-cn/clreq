@@ -43,7 +43,22 @@ jobs:
         with:
           name: dist
           path: "./dist"
-      - run: pnpm check
+  check-issues:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - uses: typst-community/setup-typst@v4
+      - run: |
+          pnpm check-issues >> "$GITHUB_STEP_SUMMARY"
+        env:
+          GH_TOKEN: ${{ github.token }}
 
   fmt:
     runs-on: ubuntu-latest

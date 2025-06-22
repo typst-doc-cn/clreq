@@ -344,7 +344,7 @@
 
 #level.advanced
 #issue("typst#5319")
-#issue("typst#5785")
+#issue("typst#5785", closed: true) // duplicate but cleaner
 
 #babel(
   en: [#link("https://www.unicode.org/ivd/")[Ideographic Variation Sequence (IVS)] is a mechanism for plain text #link("https://www.unicode.org/versions/Unicode16.0.0/core-spec/chapter-23/#G19053")[specified by Unicode] to change the glyph to be used to display a character. For more information, please refer to #link("https://unicode.org/faq/vs.html")[the FAQ on Unicode.org].],
@@ -1421,7 +1421,6 @@ $ integral f dif x $
 
   - GitHub
 
-    - Check/display issue status
     - Watch
       #link("https://github.com/typst/typst/issues?q=%20is%3Aopen%20label%3Acjk%20sort%3Areactions-desc")[label: cjk · Issues · typst/typst]
 
