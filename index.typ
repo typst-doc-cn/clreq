@@ -7,7 +7,7 @@
 #show: load-html-template.with(
   "/typ/templates/template.html",
   extra-head: {
-    vite.load-files(("src/main.ts",))
+    vite.load-files(("src/main.ts", "src/theme.ts#nomodule"))
   },
 )
 

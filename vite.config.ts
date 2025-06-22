@@ -11,6 +11,7 @@ export default defineConfig({
     rollupOptions: {
       input: {
         main: resolve(__dirname, "src/main.ts"),
+        theme: resolve(__dirname, "src/theme.ts"),
       },
     },
     manifest: true, // https://vite.dev/guide/backend-integration.html
