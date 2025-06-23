@@ -9,7 +9,7 @@
 
 #babel(
   en: [
-    Typst is a markup-based typesetting software, and this document describes gaps for the support of the Chinese script within Typst.
+    Typst is a markup-based typesetting software, and this document describes gaps or shortcomings for the support of the Chinese script within Typst.
     In particular, it is concerned with #link("https://www.w3.org/TR/clreq/")[text layout] and #link("https://std.samr.gov.cn/gb/search/gbDetailed?id=71F772D8055ED3A7E05397BE0A0AB82A")[bibliography].
     It examines whether needed features are supported by the typst compiler, and provides information on potential workarounds.
   ],
@@ -586,6 +586,40 @@
 >>> ]
 ```
 
+#babel(
+  en: [The above simple examples demonstrate the principle, and the following complex examples are closer to practicality.],
+  zh: [以上简单例子展示了原理，下面的复杂例子更接近实用],
+)
+
+```example
+>>> #set text(top-edge: "ascender", bottom-edge: "descender")
+>>> Current:
+#set par(justify: true)
+#block(width: 8em)[
+  天生我材必有用，千金散尽还复来。烹羊宰牛且为乐，会须一饮三百杯。
+]
+
+>>> Expected:
+>>> #block(width: 8em)[
+>>>   天生我材必有用，千金散尽还复来。烹羊宰牛且为乐，会须一饮三百杯#box[。]#linebreak(justify: true)
+>>> ]
+```
+
+```example-page
+>>> // This example behaves differently in `example` and `example-page`.
+>>> #set text(top-edge: "ascender", bottom-edge: "descender")
+>>> Current:
+#set par(justify: true)
+#block(width: 12em)[
+  每年的消费量约4,000吨，每年的消费量
+]
+
+>>> Expected:
+>>> #block(width: 12em)[
+>>>   每年的消费量约4,000吨，每年的消费量#hide[约4,000吨#box[。]]#linebreak(justify: true)
+>>> ]
+```
+
 === #bbl(en: [Brackets at the beginning of paragraph], zh: [段首的方括号])
 
 #level.tbd
@@ -966,6 +1000,35 @@ $ integral f dif x $
 }
 ```.text
 #bibliography(bytes(bib), style: "gb-7714-2015-numeric")
+````
+
+#babel(
+  en: [This issue is caused by an imperfect font, but typst can still provide a better default. For example, we can use the dedicated superscript glyphs only when all characters in `[1]` have them. According to the following example, the mechanism is already implemented for `#super`, but `#cite` processes prefix (`[`), number (`1`), and suffix (`]`) separately, thereby ignoring that mechanism.],
+  zh: [此一问题由字体不完善导致，但 typst 仍可改进默认处理方式。例如，只有`[1]`中所有字符都有专用上标版本时，才使用它。根据下例，`#super`已实现此机制，但`#cite`分别处理前缀（`[`）、数字（`1`）和后缀（`]`），导致绕开了这一机制。],
+)
+
+````example-page
+>>> Debug:
+>>> #show regex("[✅❌]"): set text(fallback: true)
+#set text(font: "Noto Serif CJK SC")
+
+❌国@key
+✅国#super("[1]")
+❌国#"[1]".clusters().map(super).join()
+
+#set super(typographic: false)
+
+✅国@key
+✅国#super("[1]")
+✅国#"[1]".clusters().map(super).join()
+
+>>> #show bibliography: none
+>>> #let bib = ```bib
+>>> @misc{key,
+>>>   title = {Title},
+>>> }
+>>> ```.text
+>>> #bibliography(bytes(bib), style: "gb-7714-2015-numeric")
 ````
 
 === #bbl(en: [Compression of continuous citation numbers], zh: [压缩连续的引用编号])

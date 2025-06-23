@@ -21,7 +21,7 @@
 
 #h.h1[
   #h.span(style: "display: inline-block;")[
-    #link("https://www.w3.org/TR/clreq/")[clreq]-#link("https://www.w3.org/TR/clreq-gap/")[gap] for typst
+    #link("https://www.w3.org/TR/clreq/")[clreq]-#link("https://www.w3.org/TR/clreq-gap/")[gap] for #link("https://typst.app/home")[typst]
   ]
   #h.span(style: "display: inline-block; font-weight: normal; font-size: 1rem; color: var(--gray-color);")[
     #datetime.today().display(), typst v#sys.version
