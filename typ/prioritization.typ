@@ -3,7 +3,7 @@
 /// Usage: Put `#level.ok`, etc. after a heading.
 
 #import "templates/html-toolkit.typ": h, to-html
-#import "mode.typ": cache-ready, cache-dir
+#import "mode.typ": cache-dir, cache-ready
 
 /// Configuration of levels, copied from clreq-gap.
 #let config = (
@@ -65,10 +65,9 @@
   let l = config.at(level)
   h.span(
     {
-      h.span(
-        style: "display: inline-block; width: 1em; height: 1em; margin: 0.25em; vertical-align: -5%",
-        box(html.frame(circle(radius: 0.5em, stroke: none, fill: l.paint))),
-      )
+      h.span(style: "display: inline-block; width: 1em; height: 1em; margin: 0.25em; vertical-align: -5%", box(
+        html.frame(circle(radius: 0.5em, stroke: none, fill: l.paint)),
+      ))
       l.human
     },
     class: "unbreakable",

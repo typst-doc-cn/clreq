@@ -1,6 +1,6 @@
 #import "@preview/unichar:0.3.0": codepoint
 
-#import "templates/html-toolkit.typ": a, span, article, p
+#import "templates/html-toolkit.typ": a, article, p, span
 #import "templates/html-fix.typ": link-in-new-tab
 
 /// Multilingual
@@ -43,30 +43,20 @@
   }
 
   show link: link-in-new-tab.with(class: "unbreakable")
-  link(
-    "https://github.com/" + repo + "/issues/" + num + anchor,
-    {
-      span(
-        class: "icon",
-        // https://primer.style/octicons/icon/issue-opened-16/
-        html.elem(
-          "svg",
-          attrs: (viewBox: "0 0 16 16", width: "16", height: "16"),
-          {
-            html.elem("path", attrs: (d: "M8 9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3Z"))
-            html.elem(
-              "path",
-              attrs: (d: "M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0ZM1.5 8a6.5 6.5 0 1 0 13 0 6.5 6.5 0 0 0-13 0Z"),
-            )
-          },
-        ),
-      )
-      repo-num
-      if note == auto {
-        if anchor != "" { [~(comment)] }
-      } else { [~(#note)] }
-    },
-  )
+  link("https://github.com/" + repo + "/issues/" + num + anchor, {
+    span(
+      class: "icon",
+      // https://primer.style/octicons/icon/issue-opened-16/
+      html.elem("svg", attrs: (viewBox: "0 0 16 16", width: "16", height: "16"), {
+        html.elem("path", attrs: (d: "M8 9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3Z"))
+        html.elem("path", attrs: (d: "M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0ZM1.5 8a6.5 6.5 0 1 0 13 0 6.5 6.5 0 0 0-13 0Z"))
+      }),
+    )
+    repo-num
+    if note == auto {
+      if anchor != "" { [~(comment)] }
+    } else { [~(#note)] }
+  })
   [#metadata((repo: repo, num: num, note: repr(note), closed: closed)) <issue>]
 }
 
@@ -114,20 +104,17 @@
 /// A formatted description of the Unicode character for a given codepoint
 ///
 /// Usage: `unichar("‘")
-#let unichar(code) = span(
-  class: "unichar",
-  {
-    let c = codepoint(code)
+#let unichar(code) = span(class: "unichar", {
+  let c = codepoint(code)
 
-    show smallcaps: span.with(class: "small-caps")
+  show smallcaps: span.with(class: "small-caps")
 
-    span(class: "code-point")[U+#lower(c.id)]
-    [~]
-    raw(str.from-unicode(c.code))
-    [ ]
-    smallcaps(lower(c.name))
-  },
-)
+  span(class: "code-point")[U+#lower(c.id)]
+  [~]
+  raw(str.from-unicode(c.code))
+  [ ]
+  smallcaps(lower(c.name))
+})
 
 /// Introduction of a section
 ///

@@ -13,3 +13,11 @@ pnpm install && \
 pnpm build
 """
 # `cargo binstall` not works here
+
+[[plugins]]
+package = "netlify-plugin-cache"
+[plugins.inputs]
+paths = ["fonts"]
+
+[[plugins]]
+package = "netlify-plugin-debug-cache"

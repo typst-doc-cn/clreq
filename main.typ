@@ -1,4 +1,4 @@
-#import "typ/util.typ": babel, bbl, issue, workaround, prompt, unichar
+#import "typ/util.typ": babel, bbl, issue, prompt, unichar, workaround
 #import "typ/prioritization.typ": level, level-table
 #import "typ/show-example.typ": render-examples
 #show: render-examples
@@ -73,10 +73,7 @@
 #issue("typst#5908")
 
 // Ref: https://www.w3.org/TR/clreq/#writing_modes_in_chinese_composition
-#babel(
-  en: [There are two writing modes in Chinese composition:],
-  zh: [中文有两种行文模式：],
-)
+#babel(en: [There are two writing modes in Chinese composition:], zh: [中文有两种行文模式：])
 
 - #babel(
     en: [*Horizontal writing mode* is the mainstream mode in Chinese Mainland, and is also commonly used for books on natural science in Hong Kong, Macao, Taiwan.],
@@ -102,23 +99,20 @@
   zh: [鉴于 typst 目前连基础直排也难以实现，下文各节将不再讨论直排相关的问题。],
 )
 
-#figure(
-  image("/public/vertical-example-ancient.jpg", alt: "《永樂大典》The Yongle Encyclopedia"),
-  caption: link(
-    "https://commons.wikimedia.org/w/index.php?title=File:Shanghai_永樂大典卷之二千三百三十七.pdf&page=1",
-    bbl(en: [An ancient example of vertical text], zh: [直排的古代例子]),
-  ),
-) <fig:vertical-example-ancient>
+#figure(image("/public/vertical-example-ancient.jpg", alt: "《永樂大典》The Yongle Encyclopedia"), caption: link(
+  "https://commons.wikimedia.org/w/index.php?title=File:Shanghai_永樂大典卷之二千三百三十七.pdf&page=1",
+  bbl(en: [An ancient example of vertical text], zh: [直排的古代例子]),
+)) <fig:vertical-example-ancient>
 
 #figure(
   image(
     "/public/vertical-example-modern.jpg",
     alt: "Straight and wavy lines alongside vertical text 直排行间的专名号与书名号",
   ),
-  caption: link(
-    "https://github.com/w3c/type-samples/issues/56",
-    bbl(en: [A modern example of vertical text], zh: [直排的现代例子]),
-  ),
+  caption: link("https://github.com/w3c/type-samples/issues/56", bbl(
+    en: [A modern example of vertical text],
+    zh: [直排的现代例子],
+  )),
 ) <fig:vertical-example-modern>
 
 
@@ -164,25 +158,16 @@
 
 #figure(
   image("/public/font-fallback-messy.png", alt: "“为什么字体这么奇怪”, literally “Why is the font so strange”"),
-  caption: bbl(
-    en: [The result might be a mixture of sans and serif fonts],
-    zh: [结果可能混合了黑体和宋体],
-  ),
+  caption: bbl(en: [The result might be a mixture of sans and serif fonts], zh: [结果可能混合了黑体和宋体]),
 ) <fig:font-fallback-messy>
 
-=== #bbl(
-  en: [Wrong monospace font fallback for Chinese in raw block],
-  zh: [代码块内汉字回落的等宽字体不正常],
-)
+=== #bbl(en: [Wrong monospace font fallback for Chinese in raw block], zh: [代码块内汉字回落的等宽字体不正常])
 
 #level.advanced
 #issue("typst#3385")
 #workaround("https://typst-doc-cn.github.io/guide/FAQ/chinese-in-raw.html")
 
-#babel(
-  en: [This issue continues the above issue.],
-  zh: [这一问题接续上一问题。],
-)
+#babel(en: [This issue continues the above issue.], zh: [这一问题接续上一问题。])
 
 #babel(
   en: [
@@ -394,10 +379,7 @@
   )
 ]
 
-=== #bbl(
-  en: [Quotation marks should have different widths for Chinese and Western text],
-  zh: [中西文引号的宽度应当不同],
-)
+=== #bbl(en: [Quotation marks should have different widths for Chinese and Western text], zh: [中西文引号的宽度应当不同])
 
 #level.basic
 #issue("typst#5858")
@@ -651,10 +633,7 @@
 >>> #h(1.5em)《新生》#h(-0.5em)的出版之期接近了……
 ```
 
-=== #bbl(
-  en: [Unexpected indentation after figures, lists and block equations],
-  zh: [图表、列表、块级公式后异常缩进],
-)
+=== #bbl(en: [Unexpected indentation after figures, lists and block equations], zh: [图表、列表、块级公式后异常缩进])
 
 #level.basic
 #issue("typst#3206")
@@ -1153,10 +1132,7 @@ $ integral f dif x $
 % SU B, CHEN Y, WANG Z, et al. South Pole–Aitken Massive Impact 4.25 Billion Years Ago Revealed by #text(font: "New Computer Modern")[Chang’e-6] Samples[J/OL]. National Science Review, 2025: nwaf103. DOI:10.1093/nsr/nwaf103.
 ```
 
-=== #bbl(
-  en: [`institution` and `school` are not shown],
-  zh: [`institution`机构名称和`school`学校名称不显示],
-)
+=== #bbl(en: [`institution` and `school` are not shown], zh: [`institution`机构名称和`school`学校名称不显示])
 
 #level.broken
 #issue("hayagriva#112")
@@ -1191,10 +1167,7 @@ $ integral f dif x $
 % 王楠. 在“共产主义视镜”下想象科学——“十七年”期间的中国科幻文学与科学话语[D/OL]. 新加坡: 新加坡国立大学, 2016[2025-02-15]. https://scholarbank.nus.edu.sg/handle/10635/132143.
 ```
 
-=== #bbl(
-  en: [Discontinuous page numbers are displayed incorrectly, missing a comma],
-  zh: [不连续页码显示错误，缺少逗号],
-)
+=== #bbl(en: [Discontinuous page numbers are displayed incorrectly, missing a comma], zh: [不连续页码显示错误，缺少逗号])
 
 #level.basic
 #workaround("https://typst-doc-cn.github.io/guide/FAQ/bib-missing-page-delimiter.html")
@@ -1380,10 +1353,7 @@ $ integral f dif x $
   There are many other modules and specifications which may need review for script-specific requirements. What else is likely to cause problems for worldwide usage of typst, and what requirements need to be addressed to make typst function well locally?
 ]
 
-=== #bbl(
-  en: [Ignore linebreaks between CJK characters in source code],
-  zh: [忽略源码中CJK字符间的换行],
-)
+=== #bbl(en: [Ignore linebreaks between CJK characters in source code], zh: [忽略源码中CJK字符间的换行])
 
 #level.advanced
 #issue("typst#792")
@@ -1485,7 +1455,9 @@ $ integral f dif x $
   - GitHub
 
     - Watch
-      #link("https://github.com/typst/typst/issues?q=%20is%3Aopen%20label%3Acjk%20sort%3Areactions-desc")[label: cjk · Issues · typst/typst]
+      #link(
+        "https://github.com/typst/typst/issues?q=%20is%3Aopen%20label%3Acjk%20sort%3Areactions-desc",
+      )[label: cjk · Issues · typst/typst]
 
 == Umbrella/tracking issues
 
