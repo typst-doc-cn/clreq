@@ -45,7 +45,8 @@ jobs:
         with:
           path: |
             fonts/
-          key: |
+          key: fonts-${{ hashFiles('scripts/download_fonts.sh') }}
+          restore-keys: |
             fonts-${{ hashFiles('scripts/download_fonts.sh') }}
             fonts-
       - uses: taiki-e/install-action@v2
