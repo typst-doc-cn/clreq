@@ -532,6 +532,67 @@
   )
 ]
 
+```example-page
+>>> #import "/typ/examples/justification.typ": cell, example
+>>> #example(
+>>>   headers: (
+>>>     [*Current* \ `#set par(justify: false)`],
+>>>     [*Current & Expected* \ `#set par(justify: true)`],
+>>>     [*Expected* \ (full-width `“”`)],
+>>>   ),
+>>>   pages: (
+>>>     {
+>>>       set par(justify: false)
+>>>       [“十四五”前四年我国能耗强度累计降低11.6%；2025年黄河调水调沙今天启动。]
+>>>     },
+>>>     {
+>>>       set par(justify: true)
+>>>       [“十四五”前四年我国能耗强度累计降低11.6%；2025年黄河调水调沙今天启动。]
+>>>     },
+>>>     {
+>>>       cell(align: end)[“]
+>>>       [十四五]
+>>>       cell(align: start)[”]
+>>>       [前四年我国能耗强度累计降低]
+>>>       cell(width: 3em, align: end)[11.6%]
+>>>       [；]
+>>>       cell(width: 2em)[2025]
+>>>       [年黄河调水调沙今天启动。]
+>>>     },
+>>>   ),
+>>> )
+```
+
+#babel(
+  en: [As the above example, the frame grid is the conventional typesetting mechanism in Chinese. It is difficult to strictly implement the mechanism in current typst. People usually `#set par(justify: true)` to achieve similar results. However, this workaround can lead to several issues in this section.],
+  zh: [如上例，中文习惯按稿纸网格排版。这目前在 typst 中难以严格实现，通常变通设置`#set par(justify: true)`。然而这权宜之计触发了本节若干问题。],
+)
+
+#babel(
+  en: [Furthermore, as illustrated in the following example, since Chinese characters are square-shaped, simple texts can often be aligned acceptably (and occasionally better) using the default `justify: false`. Only in complex cases---such as when text includes numbers, mathematical formulae, acronyms, or Western words---is it necessary to set `justify: true`. Nevertheless, for the sake of simplicity and robustness, we will continue to use simple text to demonstrate issues.],
+  zh: [此外如下例，由于汉字是方块字，若文本比较简单，默认`justify: false`即可对齐（有时效果还更好）；只有遇到数字及数学公式、首字母缩写甚至西文单词等复杂情况时，才必须`justify: true`。不过为了简洁可靠，以下演示问题仍会采用简单文本。],
+)
+
+```example-page
+>>> #import "/typ/examples/justification.typ": cell, example
+>>> #example(
+>>>   headers: (
+>>>     [*Current & Expected* \ `#set par(justify: false)`],
+>>>     [*Current & Expected* \ `#set par(justify: true)`],
+>>>   ),
+>>>   pages: (
+>>>     {
+>>>       set par(justify: false)
+>>>       [我国在“十四五”前四年累计降低一成能耗强度；本年度黄河调水调沙今天启动。]
+>>>     },
+>>>     {
+>>>       set par(justify: true)
+>>>       [我国在“十四五”前四年累计降低一成能耗强度；本年度黄河调水调沙今天启动。]
+>>>     },
+>>>   ),
+>>> )
+```
+
 === #bbl(en: [CJK-latin glues stretch only before latin characters], zh: [中西间距只在拉丁字母之前拉伸])
 
 #level.advanced
@@ -987,7 +1048,7 @@ $ integral f dif x $
 )
 
 ````example-page
->>> Debug:
+>>> Analysis:
 >>> #show regex("[✅❌]"): set text(fallback: true)
 #set text(font: "Noto Serif CJK SC")
 
@@ -1429,6 +1490,8 @@ $ integral f dif x $
   - #link("https://www.w3.org/TR/clreq-gap/")[Chinese Layout Gap Analysis]
 
 - #link("https://typst-doc-cn.github.io/guide/FAQ.html")[FAQ 常见问题 | Typst Doc CN 中文社区导航]
+
+- #link("https://www.thetype.com/kongque/")[孔雀计划：中文字体排印的思路 | The Type — 文字 / 设计 / 文化]
 
 - #bbl(en: [Standards], zh: [标准])
 
