@@ -70,11 +70,7 @@
     data = rewrite(data, "href")
     data = rewrite(data, "src")
 
-    html.elem(
-      data.tag,
-      attrs: data.attrs,
-      data.children.map(to-html).join(),
-    )
+    html.elem(data.tag, attrs: data.attrs, data.children.map(to-html).join())
   }
 }
 
@@ -90,42 +86,35 @@
   let head = to-html(html-children.at(0)).body
   let body = to-html(html-children.at(1), slot: body)
 
-  h.html(
-    ..html-elem.attrs,
-    {
-      h.head({
-        head
-        extra-head
-        context if document.description != none {
-          head-meta("description", plain-text(document.description))
-        }
-      })
-      // html.elem("body", repr(body))
-      body
-    },
-  )
+  h.html(..html-elem.attrs, {
+    h.head({
+      head
+      extra-head
+      context if document.description != none {
+        head-meta("description", plain-text(document.description))
+      }
+    })
+    // html.elem("body", repr(body))
+    body
+  })
 }
 
 /// Creates a preload link for the given CSS file.
 ///
 /// - href (str): The URL of the CSS file.
 /// -> content
-#let preload-css(href) = to-html(
-  xml
-    .decode(
-      ```xml
-      <link
-      rel="preload"
-      as="style"
-      href="{{href}}"
-      onload="this.rel='stylesheet'"
-      />
-      ```
-        .text
-        .replace("{{href}}", href),
-    )
-    .at(0),
-)
+#let preload-css(href) = to-html(xml
+  .decode(```xml
+  <link
+  rel="preload"
+  as="style"
+  href="{{href}}"
+  onload="this.rel='stylesheet'"
+  />
+  ```
+    .text
+    .replace("{{href}}", href))
+  .at(0))
 
 
 

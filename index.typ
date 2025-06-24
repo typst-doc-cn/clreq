@@ -1,15 +1,12 @@
-#import "/typ/templates/html-toolkit.typ": load-html-template, h
+#import "/typ/templates/html-toolkit.typ": h, load-html-template
 #import "/typ/templates/html-fix.typ": html-fix
 #import "/typ/respec.typ"
 #import "/typ/packages/vite.typ"
 
 /// Wraps the following content with the HTML template.
-#show: load-html-template.with(
-  "/typ/templates/template.html",
-  extra-head: {
-    vite.load-files(("src/main.ts", "src/theme.ts#nomodule"))
-  },
-)
+#show: load-html-template.with("/typ/templates/template.html", extra-head: {
+  vite.load-files(("src/main.ts", "src/theme.ts#nomodule"))
+})
 
 #show: h.main
 

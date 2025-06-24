@@ -1,6 +1,6 @@
 /// A module providing workarounds for HTML features not supported by typst yet
 
-#import "./html-toolkit.typ": h, asset-url
+#import "./html-toolkit.typ": asset-url, h
 
 /// Display the linked URL in a new tab
 ///
@@ -28,7 +28,7 @@
 #let external-image(it) = {
   if type(it.source) == str and it.source.starts-with("/public/") {
     h.img(
-      { },
+      {},
       src: asset-url(it.source.trim("/public", at: start)),
       ..if it.alt != none { (alt: it.alt, title: it.alt) },
       ..if type(it.width) == relative { (style: "width:" + repr(it.width.ratio)) },

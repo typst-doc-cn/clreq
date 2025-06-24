@@ -1,9 +1,9 @@
 #import "@preview/tidy:0.4.3": show-example as tidy-example
-#import "@preview/jumble:0.0.1": sha1, bytes-to-hex
+#import "@preview/jumble:0.0.1": bytes-to-hex, sha1
 
 #import "templates/html-fix.typ": reserve-text-fill
-#import "templates/html-toolkit.typ": img, div, div-frame
-#import "mode.typ": cache-ready, cache-dir
+#import "templates/html-toolkit.typ": div, div-frame, img
+#import "mode.typ": cache-dir, cache-ready
 
 
 /// -> str
@@ -25,16 +25,13 @@
 /// - code (content): a `raw` element containing the displayed code
 /// - preview (content): previewed result
 /// -> content
-#let layout-example(code, preview, ..sink) = div(
-  class: "example",
+#let layout-example(code, preview, ..sink) = div(class: "example", {
   {
-    {
-      show text: reserve-text-fill
-      code
-    }
-    div-frame(preview, class: "preview")
-  },
-)
+    show text: reserve-text-fill
+    code
+  }
+  div-frame(preview, class: "preview")
+})
 
 
 /// Layout an external example
@@ -44,12 +41,9 @@
 /// - code (content): a `raw` element containing the displayed code
 /// - id (str): ID of the executed code
 /// -> content
-#let layout-external-example(code, id) = layout-example(
-  code,
-  if cache-ready {
-    image(cache-dir + "{id}.svg".replace("{id}", id))
-  },
-)
+#let layout-external-example(code, id) = layout-example(code, if cache-ready {
+  image(cache-dir + "{id}.svg".replace("{id}", id))
+})
 
 
 /// `f: U → V`, `x: U | none` ⇒ `optional-map(f, x): V | none`
