@@ -20,5 +20,8 @@
         "postcss-nesting": "^13.0.2",
         "typescript": "~5.8.3",
         "vite": "^6.3.5"
+    },
+    "optionalDependencies": {
+        "netlify-plugin-cache": "^1.0.3"
     }
 }
