@@ -1,4 +1,4 @@
-#import "typ/util.typ": babel, bbl, issue, prompt, unichar, workaround
+#import "typ/util.typ": babel, bbl, issue, note, prompt, unichar, workaround
 #import "typ/prioritization.typ": level, level-table
 #import "typ/show-example.typ": render-examples
 #show: render-examples
@@ -568,6 +568,14 @@
   zh: [如上例，中文习惯按稿纸网格排版。这目前在 typst 中难以严格实现，通常变通设置`#set par(justify: true)`。然而这权宜之计触发了本节若干问题。],
 )
 
+#note(
+  summary: bbl(en: [Note: Why two expected results?], zh: [注：为何有两种期望结果？]),
+  babel(
+    en: [In the above example, the middle version resembles traditional typesetting, and the right version is close to the ordinary output of non-professional desktop publishing softwares. Most people find the left version hard to read, whereas opinions on the other two versions vary—some prefer the middle, and others favor the right. Therefore, both the middle and the right versions are considered acceptable.],
+    zh: [上例中，中间版本接近传统效果，最右版本接近一般非专业计算机软件排版效果。大多数人认为最左版本难以阅读，而中间与最右版本则各有所好。因此中间、最右均可接受。],
+  ),
+)
+
 #babel(
   en: [Furthermore, as illustrated in the following example, since Chinese characters are square-shaped, simple texts can often be aligned acceptably (and occasionally better) using the default `justify: false`. Only in complex cases---such as when text includes numbers, mathematical formulae, acronyms, or Western words---is it necessary to set `justify: true`. Nevertheless, for the sake of simplicity and robustness, we will continue to use simple text to demonstrate issues.],
   zh: [此外如下例，由于汉字是方块字，若文本比较简单，默认`justify: false`即可对齐（有时效果还更好）；只有遇到数字及数学公式、首字母缩写甚至西文单词等复杂情况时，才必须`justify: true`。不过为了简洁可靠，以下演示问题仍会采用简单文本。],
@@ -955,28 +963,35 @@ $ integral f dif x $
   zh: [号数制是中文和日文排版中指定字号的系统。这种单位无法线性转换成点数：五号 = 10.5点，小四 = 12点，四号 = 14点……号数制在中国仍然普遍使用。普通人通常理解小四字多大，但可能对 12 pt 没有直观感受，除非查阅转换表。],
 )
 
-#babel(en: [The following is a typical conversion table.], zh: [典型转换表如下。])
+#babel(
+  en: [The following is #link("https://ccjktype.fonts.adobe.com/2009/04/post_1.html#ENG")[a typical conversion table in Chinese].],
+  zh: [#link("https://ccjktype.fonts.adobe.com/2009/04/post_1.html#ZHS")[中文典型转换表]如下。],
+)
 
 ```example-page
 >>> #import "@preview/pointless-size:0.1.1": zh
 >>>
 >>> #table(
->>>   columns: 2,
->>>   align: left + horizon,
+>>>   columns: 4,
+>>>   align: (right, left).map(a => a + horizon),
 >>>   stroke: none,
 >>>   table.hline(),
+>>>   [*hào 号数*], [*point 点数*],
+>>>   table.vline(stroke: 0.5pt),
 >>>   [*hào 号数*], [*point 点数*],
 >>>   table.hline(stroke: 0.5pt),
 >>>   ..(
 >>>     "初号",
 >>>     "小初",
->>>     ..range(1, 9).map(n => (
->>>       (numbering("一号", n),),
->>>       ..if n < 7 { (numbering("小一", n),) },
+>>>     range(1, 9).map(n => (
+>>>       numbering("一号", n),
+>>>       if n < 7 { numbering("小一", n) } else { none },
 >>>     )),
 >>>   )
 >>>     .flatten()
->>>     .map(n => (text(zh(n), n), [#zh(n)]))
+>>>     .map(n => if n != none {
+>>>       (text(zh(n), n), [#zh(n)])
+>>>     } else { (none, none) })
 >>>     .flatten(),
 >>>   table.hline(),
 >>> )
