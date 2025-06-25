@@ -945,7 +945,92 @@ $ integral f dif x $
   How are the main text area and ancillary areas positioned and defined? Are there any special requirements here, such as dimensions in characters for the Japanese kihon hanmen? The book cover for scripts that are read right-to-left scripts is on the right of the spine, rather than the left. Is that provided for? When content can flow vertically and to the left or right, how do you specify the location of objects, text, etc. relative to the flow? For example, keywords `left` and `right` are likely to need to be reversed for pages written in English and page written in Arabic. Do tables and grid layouts work as expected? How do columns work in vertical text? Can you mix block of vertical and horizontal text correctly? Does text scroll in the expected direction? Other topics that belong here include any local requirements for things such as printer marks, tables of contents and indexes. See also @grids-tables.
 ]
 
-#level.tbd
+=== #bbl(en: [Chinese size system (hào-system)], zh: [中文字号的号数制])
+
+#level.advanced
+#workaround("https://typst.app/universe/package/pointless-size")
+
+#babel(
+  en: [号数制 (hào-system, or number system) is the system to specify text size in Chinese and Japanese typesetting. The unit is not linearly related to points: 五号 (size 5) = 10.5 pt, 小四 (size small 4) = 12 pt, 四号 (size 4) = 14 pt… The hào-system is still commonly used in China. An average person may be familiar with the size of 小四, but likely has little intuition about 12 pt without referring to a conversion table..],
+  zh: [号数制是中文和日文排版中指定字号的系统。这种单位无法线性转换成点数：五号 = 10.5点，小四 = 12点，四号 = 14点……号数制在中国仍然普遍使用。普通人通常理解小四字多大，但可能对 12 pt 没有直观感受，除非查阅转换表。],
+)
+
+#babel(en: [The following is a typical conversion table.], zh: [典型转换表如下。])
+
+```example-page
+>>> #import "@preview/pointless-size:0.1.1": zh
+>>>
+>>> #table(
+>>>   columns: 2,
+>>>   align: left + horizon,
+>>>   stroke: none,
+>>>   table.hline(),
+>>>   [*hào 号数*], [*point 点数*],
+>>>   table.hline(stroke: 0.5pt),
+>>>   ..(
+>>>     "初号",
+>>>     "小初",
+>>>     ..range(1, 9).map(n => (
+>>>       (numbering("一号", n),),
+>>>       ..if n < 7 { (numbering("小一", n),) },
+>>>     )),
+>>>   )
+>>>     .flatten()
+>>>     .map(n => (text(zh(n), n), [#zh(n)]))
+>>>     .flatten(),
+>>>   table.hline(),
+>>> )
+```
+
+#babel(
+  en: [This issue should have been marked as Basic. However, considering that the hào-system was not standardized by the various foundries in the past (for example, nowadays, #link("https://github.com/YDX-2147483647/typst-pointless-size/blob/main/docs/ref.md")[四号 is 14 pt in CTeX, MS Word, WPS, and Adobe], but others may prefer 13.75 pt), we mark it as Advanced for the moment.],
+  zh: [这一问题本该算作 Basic，但由于号数制当年在各地金属活字厂家并未统一（例如今日 #link("https://github.com/YDX-2147483647/typst-pointless-size/blob/main/docs/ref.md")[CTeX、MS Word、WPS、Adobe 的四号是14点]，但其它可能用13.75点），暂且算作 Advanced。],
+)
+
+=== #bbl(
+  en: [Directly setting the width of the type area, instead of the paper width],
+  zh: [直接设置版心宽度而非纸张宽度],
+)
+
+#level.advanced
+
+// Ref: https://www.w3.org/TR/clreq/#considerations_in_designing_type_area
+#babel(
+  en: [In Chinese typography, line length should be multiples of the character size. Otherwise, several alignment issues described in @justification may occur.],
+  zh: [中文排版中，一行的行长应为文字尺寸的整数倍，不然容易触发 @justification 中的若干对齐问题。因此通常“先确定版心，再余出空白”，而不是“先确定边距，再剩出版心”。],
+)
+
+```example
+<<< // Current:
+<<< #set page(paper: "a4", margin: (x: (210mm - 42em) / 2))
+<<<
+<<< // Expected to be easier:
+<<< #set page(paper: "a4", inner-width: 42em)
+
+>>> #let k = 7 // scale factor
+>>>
+>>> #box(width: 210mm / k, height: 297mm / k, stroke: 1pt, align(center + horizon, box(
+>>>   width: 42em / k,
+>>>   height: (297mm - 5cm) / k,
+>>>   fill: blue.lighten(50%),
+>>>   {
+>>>     import math: arrow, stretch
+>>>     set raw(lang: "typc")
+>>>     set text(42em / k / 5)
+>>>     set par(leading: 0em)
+>>>
+>>>     `42em`
+>>>     v(-1.5em)
+>>>     stretch(arrow.l.r, size: 5em)
+>>>
+>>>     parbreak()
+>>>
+>>>     `210mm`
+>>>     v(-1.5em)
+>>>     stretch(arrow.l.r, size: 210mm / k)
+>>>   },
+>>> )))
+```
 
 == #bbl(en: [Grids & tables], zh: [网格与表格]) <grids-tables>
 
