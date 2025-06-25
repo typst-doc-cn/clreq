@@ -29,3 +29,18 @@ article.prompt {
     font-variant-caps: small-caps;
   }
 }
+
+/* `#note` */
+aside.note {
+  margin-block: 1em;
+  border-left: 3px solid var(--accent);
+  border-radius: 8px;
+  padding-inline: 1.5em;
+  padding-block: 0.5em;
+
+  > .note-title {
+    margin-top: 0;
+    font-weight: bold;
+    color: var(--accent);
+  }
+}

@@ -3,7 +3,7 @@
 
 #import "templates/html-fix.typ": reserve-text-fill
 #import "templates/html-toolkit.typ": div, div-frame, img
-#import "mode.typ": cache-dir, cache-ready
+#import "mode.typ": cache-dir, cache-ready, mode
 
 
 /// -> str
@@ -24,14 +24,19 @@
 ///
 /// - code (content): a `raw` element containing the displayed code
 /// - preview (content): previewed result
+/// - annotation (str): an annotation shown when hovering
 /// -> content
-#let layout-example(code, preview, ..sink) = div(class: "example", {
+#let layout-example(code, preview, annotation: none, ..sink) = div(
+  class: "example",
+  ..if annotation != none { (title: annotation) },
   {
-    show text: reserve-text-fill
-    code
-  }
-  div-frame(preview, class: "preview")
-})
+    {
+      show text: reserve-text-fill
+      code
+    }
+    div-frame(preview, class: "preview")
+  },
+)
 
 
 /// Layout an external example
@@ -41,9 +46,14 @@
 /// - code (content): a `raw` element containing the displayed code
 /// - id (str): ID of the executed code
 /// -> content
-#let layout-external-example(code, id) = layout-example(code, if cache-ready {
-  image(cache-dir + "{id}.svg".replace("{id}", id))
-})
+#let layout-external-example(code, id) = {
+  let path = cache-dir + "{id}.svg".replace("{id}", id)
+  layout-example(
+    code,
+    if cache-ready { image(path) },
+    ..if mode == "dev" { (annotation: path) },
+  )
+}
 
 
 /// `f: U → V`, `x: U | none` ⇒ `optional-map(f, x): V | none`

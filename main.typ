@@ -1,4 +1,4 @@
-#import "typ/util.typ": babel, bbl, issue, prompt, unichar, workaround
+#import "typ/util.typ": babel, bbl, issue, note, prompt, unichar, workaround
 #import "typ/prioritization.typ": level, level-table
 #import "typ/show-example.typ": render-examples
 #show: render-examples
@@ -532,6 +532,75 @@
   )
 ]
 
+```example-page
+>>> #import "/typ/examples/justification.typ": cell, example
+>>> #example(
+>>>   headers: (
+>>>     [*Current* \ `#set par(justify: false)`],
+>>>     [*Current & Expected* \ `#set par(justify: true)`],
+>>>     [*Expected* \ (full-width `“”`)],
+>>>   ),
+>>>   pages: (
+>>>     {
+>>>       set par(justify: false)
+>>>       [“十四五”前四年我国能耗强度累计降低11.6%；2025年黄河调水调沙今天启动。]
+>>>     },
+>>>     {
+>>>       set par(justify: true)
+>>>       [“十四五”前四年我国能耗强度累计降低11.6%；2025年黄河调水调沙今天启动。]
+>>>     },
+>>>     {
+>>>       cell(align: end)[“]
+>>>       [十四五]
+>>>       cell(align: start)[”]
+>>>       [前四年我国能耗强度累计降低]
+>>>       cell(width: 3em, align: end)[11.6%]
+>>>       [；]
+>>>       cell(width: 2em)[2025]
+>>>       [年黄河调水调沙今天启动。]
+>>>     },
+>>>   ),
+>>> )
+```
+
+#babel(
+  en: [As the above example, the frame grid is the conventional typesetting mechanism in Chinese. It is difficult to strictly implement the mechanism in current typst. People usually `#set par(justify: true)` to achieve similar results. However, this workaround can lead to several issues in this section.],
+  zh: [如上例，中文习惯按稿纸网格排版。这目前在 typst 中难以严格实现，通常变通设置`#set par(justify: true)`。然而这权宜之计触发了本节若干问题。],
+)
+
+#note(
+  summary: bbl(en: [Note: Why two expected results?], zh: [注：为何有两种期望结果？]),
+  babel(
+    en: [In the above example, the middle version resembles traditional typesetting, and the right version is close to the ordinary output of non-professional desktop publishing softwares. Most people find the left version hard to read, whereas opinions on the other two versions vary—some prefer the middle, and others favor the right. Therefore, both the middle and the right versions are considered acceptable.],
+    zh: [上例中，中间版本接近传统效果，最右版本接近一般非专业计算机软件排版效果。大多数人认为最左版本难以阅读，而中间与最右版本则各有所好。因此中间、最右均可接受。],
+  ),
+)
+
+#babel(
+  en: [Furthermore, as illustrated in the following example, since Chinese characters are square-shaped, simple texts can often be aligned acceptably (and occasionally better) using the default `justify: false`. Only in complex cases---such as when text includes numbers, mathematical formulae, acronyms, or Western words---is it necessary to set `justify: true`. Nevertheless, for the sake of simplicity and robustness, we will continue to use simple text to demonstrate issues.],
+  zh: [此外如下例，由于汉字是方块字，若文本比较简单，默认`justify: false`即可对齐（有时效果还更好）；只有遇到数字及数学公式、首字母缩写甚至西文单词等复杂情况时，才必须`justify: true`。不过为了简洁可靠，以下演示问题仍会采用简单文本。],
+)
+
+```example-page
+>>> #import "/typ/examples/justification.typ": cell, example
+>>> #example(
+>>>   headers: (
+>>>     [*Current & Expected* \ `#set par(justify: false)`],
+>>>     [*Current & Expected* \ `#set par(justify: true)`],
+>>>   ),
+>>>   pages: (
+>>>     {
+>>>       set par(justify: false)
+>>>       [我国在“十四五”前四年累计降低一成能耗强度；本年度黄河调水调沙今天启动。]
+>>>     },
+>>>     {
+>>>       set par(justify: true)
+>>>       [我国在“十四五”前四年累计降低一成能耗强度；本年度黄河调水调沙今天启动。]
+>>>     },
+>>>   ),
+>>> )
+```
+
 === #bbl(en: [CJK-latin glues stretch only before latin characters], zh: [中西间距只在拉丁字母之前拉伸])
 
 #level.advanced
@@ -884,7 +953,99 @@ $ integral f dif x $
   How are the main text area and ancillary areas positioned and defined? Are there any special requirements here, such as dimensions in characters for the Japanese kihon hanmen? The book cover for scripts that are read right-to-left scripts is on the right of the spine, rather than the left. Is that provided for? When content can flow vertically and to the left or right, how do you specify the location of objects, text, etc. relative to the flow? For example, keywords `left` and `right` are likely to need to be reversed for pages written in English and page written in Arabic. Do tables and grid layouts work as expected? How do columns work in vertical text? Can you mix block of vertical and horizontal text correctly? Does text scroll in the expected direction? Other topics that belong here include any local requirements for things such as printer marks, tables of contents and indexes. See also @grids-tables.
 ]
 
-#level.tbd
+=== #bbl(en: [Chinese size system (hào-system)], zh: [中文字号的号数制])
+
+#level.advanced
+#workaround("https://typst.app/universe/package/pointless-size")
+
+#babel(
+  en: [号数制 (hào-system, or number system) is the system to specify text size in Chinese and Japanese typesetting. The unit is not linearly related to points: 五号 (size 5) = 10.5 pt, 小四 (size small 4) = 12 pt, 四号 (size 4) = 14 pt… The hào-system is still commonly used in China. An average person may be familiar with the size of 小四, but likely has little intuition about 12 pt without referring to a conversion table..],
+  zh: [号数制是中文和日文排版中指定字号的系统。这种单位无法线性转换成点数：五号 = 10.5点，小四 = 12点，四号 = 14点……号数制在中国仍然普遍使用。普通人通常理解小四字多大，但可能对 12 pt 没有直观感受，除非查阅转换表。],
+)
+
+#babel(
+  en: [The following is #link("https://ccjktype.fonts.adobe.com/2009/04/post_1.html#ENG")[a typical conversion table in Chinese].],
+  zh: [#link("https://ccjktype.fonts.adobe.com/2009/04/post_1.html#ZHS")[中文典型转换表]如下。],
+)
+
+```example-page
+>>> #import "@preview/pointless-size:0.1.1": zh
+>>>
+>>> #table(
+>>>   columns: 4,
+>>>   align: (right, left).map(a => a + horizon),
+>>>   stroke: none,
+>>>   table.hline(),
+>>>   [*hào 号数*], [*point 点数*],
+>>>   table.vline(stroke: 0.5pt),
+>>>   [*hào 号数*], [*point 点数*],
+>>>   table.hline(stroke: 0.5pt),
+>>>   ..(
+>>>     "初号",
+>>>     "小初",
+>>>     range(1, 9).map(n => (
+>>>       numbering("一号", n),
+>>>       if n < 7 { numbering("小一", n) } else { none },
+>>>     )),
+>>>   )
+>>>     .flatten()
+>>>     .map(n => if n != none {
+>>>       (text(zh(n), n), [#zh(n)])
+>>>     } else { (none, none) })
+>>>     .flatten(),
+>>>   table.hline(),
+>>> )
+```
+
+#babel(
+  en: [This issue should have been marked as Basic. However, considering that the hào-system was not standardized by the various foundries in the past (for example, nowadays, #link("https://github.com/YDX-2147483647/typst-pointless-size/blob/main/docs/ref.md")[四号 is 14 pt in CTeX, MS Word, WPS, and Adobe], but others may prefer 13.75 pt), we mark it as Advanced for the moment.],
+  zh: [这一问题本该算作 Basic，但由于号数制当年在各地金属活字厂家并未统一（例如今日 #link("https://github.com/YDX-2147483647/typst-pointless-size/blob/main/docs/ref.md")[CTeX、MS Word、WPS、Adobe 的四号是14点]，但其它可能用13.75点），暂且算作 Advanced。],
+)
+
+=== #bbl(
+  en: [Directly setting the width of the type area, instead of the paper width],
+  zh: [直接设置版心宽度而非纸张宽度],
+)
+
+#level.advanced
+
+// Ref: https://www.w3.org/TR/clreq/#considerations_in_designing_type_area
+#babel(
+  en: [In Chinese typography, line length should be multiples of the character size. Otherwise, several alignment issues described in @justification may occur.],
+  zh: [中文排版中，一行的行长应为文字尺寸的整数倍，不然容易触发 @justification 中的若干对齐问题。因此通常“先确定版心，再余出空白”，而不是“先确定边距，再剩出版心”。],
+)
+
+```example
+<<< // Current:
+<<< #set page(paper: "a4", margin: (x: (210mm - 42em) / 2))
+<<<
+<<< // Expected to be easier:
+<<< #set page(paper: "a4", inner-width: 42em)
+
+>>> #let k = 7 // scale factor
+>>>
+>>> #box(width: 210mm / k, height: 297mm / k, stroke: 1pt, align(center + horizon, box(
+>>>   width: 42em / k,
+>>>   height: (297mm - 5cm) / k,
+>>>   fill: blue.lighten(50%),
+>>>   {
+>>>     import math: arrow, stretch
+>>>     set raw(lang: "typc")
+>>>     set text(42em / k / 5)
+>>>     set par(leading: 0em)
+>>>
+>>>     `42em`
+>>>     v(-1.5em)
+>>>     stretch(arrow.l.r, size: 5em)
+>>>
+>>>     parbreak()
+>>>
+>>>     `210mm`
+>>>     v(-1.5em)
+>>>     stretch(arrow.l.r, size: 210mm / k)
+>>>   },
+>>> )))
+```
 
 == #bbl(en: [Grids & tables], zh: [网格与表格]) <grids-tables>
 
@@ -987,7 +1148,7 @@ $ integral f dif x $
 )
 
 ````example-page
->>> Debug:
+>>> Analysis:
 >>> #show regex("[✅❌]"): set text(fallback: true)
 #set text(font: "Noto Serif CJK SC")
 
@@ -1429,6 +1590,8 @@ $ integral f dif x $
   - #link("https://www.w3.org/TR/clreq-gap/")[Chinese Layout Gap Analysis]
 
 - #link("https://typst-doc-cn.github.io/guide/FAQ.html")[FAQ 常见问题 | Typst Doc CN 中文社区导航]
+
+- #link("https://www.thetype.com/kongque/")[孔雀计划：中文字体排印的思路 | The Type — 文字 / 设计 / 文化]
 
 - #bbl(en: [Standards], zh: [标准])
 
