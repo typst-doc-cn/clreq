@@ -242,6 +242,11 @@
   zh: [可变字体的创意可能性更多，并且存储效率更高。汉字数量庞大，设计、存储传统不可变字体都相对困难——例如不可变思源黑体一般有 \~100 MB，所以可变字体对中文有独特价值。],
 )
 
+#babel(
+  en: [The current typst will render them as the lightest weight when exporting SVG, and turn them into tofus when exporting PDF or PNG.],
+  zh: [目前 typst 导出 SVG 会渲染成最细字重，导出 PDF、PNG 会变成豆腐块。],
+)
+
 ```example
 >>> Current: \
 >>> #[
