@@ -1,0 +1,51 @@
+name: Scheduled check
+
+on:
+  schedule:
+    - cron: "0 1 28 * *"
+      # At 01:00 on day-of-month 28. (UTC)
+      # https://crontab.guru/#0_1_28_*_*
+  workflow_dispatch:
+
+jobs:
+  check-issues:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          # No cache is needed, because `check-issues` do not use any npm package.
+      - uses: typst-community/setup-typst@v4
+      - name: Check issues and generate a report
+        id: check
+        shell: bash
+        continue-on-error: true
+        run: |
+          pnpm check-issues --assert-all-covered > report.md
+          cat report.md >> "$GITHUB_STEP_SUMMARY"
+        env:
+          GH_TOKEN: ${{ github.token }}
+      - name: Find last report
+        uses: micalevisk/last-issue-action@v2
+        id: issue
+        with:
+          state: open
+          labels: |
+            cron-check
+      - name: Create or update the report
+        # If there is no last report and the check failed, create one.
+        # If there was a report, update it.
+        if: steps.issue.outputs.has-found == 'true' || steps.check.outcome == 'failure'
+        uses: peter-evans/create-issue-from-file@v5
+        with:
+          title: 🤖 Cron check
+          # Update an existing issue if one was found (issue-number),
+          # otherwise an empty value creates a new issue:
+          issue-number: "${{ steps.issue.outputs.issue-number }}"
+          content-filepath: ./report.md
+          labels: |
+            cron-check

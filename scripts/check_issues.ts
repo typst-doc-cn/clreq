@@ -1,5 +1,7 @@
 /**
- * Check issues.
+ * Check issues mentioned in the document or reported in typst repositories.
+ *
+ * Prerequisite: https://cli.github.com.
  */
 
 import assert from "node:assert";
@@ -33,6 +35,7 @@ type IssueState =
     closedAt: string;
   });
 
+/** Get issues in the typst document. */
 async function queryIssues(): Promise<IssueMeta[]> {
   return JSON.parse(
     await typst([
@@ -48,7 +51,7 @@ async function queryIssues(): Promise<IssueMeta[]> {
 /**
  * Checks if there are any duplicate issues.
  *
- * @throws Exits the process with status code 1 if duplicates are found
+ * @returns succeeded (no duplicates) or not
  *
  * Most issues should be linked only once.
  * If an issue truly needs to be linked multiple times (e.g., it involves multiple problems),
@@ -58,7 +61,7 @@ async function queryIssues(): Promise<IssueMeta[]> {
  * #issue("hayagriva#189", note: [mentioned])
  * ```
  */
-function assertUniq(issues: IssueMeta[]): void {
+function assertUniq(issues: IssueMeta[]): boolean {
   const suspiciousDest = issues.filter(({ note }) => note === "auto").map((
     { repo, num },
   ) => `${repo}#${num}`);
@@ -72,13 +75,28 @@ function assertUniq(issues: IssueMeta[]): void {
       "color: red;",
       new Set(duplicates),
     );
-    process.exit(1);
+    return false;
   } else {
     console.log("All issues are unique.");
+    return true;
   }
 }
 
-/***
+/**
+ * Query GitHub GraphQL API using GitHub CLI.
+ * https://docs.github.com/en/graphql/reference/queries
+ */
+async function queryGitHub(query: string): Promise<any> {
+  const { stdout } = await execFile("gh", [
+    "api",
+    "graphql",
+    "--raw-field",
+    `query=${query}`,
+  ]);
+  return JSON.parse(stdout).data;
+}
+
+/**
  * Fetch states of issues.
  *
  * Duplicate issues will be collected into a single entry.
@@ -123,13 +141,7 @@ async function fetchStates(
     "}",
   ].flat().join("\n");
 
-  const { stdout } = await execFile("gh", [
-    "api",
-    "graphql",
-    "--raw-field",
-    `query=${query}`,
-  ]);
-  const data = JSON.parse(stdout).data as Record<
+  const data = await queryGitHub(query) as Record<
     string,
     Record<string, IssueState>
   >;
@@ -147,7 +159,7 @@ async function fetchStates(
 /**
  * Checks if all issues’ states are up to date.
  *
- * @throws Exits the process with status code 1 if outdated issues are found
+ * @returns succeeded (no outdated issue has been found) or not
  *
  * Most issues should be open.
  * If a closed issue is truly needed (e.g., duplicated but cleaner),
@@ -157,7 +169,7 @@ async function fetchStates(
  * #issue("hayagriva#189", closed: true)
  * ```
  */
-function assertStateUpdated(states: [IssueMeta[], IssueState][]): void {
+function assertStateUpdated(states: [IssueMeta[], IssueState][]): boolean {
   const outdated = states.filter(([meta, state]) =>
     meta.some((m) => m.closed !== state.closed)
   );
@@ -185,17 +197,119 @@ function assertStateUpdated(states: [IssueMeta[], IssueState][]): void {
         "\n",
       ),
     );
-    process.exit(1);
+    return false;
   } else {
     console.log("All issues’ states are up to date.");
+    return true;
+  }
+}
+
+interface WatchTarget {
+  repo: string;
+  labels: string[];
+}
+
+type LatestIssue = {
+  repo: string;
+  num: string;
+  title: string;
+  stateReason: string | null;
+};
+
+/** Fetches latest open issues from multiple GitHub repositories. */
+async function fetchLatestIssues(
+  watches: WatchTarget[],
+): Promise<LatestIssue[]> {
+  const query = [
+    "query {",
+    ...watches.map(({ repo, labels }) => {
+      const [owner, name] = repo.split("/", 2);
+      const repoSanitized = repo.replaceAll(/[\/-]/g, "_");
+      return `
+        ${repoSanitized}: repository(owner: "${owner}", name: "${name}") {
+          issues(
+            labels: ${JSON.stringify(labels)}
+            first: 30,
+            states: [OPEN],
+            orderBy: { direction: DESC, field: UPDATED_AT }
+          ) {
+            nodes { number title stateReason }
+          }
+        }`;
+    }),
+    "}",
+  ].join("\n");
+
+  const data = await queryGitHub(query) as Record<
+    string,
+    {
+      issues: {
+        nodes: { number: number; title: string; stateReason: string | null }[];
+      };
+    }
+  >;
+
+  const dataFlat = Object.values(data).map((repo) => repo.issues.nodes);
+
+  return watches.map(({ repo }, index) =>
+    dataFlat[index].map(({ number, title, stateReason }) => ({
+      repo,
+      num: number.toString(),
+      title,
+      stateReason,
+    }))
+  ).flat();
+}
+
+/**
+ * Checks if all latest issues are covered in the document.
+ *
+ * @returns succeeded (no uncovered issue has been found) or not.
+ */
+function assertAllCovered(issues: IssueMeta[], latest: LatestIssue[]): boolean {
+  const uncovered = latest.filter(({ repo, num }) =>
+    !issues.some((i) => i.repo === repo && i.num === num)
+  );
+
+  if (uncovered.length > 0) {
+    console.error(
+      "%cUncovered latest issues found:",
+      "color: red;",
+    );
+    console.error(
+      uncovered.map(({ repo, num, title, stateReason }) =>
+        `- ${repo}#${num} ${stateReason ? `(${stateReason}) ` : ""}${title}`
+      ).join("\n"),
+    );
+    return false;
+  } else {
+    console.log("All latest issues are covered.");
+    return true;
   }
 }
 
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
-  const issues: IssueMeta[] = await queryIssues();
+  const argv = process.argv.slice(2);
+  const checkAllCovered = argv.includes("--assert-all-covered");
 
-  assertUniq(issues);
+  // Make sure all tests will be ran, even if an early test failed.
+  let succeeded = true;
+
+  const issues = await queryIssues();
+  succeeded = assertUniq(issues) && succeeded;
 
   const states = await fetchStates(issues);
-  assertStateUpdated(states);
+  succeeded = assertStateUpdated(states) && succeeded;
+
+  if (checkAllCovered) {
+    const latest = await fetchLatestIssues([
+      { repo: "typst/typst", labels: ["cjk"] },
+      { repo: "typst/hayagriva", labels: ["i18n"] },
+    ]);
+    succeeded = assertAllCovered(issues, latest) && succeeded;
+  }
+
+  if (!succeeded) {
+    process.exit(1);
+  }
 }

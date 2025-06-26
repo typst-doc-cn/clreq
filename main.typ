@@ -1635,13 +1635,6 @@ $ integral f dif x $
 
     - Contributing guide
 
-  - GitHub
-
-    - Watch
-      #link(
-        "https://github.com/typst/typst/issues?q=%20is%3Aopen%20label%3Acjk%20sort%3Areactions-desc",
-      )[label: cjk · Issues · typst/typst]
-
 == Umbrella/tracking issues
 
 - Advanced East-Asian layout features #issue("typst#193")
