@@ -21,8 +21,9 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-          # No cache is needed, because `check-issues` do not use any npm package.
+          cache: pnpm
       - uses: typst-community/setup-typst@v4
+      - run: pnpm install
       - name: Check issues and generate a report
         id: check
         continue-on-error: true

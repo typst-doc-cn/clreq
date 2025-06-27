@@ -1,4 +1,4 @@
-#import "typ/util.typ": babel, bbl, issue, note, prompt, unichar, workaround
+#import "typ/util.typ": babel, bbl, issue, note, prompt, pull, unichar, workaround
 #import "typ/prioritization.typ": level, level-table
 #import "typ/show-example.typ": render-examples
 #show: render-examples
@@ -1138,8 +1138,10 @@ $ integral f dif x $
 === #bbl(en: [Citation numbers are flying over their brackets], zh: [引用编号的数字高于括号])
 
 #level.basic
-#issue("typst#6513")
+#issue("typst#633")
+#issue("typst#6513", closed: true)
 #issue("typst#4203", closed: true)
+#pull("typst#5777")
 #workaround("https://typst-doc-cn.github.io/guide/FAQ/cite-flying.html")
 
 #babel(

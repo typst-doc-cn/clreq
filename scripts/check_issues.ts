@@ -15,16 +15,23 @@ import { env } from "node:process";
 import { fileURLToPath } from "node:url";
 import { promisify } from "node:util";
 
+import { zip } from "es-toolkit";
+
 import { extraArgs } from "./config.ts";
 import { typst } from "./typst.ts";
 
 const execFile = promisify(_execFile);
 
-interface IssueMeta {
+interface RepoNum {
   repo: string;
   num: string;
+}
+interface IssueMeta extends RepoNum {
   note: string;
   closed: boolean;
+}
+interface PullMeta extends RepoNum {
+  merged: boolean;
 }
 
 type IssueState =
@@ -40,6 +47,53 @@ type IssueState =
     closed: true;
     closedAt: string;
   });
+
+type PullState =
+  & { title: string }
+  & (
+    | {
+      state: "OPEN";
+      merged: false;
+      closed: false;
+      closedAt: null;
+    }
+    | { closed: true; closedAt: string }
+      & ({
+        state: "MERGED";
+        merged: true;
+      } | {
+        state: "CLOSED";
+        merged: false;
+      })
+  );
+
+/**
+ * Grouped by `repo` and `num`, and flattened
+ *
+ * E.g., an array of `[IssueMeta[] of an issue in a repo]`.
+ */
+type GroupedFlat<T extends RepoNum> = T[][];
+
+/**
+ * Grouped by `repo` and `num`
+ *
+ * repo ⇒ num ⇒ `T[]` of this repo and num.
+ */
+type Grouped<T extends RepoNum> = Map<string, [string, T[]][]>;
+
+function flattenGrouped<T extends RepoNum>(
+  grouped: Grouped<T>,
+): GroupedFlat<T> {
+  return Array.from(grouped.values()).flat().map(([_num, meta]) => meta);
+}
+
+function parseRepo(
+  repo: string,
+): { owner: string; name: string; repoSanitized: string } {
+  const [owner, name] = repo.split("/", 2);
+  const repoSanitized = repo.replaceAll(/[\/-]/g, "_");
+  return { owner, name, repoSanitized };
+}
 
 /**
  * Error handling with the `Result` type.
@@ -71,23 +125,31 @@ class Result {
   }
 }
 
-/** Get issues in the typst document. */
-async function queryIssues(): Promise<IssueMeta[]> {
-  return JSON.parse(
+/** Get issues and pull requests in the typst document. */
+async function queryDocument(): Promise<
+  { issues: IssueMeta[]; pulls: PullMeta[] }
+> {
+  const data = JSON.parse(
     await typst([
       "query",
       "main.typ",
-      "<issue>",
-      "--field=value",
+      "selector(<pull>).or(<issue>)",
       ...extraArgs.pre,
     ]),
-  );
+  ) as { func: "metadata"; value: object; label: "<issue>" | "<pull>" }[];
+
+  return {
+    issues: data.filter((d) => d.label === "<issue>").map((d) =>
+      d.value as IssueMeta
+    ),
+    pulls: data.filter((d) => d.label === "<pull>").map((d) =>
+      d.value as PullMeta
+    ),
+  };
 }
 
 /**
  * Checks if there are any duplicate issues.
- *
- * @returns succeeded (no duplicates) or not
  *
  * Most issues should be linked only once.
  * If an issue truly needs to be linked multiple times (e.g., it involves multiple problems),
@@ -126,70 +188,128 @@ async function queryGitHub(query: string): Promise<any> {
   return JSON.parse(stdout).data;
 }
 
-/**
- * Fetch states of issues.
- *
- * Duplicate issues will be collected into a single entry.
- */
-async function fetchStates(
-  issues: IssueMeta[],
-): Promise<[IssueMeta[], IssueState][]> {
-  const repos = new Set(issues.map((i) => i.repo));
+function groupByRepoNum<T extends RepoNum>(meta_list: T[]): Grouped<T> {
+  const repos = new Set(meta_list.map((i) => i.repo));
 
-  /** repo ⇒ [issue number, IssueMeta[]][] */
-  const grouped: Map<string, [string, IssueMeta[]][]> = new Map(
+  const grouped = new Map(
     Array.from(repos.values()).map(
       (repo) => {
-        const issuesConcerned = issues.filter((i) => repo === i.repo);
+        const concerned = meta_list.filter((i) => repo === i.repo);
         const numUniq = Array.from(
-          (new Set(issuesConcerned.map(({ num }) => num))).values(),
+          (new Set(concerned.map(({ num }) => num))).values(),
         );
         return [
           repo,
-          numUniq.map((n) => [
-            n,
-            issuesConcerned.filter(({ num }) => n === num),
-          ]),
+          numUniq.map((n) =>
+            [n, concerned.filter(({ num }) => n === num)] as [string, T[]]
+          ),
         ];
       },
     ),
   );
+  return grouped;
+}
+
+/**
+ * @returns query The GraphQL query without wrapping `query { }`.
+ * @returns grouped
+ */
+function generateIssuesQuery(
+  issues: IssueMeta[],
+): { query: string; grouped: GroupedFlat<IssueMeta> } {
+  const grouped = groupByRepoNum(issues);
 
   const query = [
-    "query {",
     ...Array.from(grouped.entries()).map(([repo, issues]) => {
-      const [owner, name] = repo.split("/", 2);
-      const repoSanitized = repo.replaceAll(/[\/-]/g, "_");
+      const { owner, name, repoSanitized } = parseRepo(repo);
       return [
-        `  ${repoSanitized}: repository(owner: "${owner}", name: "${name}") {`,
+        `  ${repoSanitized}_issues: repository(owner: "${owner}", name: "${name}") {`,
         ...issues.map(([num, _meta]) =>
           `    issue_${num}: issue(number: ${num}) { title state stateReason closed closedAt }`
         ),
         "  }",
       ];
     }),
-    "}",
   ].flat().join("\n");
+
+  return { query, grouped: flattenGrouped(grouped) };
+}
+
+/**
+ * @returns query The GraphQL query without wrapping `query { }`.
+ * @returns grouped
+ */
+function generatePullsQuery(
+  pulls: PullMeta[],
+): { query: string; grouped: GroupedFlat<PullMeta> } {
+  const grouped = groupByRepoNum(pulls);
+
+  const query = [
+    ...Array.from(grouped.entries()).map(([repo, pulls]) => {
+      const { owner, name, repoSanitized } = parseRepo(repo);
+      return [
+        `  ${repoSanitized}_pulls: repository(owner: "${owner}", name: "${name}") {`,
+        ...pulls.map(([num, _meta]) =>
+          `    pull_${num}: pullRequest(number: ${num}) { title state merged closed closedAt }`
+        ),
+        "  }",
+      ];
+    }),
+  ].flat().join("\n");
+
+  return { query, grouped: flattenGrouped(grouped) };
+}
+
+/**
+ * Fetch states of issues and pull requests.
+ *
+ * Duplicate issues or pull requests will be collected into a single entry.
+ */
+async function fetchStates(
+  issues: IssueMeta[],
+  pulls: PullMeta[],
+): Promise<
+  { issues: [IssueMeta[], IssueState][]; pulls: [PullMeta[], PullState][] }
+> {
+  const meta = {
+    issues: generateIssuesQuery(issues),
+    pulls: generatePullsQuery(pulls),
+  };
+
+  const query = [
+    "query {",
+    meta.issues.query,
+    meta.pulls.query,
+    "}",
+  ].join("\n");
 
   const data = await queryGitHub(query) as Record<
     string,
-    Record<string, IssueState>
+    Record<string, IssueState | PullState>
   >;
 
-  const stateFlat = Object.values(data).map((issues_of_repo) =>
-    Object.values(issues_of_repo)
+  const stateFlat = Object.values(data).map((issues_or_pulls_of_repo) =>
+    Object.values(issues_or_pulls_of_repo)
   ).flat();
-  const metaFlat = Array.from(grouped.values()).flat();
 
-  assert.strictEqual(stateFlat.length, metaFlat.length);
+  assert.strictEqual(
+    stateFlat.length,
+    meta.issues.grouped.length + meta.pulls.grouped.length,
+  );
 
-  return metaFlat.map(([_num, meta], index) => [meta, stateFlat[index]]);
+  const state = {
+    issues: stateFlat.slice(0, meta.issues.grouped.length) as IssueState[],
+    pulls: stateFlat.slice(meta.issues.grouped.length) as PullState[],
+  };
+
+  return {
+    issues: zip(meta.issues.grouped, state.issues),
+    pulls: zip(meta.pulls.grouped, state.pulls),
+  };
 }
 
 /**
  * Checks if all issues’ states are up to date.
- *
- * @returns succeeded (no outdated issue has been found) or not
  *
  * Most issues should be open.
  * If a closed issue is truly needed (e.g., duplicated but cleaner),
@@ -199,7 +319,7 @@ async function fetchStates(
  * #issue("hayagriva#189", closed: true)
  * ```
  */
-function assertStateUpdated(states: [IssueMeta[], IssueState][]): Result {
+function assertIssuesStateUpdated(states: [IssueMeta[], IssueState][]): Result {
   const outdated = states.filter(([meta, state]) =>
     meta.some((m) => m.closed !== state.closed)
   );
@@ -225,6 +345,25 @@ function assertStateUpdated(states: [IssueMeta[], IssueState][]): Result {
   }
 }
 
+/** Checks if all pull requests’ states are up to date. */
+function assertPullsStateUpdated(states: [PullMeta[], PullState][]): Result {
+  const outdated = states.filter(([meta, state]) =>
+    meta.some((m) => m.merged !== state.merged)
+  );
+
+  if (outdated.length > 0) {
+    const message = outdated.map(([meta, state]) => {
+      const stateHuman = state.state === "OPEN"
+        ? "open"
+        : `${state.state.toLowerCase()} at ${state.closedAt}`;
+      return `- ${meta[0].repo}#${meta[0].num} ${state.title} (${stateHuman})`;
+    }).join("\n");
+    return Result.Err(`Outdated pull requests found:\n${message}`);
+  } else {
+    return Result.Ok("All pull requests’ states are up to date.");
+  }
+}
+
 interface WatchTarget {
   repo: string;
   labels: string[];
@@ -244,8 +383,7 @@ async function fetchLatestIssues(
   const query = [
     "query {",
     ...watches.map(({ repo, labels }) => {
-      const [owner, name] = repo.split("/", 2);
-      const repoSanitized = repo.replaceAll(/[\/-]/g, "_");
+      const { owner, name, repoSanitized } = parseRepo(repo);
       return `
         ${repoSanitized}: repository(owner: "${owner}", name: "${name}") {
           issues(
@@ -282,11 +420,7 @@ async function fetchLatestIssues(
   ).flat();
 }
 
-/**
- * Checks if all latest issues are covered in the document.
- *
- * @returns succeeded (no uncovered issue has been found) or not.
- */
+/** Checks if all latest issues are covered in the document. */
 function assertAllCovered(issues: IssueMeta[], latest: LatestIssue[]): Result {
   const uncovered = latest.filter(({ repo, num }) =>
     !issues.some((i) => i.repo === repo && i.num === num)
@@ -306,11 +440,13 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
   const argv = process.argv.slice(2);
   const checkAllCovered = argv.includes("--assert-all-covered");
 
-  const issues = await queryIssues();
+  const { issues, pulls } = await queryDocument();
+
   let result = assertUniq(issues);
 
-  const states = await fetchStates(issues);
-  result = result.join(assertStateUpdated(states));
+  const states = await fetchStates(issues, pulls);
+  result = result.join(assertIssuesStateUpdated(states.issues));
+  result = result.join(assertPullsStateUpdated(states.pulls));
 
   if (checkAllCovered) {
     const latest = await fetchLatestIssues([

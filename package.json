@@ -6,6 +6,7 @@
     "description": "Chinese Layout Gap Analysis for Typst",
     "dependencies": {
         "concurrently": "^9.1.2",
+        "es-toolkit": "^1.39.5",
         "glob-watcher": "^6.0.0"
     },
     "scripts": {
