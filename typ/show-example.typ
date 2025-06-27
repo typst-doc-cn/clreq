@@ -1,5 +1,5 @@
 #import "@preview/tidy:0.4.3": show-example as tidy-example
-#import "@preview/jumble:0.0.1": bytes-to-hex, sha1
+#import "@preview/jumble:0.0.1": bytes-to-hex, md5
 
 #import "templates/html-fix.typ": reserve-text-fill
 #import "templates/html-toolkit.typ": div, div-frame, img
@@ -106,7 +106,7 @@
       .replace("{GENERAL-PREAMBLE}", GENERAL-PREAMBLE)
       .replace("{executed}", executed)
 
-    let id = "example-" + bytes-to-hex(sha1(full-executed))
+    let id = "example-" + bytes-to-hex(md5(full-executed))
     [
       #metadata((id: id, content: full-executed)) <external-example>
     ]
@@ -145,7 +145,7 @@
       .replace("{displayed}", displayed)
       .replace("{expected}", expected.map(x => "+ " + x).join("\n"))
 
-    let id = "example-" + bytes-to-hex(sha1(executed))
+    let id = "example-" + bytes-to-hex(md5(executed))
     [
       #metadata((id: id, content: executed)) <external-example>
     ]
