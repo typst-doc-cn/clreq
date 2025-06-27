@@ -9,18 +9,15 @@
  */
 
 import assert from "node:assert";
-import { execFile as _execFile } from "node:child_process";
 import { writeFile } from "node:fs/promises";
 import { env } from "node:process";
 import { fileURLToPath } from "node:url";
-import { promisify } from "node:util";
 
 import { zip } from "es-toolkit";
 
 import { extraArgs } from "./config.ts";
 import { typst } from "./typst.ts";
-
-const execFile = promisify(_execFile);
+import { duration_fmt, execFile } from "./util.ts";
 
 interface RepoNum {
   repo: string;
@@ -129,6 +126,8 @@ class Result {
 async function queryDocument(): Promise<
   { issues: IssueMeta[]; pulls: PullMeta[] }
 > {
+  const timeStart = Date.now();
+
   const data = JSON.parse(
     await typst([
       "query",
@@ -137,6 +136,11 @@ async function queryDocument(): Promise<
       ...extraArgs.pre,
     ]),
   ) as { func: "metadata"; value: object; label: "<issue>" | "<pull>" }[];
+
+  console.log(
+    `📃 Got ${data.length} results from typst query successfully in`,
+    `${duration_fmt(Date.now() - timeStart)}.`,
+  );
 
   return {
     issues: data.filter((d) => d.label === "<issue>").map((d) =>
@@ -179,12 +183,20 @@ function assertUniq(issues: IssueMeta[]): Result {
  * https://docs.github.com/en/graphql/reference/queries
  */
 async function queryGitHub(query: string): Promise<any> {
+  const timeStart = Date.now();
+
   const { stdout } = await execFile("gh", [
     "api",
     "graphql",
     "--raw-field",
     `query=${query}`,
   ]);
+
+  console.log(
+    `📩 Got ${stdout.length} characters from GitHub API successfully in`,
+    `${duration_fmt(Date.now() - timeStart)}.`,
+  );
+
   return JSON.parse(stdout).data;
 }
 

@@ -5,6 +5,7 @@ import watch from "glob-watcher";
 
 import { envArgs, extraArgs, ROOT_DIR } from "./config.ts";
 import { type Color, typst } from "./typst.ts";
+import { duration_fmt } from "./util.ts";
 
 const CACHE_DIR = `${ROOT_DIR}/target/cache`;
 
@@ -25,6 +26,8 @@ export async function precompile(color: { color?: Color } = {}) {
 async function renderExamples({ color }: { color?: Color }) {
   type Example = { id: string; content: string };
 
+  const timeStart = Date.now();
+
   const examples = JSON.parse(
     await typst([
       "query",
@@ -35,6 +38,7 @@ async function renderExamples({ color }: { color?: Color }) {
       ...extraArgs.pre,
     ], { color: color }),
   ) as Example[];
+  const timeQueryEnd = Date.now();
 
   /** @returns cache-hit */
   const compileExample = async ({ id, content }: Example): Promise<boolean> => {
@@ -50,11 +54,16 @@ async function renderExamples({ color }: { color?: Color }) {
   };
 
   const hit = await Promise.all(examples.map(compileExample));
+  const timeCompileEnd = Date.now();
+
   const total = hit.length;
   const cached = hit.filter((h) => h).length;
   console.log(
-    `\n✅ Rendered ${total} examples successfully.`,
+    `\n✅ Rendered ${total} examples`,
     `(${cached} cached, ${total - cached} new)`,
+    `successfully in ${duration_fmt(timeCompileEnd - timeStart)}`,
+    `(query ${duration_fmt(timeQueryEnd - timeStart)},`,
+    `compile ${duration_fmt(timeCompileEnd - timeQueryEnd)}).`,
   );
 }
 

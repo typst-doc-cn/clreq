@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@std/fmt':
+        specifier: jsr:^1.0.8
+        version: '@jsr/std__fmt@1.0.8'
       concurrently:
         specifier: ^9.1.2
         version: 9.1.2
@@ -201,6 +204,9 @@ packages:
     engines: {node: '>=18'}
     cpu: [x64]
     os: [win32]
+
+  '@jsr/std__fmt@1.0.8':
+    resolution: {integrity: sha512-miZHzj9OgjuajrcMKzpqNVwFb9O71UHZzV/FHVq0E0Uwmv/1JqXgmXAoBNPrn+MP0fHT3mMgaZ6XvQO7dam67Q==, tarball: https://npm.jsr.io/~/11/@jsr/std__fmt/1.0.8.tgz}
 
   '@rollup/rollup-android-arm-eabi@4.43.0':
     resolution: {integrity: sha512-Krjy9awJl6rKbruhQDgivNbD1WuLb8xAclM4IR4cN5pHGAs2oIMMQJEiC3IC/9TZJ+QZkmZhlMO/6MBGxPidpw==}
@@ -701,6 +707,8 @@ snapshots:
 
   '@esbuild/win32-x64@0.25.5':
     optional: true
+
+  '@jsr/std__fmt@1.0.8': {}
 
   '@rollup/rollup-android-arm-eabi@4.43.0':
     optional: true
