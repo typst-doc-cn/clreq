@@ -1,11 +1,17 @@
 /**
  * Check issues mentioned in the document or reported in typst repositories.
  *
+ * Save the report to `report.md` (`steps.{id}.outputs.report-file`) and `$GITHUB_STEP_SUMMARY` (if exists).
+ *
+ * All specified checks will be executed, even if an early check failed.
+ *
  * Prerequisite: https://cli.github.com.
  */
 
 import assert from "node:assert";
 import { execFile as _execFile } from "node:child_process";
+import { writeFile } from "node:fs/promises";
+import { env } from "node:process";
 import { fileURLToPath } from "node:url";
 import { promisify } from "node:util";
 
@@ -35,6 +41,36 @@ type IssueState =
     closedAt: string;
   });
 
+/**
+ * Error handling with the `Result` type.
+ * https://doc.rust-lang.org/stable/std/result/
+ */
+class Result {
+  succeeded: boolean;
+  /** Markdown message */
+  message: string;
+
+  constructor(succeeded: boolean, message: string) {
+    this.succeeded = succeeded;
+    this.message = message;
+  }
+
+  static Ok(message: string): Result {
+    return new Result(true, message);
+  }
+
+  static Err(message: string): Result {
+    return new Result(false, message);
+  }
+
+  join(other: Result): Result {
+    return new Result(
+      this.succeeded && other.succeeded,
+      [this.message, other.message].join("\n\n"),
+    );
+  }
+}
+
 /** Get issues in the typst document. */
 async function queryIssues(): Promise<IssueMeta[]> {
   return JSON.parse(
@@ -61,7 +97,7 @@ async function queryIssues(): Promise<IssueMeta[]> {
  * #issue("hayagriva#189", note: [mentioned])
  * ```
  */
-function assertUniq(issues: IssueMeta[]): boolean {
+function assertUniq(issues: IssueMeta[]): Result {
   const suspiciousDest = issues.filter(({ note }) => note === "auto").map((
     { repo, num },
   ) => `${repo}#${num}`);
@@ -70,15 +106,9 @@ function assertUniq(issues: IssueMeta[]): boolean {
   );
 
   if (duplicates.length > 0) {
-    console.log(
-      "%cDuplicated issues found:",
-      "color: red;",
-      new Set(duplicates),
-    );
-    return false;
+    return Result.Err(`Duplicated issues found:\n${new Set(duplicates)}`);
   } else {
-    console.log("All issues are unique.");
-    return true;
+    return Result.Ok("All issues are unique.");
   }
 }
 
@@ -169,38 +199,29 @@ async function fetchStates(
  * #issue("hayagriva#189", closed: true)
  * ```
  */
-function assertStateUpdated(states: [IssueMeta[], IssueState][]): boolean {
+function assertStateUpdated(states: [IssueMeta[], IssueState][]): Result {
   const outdated = states.filter(([meta, state]) =>
     meta.some((m) => m.closed !== state.closed)
   );
 
   if (outdated.length > 0) {
-    console.log(
-      "%cOutdated issues found:",
-      "color: red;",
-    );
-    console.log(
-      outdated.map(([meta, state]) => {
-        const stateHuman = state.closed
-          ? `closed at ${state.closedAt} for ${state.stateReason}`
-          : `open${state.stateReason ? ` for ${state.stateReason}` : ""}`;
+    const message = outdated.map(([meta, state]) => {
+      const stateHuman = state.closed
+        ? `closed at ${state.closedAt} for ${state.stateReason}`
+        : `open${state.stateReason ? ` for ${state.stateReason}` : ""}`;
 
-        const metaHuman = meta.map((m) =>
-          `(note: ${m.note}, closed: ${m.closed})`
-        ).join(" ");
+      const metaHuman = meta.map((m) =>
+        `(note: ${m.note}, closed: ${m.closed})`
+      ).join(" ");
 
-        return [
-          `- ${meta[0].repo}#${meta[0].num} ${state.title} (${stateHuman})`,
-          `  ${metaHuman}`,
-        ];
-      }).flat().join(
-        "\n",
-      ),
-    );
-    return false;
+      return [
+        `- ${meta[0].repo}#${meta[0].num} ${state.title} (${stateHuman})`,
+        `  ${metaHuman}`,
+      ];
+    }).flat().join("\n");
+    return Result.Err(`Outdated issues found:\n${message}`);
   } else {
-    console.log("All issues’ states are up to date.");
-    return true;
+    return Result.Ok("All issues’ states are up to date.");
   }
 }
 
@@ -266,25 +287,18 @@ async function fetchLatestIssues(
  *
  * @returns succeeded (no uncovered issue has been found) or not.
  */
-function assertAllCovered(issues: IssueMeta[], latest: LatestIssue[]): boolean {
+function assertAllCovered(issues: IssueMeta[], latest: LatestIssue[]): Result {
   const uncovered = latest.filter(({ repo, num }) =>
     !issues.some((i) => i.repo === repo && i.num === num)
   );
 
   if (uncovered.length > 0) {
-    console.log(
-      "%cUncovered latest issues found:",
-      "color: red;",
-    );
-    console.log(
-      uncovered.map(({ repo, num, title, stateReason }) =>
-        `- ${repo}#${num} ${stateReason ? `(${stateReason}) ` : ""}${title}`
-      ).join("\n"),
-    );
-    return false;
+    const message = uncovered.map(({ repo, num, title, stateReason }) =>
+      `- ${repo}#${num} ${stateReason ? `(${stateReason}) ` : ""}${title}`
+    ).join("\n");
+    return Result.Err(`Uncovered latest issues found:\n${message}`);
   } else {
-    console.log("All latest issues are covered.");
-    return true;
+    return Result.Ok("All latest issues are covered.");
   }
 }
 
@@ -292,24 +306,28 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
   const argv = process.argv.slice(2);
   const checkAllCovered = argv.includes("--assert-all-covered");
 
-  // Make sure all tests will be ran, even if an early test failed.
-  let succeeded = true;
-
   const issues = await queryIssues();
-  succeeded = assertUniq(issues) && succeeded;
+  let result = assertUniq(issues);
 
   const states = await fetchStates(issues);
-  succeeded = assertStateUpdated(states) && succeeded;
+  result = result.join(assertStateUpdated(states));
 
   if (checkAllCovered) {
     const latest = await fetchLatestIssues([
       { repo: "typst/typst", labels: ["cjk"] },
       { repo: "typst/hayagriva", labels: ["i18n"] },
     ]);
-    succeeded = assertAllCovered(issues, latest) && succeeded;
+    result = result.join(assertAllCovered(issues, latest));
   }
 
-  if (!succeeded) {
-    process.exit(1);
+  await writeFile("report.md", result.message + "\n", { flag: "w" });
+  if (env.GITHUB_OUTPUT) {
+    await writeFile(env.GITHUB_OUTPUT, "report-file=report.md", { flag: "a" });
   }
+  if (env.GITHUB_STEP_SUMMARY) {
+    await writeFile(env.GITHUB_STEP_SUMMARY, result.message + "\n", {
+      flag: "a",
+    });
+  }
+  process.exit(result.succeeded ? 0 : 1);
 }

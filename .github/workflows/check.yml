@@ -57,7 +57,7 @@ jobs:
           # No cache is needed, because `check-issues` do not use any npm package.
       - uses: typst-community/setup-typst@v4
       - run: |
-          pnpm check-issues >> "$GITHUB_STEP_SUMMARY"
+          pnpm check-issues
         env:
           GH_TOKEN: ${{ github.token }}
 
