@@ -70,7 +70,7 @@ function assertUniq(issues: IssueMeta[]): boolean {
   );
 
   if (duplicates.length > 0) {
-    console.error(
+    console.log(
       "%cDuplicated issues found:",
       "color: red;",
       new Set(duplicates),
@@ -175,11 +175,11 @@ function assertStateUpdated(states: [IssueMeta[], IssueState][]): boolean {
   );
 
   if (outdated.length > 0) {
-    console.error(
+    console.log(
       "%cOutdated issues found:",
       "color: red;",
     );
-    console.error(
+    console.log(
       outdated.map(([meta, state]) => {
         const stateHuman = state.closed
           ? `closed at ${state.closedAt} for ${state.stateReason}`
@@ -272,11 +272,11 @@ function assertAllCovered(issues: IssueMeta[], latest: LatestIssue[]): boolean {
   );
 
   if (uncovered.length > 0) {
-    console.error(
+    console.log(
       "%cUncovered latest issues found:",
       "color: red;",
     );
-    console.error(
+    console.log(
       uncovered.map(({ repo, num, title, stateReason }) =>
         `- ${repo}#${num} ${stateReason ? `(${stateReason}) ` : ""}${title}`
       ).join("\n"),

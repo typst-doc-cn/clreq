@@ -7,6 +7,9 @@ on:
       # https://crontab.guru/#0_1_28_*_*
   workflow_dispatch:
 
+permissions: 
+  issues: write
+
 jobs:
   check-issues:
     runs-on: ubuntu-latest
@@ -25,8 +28,12 @@ jobs:
         shell: bash
         continue-on-error: true
         run: |
-          pnpm check-issues --assert-all-covered > report.md
+          set +e
+          pnpm check-issues --assert-all-covered | tee report.md
+          exit_code=$?
+          set -e
           cat report.md >> "$GITHUB_STEP_SUMMARY"
+          exit $exit_code
         env:
           GH_TOKEN: ${{ github.token }}
       - name: Find last report
