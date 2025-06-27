@@ -45,7 +45,7 @@
 
   show link: link-in-new-tab.with(class: "unbreakable")
   link("https://github.com/" + repo + "/issues/" + num + anchor, {
-    icon.issue-open
+    if closed { icon.issue-closed } else { icon.issue-open }
     repo-num
     if note == auto {
       if anchor != "" { [~(comment)] }

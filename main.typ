@@ -1138,6 +1138,8 @@ $ integral f dif x $
 === #bbl(en: [Citation numbers are flying over their brackets], zh: [引用编号的数字高于括号])
 
 #level.basic
+#issue("typst#6513")
+#issue("typst#4203", closed: true)
 #workaround("https://typst-doc-cn.github.io/guide/FAQ/cite-flying.html")
 
 #babel(
