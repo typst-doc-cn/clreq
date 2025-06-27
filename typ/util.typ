@@ -45,13 +45,32 @@
 
   show link: link-in-new-tab.with(class: "unbreakable")
   link("https://github.com/" + repo + "/issues/" + num + anchor, {
-    icon.issue-open
+    if closed { icon.issue-closed } else { icon.issue-open }
     repo-num
     if note == auto {
       if anchor != "" { [~(comment)] }
     } else { [~(#note)] }
   })
   [#metadata((repo: repo, num: num, note: repr(note), closed: closed)) <issue>]
+}
+
+/// Link to a GitHub pull request
+///
+/// - repo-num (str): Repo and pull request number, e.g., `"typst#5777"`
+/// - merged (bool): State of the pull request
+/// -> content
+#let pull(repo-num, merged: false) = {
+  let (repo, num) = repo-num.split("#")
+  if not repo.contains("/") {
+    repo = "typst/" + repo
+  }
+
+  show link: link-in-new-tab.with(class: "unbreakable")
+  link("https://github.com/" + repo + "/pull/" + num, {
+    if merged { icon.git-merge } else { icon.git-pull-request }
+    repo-num
+  })
+  [#metadata((repo: repo, num: num, merged: merged)) <pull>]
 }
 
 /// Link to a workaround

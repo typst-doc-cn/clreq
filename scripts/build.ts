@@ -4,6 +4,7 @@ import { fileURLToPath } from "node:url";
 import { extraArgs } from "./config.ts";
 import { precompile } from "./precompile.ts";
 import { typst } from "./typst.ts";
+import { duration_fmt } from "./util.ts";
 
 function git_info(): string[] {
   if (env.GITHUB_ACTIONS === "true") {
@@ -31,6 +32,8 @@ function git_info(): string[] {
 
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
   await precompile();
+
+  const timeStart = Date.now();
   await typst([
     "compile",
     "index.typ",
@@ -38,4 +41,8 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
     ...git_info(),
     ...extraArgs.build,
   ]);
+  console.log(
+    `🏛️ Built the document successfully in`,
+    `${duration_fmt(Date.now() - timeStart)}.`,
+  );
 }

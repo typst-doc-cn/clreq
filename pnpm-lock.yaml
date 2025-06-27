@@ -8,9 +8,15 @@ importers:
 
   .:
     dependencies:
+      '@std/fmt':
+        specifier: jsr:^1.0.8
+        version: '@jsr/std__fmt@1.0.8'
       concurrently:
         specifier: ^9.1.2
         version: 9.1.2
+      es-toolkit:
+        specifier: ^1.39.5
+        version: 1.39.5
       glob-watcher:
         specifier: ^6.0.0
         version: 6.0.0
@@ -199,6 +205,9 @@ packages:
     cpu: [x64]
     os: [win32]
 
+  '@jsr/std__fmt@1.0.8':
+    resolution: {integrity: sha512-miZHzj9OgjuajrcMKzpqNVwFb9O71UHZzV/FHVq0E0Uwmv/1JqXgmXAoBNPrn+MP0fHT3mMgaZ6XvQO7dam67Q==, tarball: https://npm.jsr.io/~/11/@jsr/std__fmt/1.0.8.tgz}
+
   '@rollup/rollup-android-arm-eabi@4.43.0':
     resolution: {integrity: sha512-Krjy9awJl6rKbruhQDgivNbD1WuLb8xAclM4IR4cN5pHGAs2oIMMQJEiC3IC/9TZJ+QZkmZhlMO/6MBGxPidpw==}
     cpu: [arm]
@@ -377,6 +386,9 @@ packages:
 
   end-of-stream@1.4.4:
     resolution: {integrity: sha512-+uw1inIHVPQoaVuHzRyXd21icM+cnt4CzD5rW+NC1wjOUSTOs+Te7FOv7AhN7vS9x/oIyhLP5PR1H+phQAHu5Q==}
+
+  es-toolkit@1.39.5:
+    resolution: {integrity: sha512-z9V0qU4lx1TBXDNFWfAASWk6RNU6c6+TJBKE+FLIg8u0XJ6Yw58Hi0yX8ftEouj6p1QARRlXLFfHbIli93BdQQ==}
 
   esbuild@0.25.5:
     resolution: {integrity: sha512-P8OtKZRv/5J5hhz0cUAdu/cLuPIKXpQl1R9pZtvmHWQvrAUVd0UNIPT4IB4W3rNOqVO0rlqHmCIbSwxh/c9yUQ==}
@@ -696,6 +708,8 @@ snapshots:
   '@esbuild/win32-x64@0.25.5':
     optional: true
 
+  '@jsr/std__fmt@1.0.8': {}
+
   '@rollup/rollup-android-arm-eabi@4.43.0':
     optional: true
 
@@ -835,6 +849,8 @@ snapshots:
   end-of-stream@1.4.4:
     dependencies:
       once: 1.4.0
+
+  es-toolkit@1.39.5: {}
 
   esbuild@0.25.5:
     optionalDependencies:
