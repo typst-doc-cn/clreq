@@ -12,11 +12,12 @@ const CACHE_DIR = `${ROOT_DIR}/target/cache`;
 /**
  * The main entrypoint of precompilation.
  */
-export async function precompile(color: { color?: Color } = {}) {
+export async function precompile({ color }: { color?: Color } = {}) {
   await fs.mkdir(CACHE_DIR, { recursive: true });
   await Promise.all([
-    renderExamples(color),
-    renderPrioritization(color),
+    renderExamples({ color }),
+    renderPrioritization({ lang: "en", color }),
+    renderPrioritization({ lang: "zh", color }),
   ]);
 }
 
@@ -71,9 +72,9 @@ async function renderExamples({ color }: { color?: Color }) {
  * Render prioritization.level-table into an SVG.
  */
 async function renderPrioritization(
-  { color }: { color?: Color },
+  { lang, color }: { lang: "en" | "zh"; color?: Color },
 ): Promise<void> {
-  const output = `${CACHE_DIR}/prioritization.level-table.svg`;
+  const output = `${CACHE_DIR}/prioritization.level-table.${lang}.svg`;
   const dep = "typ/prioritization.typ";
 
   // compiled = output exists and newer than dep
@@ -100,7 +101,7 @@ async function renderPrioritization(
     stdin: `
 #set page(height: auto, width: auto, margin: 0.5em, fill: none)
 #import "/typ/prioritization.typ": level-table
-#level-table
+#level-table(lang: "${lang}")
 `.trim(),
     color: color,
   });

@@ -19,8 +19,8 @@
 ///
 /// If cache is ready, use the cached `prioritization.level-table.svg`.
 /// Otherwise, draw the table.
-#let level-table = if cache-ready {
-  to-html(xml(cache-dir + "prioritization.level-table.svg").first())
+#let level-table(lang: "en") = if cache-ready {
+  to-html(xml(cache-dir + "prioritization.level-table." + lang + ".svg").first())
 } else {
   let level = config
     .pairs()
@@ -34,27 +34,29 @@
     ))
     .to-dict()
 
-  set text(font: ("Libertinus Serif", "Noto Color Emoji"))
+  set text(font: ("Libertinus Serif", "Source Han Serif SC", "Noto Color Emoji"))
+
+  let bbl(en, zh) = if lang == "en" { en } else { zh }
 
   table(
     columns: 3,
     align: (x, y) => (if x == 0 { end } else if y <= 1 { center } else { start }) + horizon,
     stroke: none,
-    table.cell(rowspan: 2, smallcaps[*Difficulty to Resolve*]),
+    table.cell(rowspan: 2, smallcaps[*#bbl[Difficulty to Resolve][解决难度]*]),
     table.vline(),
-    table.cell(colspan: 2, smallcaps[*Issue*]),
+    table.cell(colspan: 2, smallcaps[*#bbl[Issue][问题]*]),
     table.hline(stroke: 0.5pt),
-    [🚲 *Typical*],
-    [🚀 *Specialized*],
+    [🚲 *#bbl[Typical][常见]*],
+    [🚀 *#bbl[Specialized][专业]*],
     table.hline(),
-    [*Works by default* 😃], level.ok, level.ok,
-    [*Requires simple config* ✅], level.advanced, level.ok,
-    [*Easy but not obvious* 🤨], level.basic, level.advanced,
-    [*Hard or fragile* 💀], level.broken, level.basic,
+    [*#bbl[Works by default][默认即可使用]* 😃], level.ok, level.ok,
+    [*#bbl[Requires simple config][只需简单设置]* ✅], level.advanced, level.ok,
+    [*#bbl[Easy but not obvious][容易但不直接]* 🤨], level.basic, level.advanced,
+    [*#bbl[Hard or fragile][困难而不可靠]* 💀], level.broken, level.basic,
     table.hline(stroke: 0.5pt),
     ..(
-      ([*Needs further research* 🔎], level.tbd),
-      ([*Irrelevant to this script* 🖖], level.na),
+      ([*#bbl[Needs further research][等待继续调查]* 🔎], level.tbd),
+      ([*#bbl[Irrelevant to this script][不涉及此文字]* 🖖], level.na),
     )
       .map(((k, v)) => (k, table.cell(colspan: 2, box(inset: (left: 27%), width: 100%, v))))
       .flatten(),

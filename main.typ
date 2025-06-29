@@ -24,7 +24,7 @@
 )
 
 #figure(
-  level-table,
+  bbl(en: level-table(lang: "en"), zh: level-table(lang: "zh")),
   caption: bbl(en: [Priority levels], zh: [优先级]),
   kind: table,
 ) <fig:level-table>
