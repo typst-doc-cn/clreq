@@ -58,7 +58,7 @@ A simple typst example.
 
   👀 shown as the source, but 🛑 not executed in the preview.
 
-#### Limitations
+#### Limitations and caveats
 
 Simple examples are evaluated in a container and their states are shared across the entire document.
 
@@ -72,9 +72,13 @@ As a result:
 
 - Citations and bibliographies will conflict with other examples.
 
+- The default configuration values are those specified in `raw`, which may differ from the defaults in regular documents.
+
+  For example, the default `text.cjk-latin-spacing` is typically `auto`, but here it is `none`.
+
 - …
 
-If you need advanced features, please write a page example instead.
+If you require advanced features or 100% accuracy, please write a page example instead.
 
 ### Page examples (`example-page`)
 

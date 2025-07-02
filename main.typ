@@ -677,7 +677,7 @@
 ```
 
 ```example-page
->>> // This example behaves differently in `example` and `example-page`.
+>>> // This example behaves differently in `example` and `example-page` because of cjk-latin-spacing.
 >>> #set text(top-edge: "ascender", bottom-edge: "descender")
 >>> Current:
 #set par(justify: true)
@@ -814,6 +814,25 @@ $ integral f dif x $
 
 >>> Expected: \
 >>> 汉字#h(0.25em)$A$#h(0.25em)汉字
+```
+
+=== #bbl(en: [Redundant CJK-Latin space at manual line breaks], zh: [人为换行时多余中西间距])
+
+#level.advanced
+#issue("typst#6539")
+
+#babel(
+  en: [If the line is manually broken between a CJK and a Latin character, then typst will insert an extra CJK-Latin space. This space becomes noticeable when text is aligned to the right or center.],
+  zh: [若在汉字和拉丁字母间手动换行，typst 会插入多余中西间距。如果文本右对齐或居中对齐，这个间距会显现出来。],
+)
+
+```example
+>>> Current: \
+#set text(cjk-latin-spacing: auto)
+#box(width: 3em, stroke: (right: green), align(right, [国国\ TT]))
+
+>>> Expected: \
+>>> #box(width: 3em, stroke: (right: green), align(right, [国国TT]))
 ```
 
 === #bbl(en: [Punctuation compression is interrupted by `#show`], zh: [`#show`会打断标点挤压])
@@ -955,6 +974,31 @@ $ integral f dif x $
 >>> Expected:
 >>> #set heading(numbering: none)
 >>> = 一、标题
+```
+
+=== #bbl(en: [The auto hanging indents of multiline headings are inaccurate], zh: [多行标题的自动悬挂缩进不准确])
+
+#level.advanced
+#issue("typst#6527")
+#workaround("https://github.com/typst/typst/issues/6527#issuecomment-3026200835")
+
+#babel(
+  en: [The default value of `heading.hanging-indent` is `auto`, which indicates that the subsequent heading lines will be indented based on the width of the numbering. However, the `auto` width is not accurate if the numbering ends with a full-width punctuation, e.g., #unichar("、").],
+  zh: [`heading.hanging-indent`默认为`auto`，表示标题从第二行起按编号的宽度缩进。然而若编号以全宽标点结尾，例如 #unichar("、")，那么`auto`得出的宽度并不准确。],
+)
+
+```example-page
+#set page(width: 5 * 12pt + 2 * 1em, margin: 1em)
+#show heading: set text(12pt)
+
+>>> #show heading: pad.with(top: -0.75em)
+>>> Current:
+#set heading(numbering: "一、")
+= 寻寻觅觅
+
+>>> Expected:
+>>> #set heading(numbering: none, hanging-indent: 2em)
+>>> = 一、寻寻觅觅
 ```
 
 == Styling initials <initials>
@@ -1232,7 +1276,7 @@ $ integral f dif x $
 
 ````example-page
 >>> Expected: \
-<<< 孔乙己@key，另见文献~#parencite(<key>)。
+<<< 孔乙己@key，另见#cite(<key>, form: "prose-short")。
 >>> 孔乙己#super[[1]]，另见文献#h(0.25em)#[[1]]。
 ````
 
