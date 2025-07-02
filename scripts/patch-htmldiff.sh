@@ -18,9 +18,30 @@ if [[ "${NETLIFY:-false}" == "true" ]]; then
   sd --fixed-strings "<head>" "<head><base href='$DEPLOY_URL/'>" dist/index.html
 fi
 
-# Ensure at least one newline before every `</pre>`.
+# Improve readability for `<pre>`.
 #
-# This is a bug.
+# This is a bug of htmldiff.
+#
 # When `<pre>` and `</pre>` is on the same line, `splitit` should set `$preformatted` to true, but not.
 # https://github.com/w3c/htmldiff-ui/blob/main/htmldiff.pl#L406-L412
-sd --fixed-strings "</pre>" $'\n</pre>' dist/index.html
+#
+# Additionally, `markit` will drop all characters after `<` for deleted (or replaced) lines.
+# As a result, htmldiff does not work as expected even if `$preformatted` has been set to true`.
+# https://github.com/w3c/htmldiff-ui/blob/5eac9b073c66b24422df613a537da2ec2f97f457/htmldiff.pl#L167-L168
+#
+# Therefore, let us ignore it…
+sd --fixed-strings "</head>" '<script>
+  if (
+    window.location.origin + window.location.pathname ===
+      "https://services.w3.org/htmldiff"
+  ) {
+    const style = document.createElement("style")
+    style.textContent = `
+      pre {
+        white-space: normal;
+      }
+    `
+    document.head.appendChild(style)
+  }
+</script>
+</head>' dist/index.html
