@@ -1,4 +1,5 @@
-#import "typ/util.typ": babel, bbl, issue, note, prompt, pull, unichar, workaround
+#import "typ/packages/till-next.typ": mark-till-next, till-next
+#import "typ/util.typ": babel, bbl, issue, note, now-fixed, prompt, pull, unichar, workaround
 #import "typ/prioritization.typ": level, level-table
 #import "typ/show-example.typ": render-examples
 #show: render-examples
@@ -44,6 +45,7 @@
 
 #set heading(numbering: "1.1")
 #show heading.where(level: 3): set heading(numbering: none)
+#show: mark-till-next
 
 = #bbl(en: [Text direction], zh: [文本方向])
 
@@ -1181,12 +1183,14 @@ $ integral f dif x $
 
 === #bbl(en: [Citation numbers are flying over their brackets], zh: [引用编号的数字高于括号])
 
-#level.basic
-#issue("typst#633")
+#level.ok
+#issue("typst#633", closed: true)
 #issue("typst#6513", closed: true)
 #issue("typst#4203", closed: true)
-#pull("typst#5777")
+#pull("typst#5777", merged: true)
 #workaround("https://typst-doc-cn.github.io/guide/FAQ/cite-flying.html")
+
+#till-next(now-fixed.with(last-affected: "0.13.1", last-level: "basic"))
 
 #babel(
   en: [The style `gb-7714-2015-numeric` formats a citation with a number enclosed in square brackets (e.g., `[1]`) and render them in superscript. However, some fonts only provide dedicated superscript glyphs for numbers, not for brackets. This can cause misalignment, with the numbers appearing higher than the brackets in the superscript.],
