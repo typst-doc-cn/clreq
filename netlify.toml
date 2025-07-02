@@ -1,7 +1,7 @@
 [build]
 command = """
 curl -L --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/cargo-bins/cargo-binstall/main/install-from-binstall-release.sh | bash && \
-cargo-binstall typst-cli ripgrep && \
+cargo-binstall typst-cli ripgrep sd && \
 \
 curl -OL https://www.7-zip.org/a/7z2409-linux-x64.tar.xz && \
 tar -xvf 7z2409-linux-x64.tar.xz 7zz && ln -s 7zz 7z && \
@@ -10,9 +10,18 @@ export PATH=$PATH:$(pwd) && \
 bash scripts/download_fonts.sh && \
 \
 pnpm install && \
-pnpm build
+pnpm build && \
+\
+bash scripts/patch-htmldiff.sh
 """
-# `cargo binstall` not works here
+# Remarks: `cargo-binstall` works, but `cargo binstall` not.
+
+
+[[headers]]
+for = "/assets/*"
+[headers.values]
+Access-Control-Allow-Origin = "https://services.w3.org" # Allow CORS for /htmldiff
+
 
 [[plugins]]
 package = "netlify-plugin-cache"
