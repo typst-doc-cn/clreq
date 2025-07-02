@@ -1,7 +1,7 @@
 #import "typ/packages/till-next.typ": mark-till-next, till-next
 #import "typ/util.typ": babel, bbl, issue, note, now-fixed, prompt, pull, unichar, workaround
 #import "typ/prioritization.typ": level, level-table
-#import "typ/show-example.typ": render-examples
+#import "typ/show-example.typ": layout-git-log, render-examples
 #show: render-examples
 
 #babel(en: [Chinese Layout Gap Analysis for Typst.], zh: [分析 Typst 与中文排版的差距。])
@@ -1648,6 +1648,8 @@ $ integral f dif x $
   [
     - #bbl(en: [Document version], zh: [文档版本]) \
       #link(git.commit_url)[commit #git.name] (#link(git.log_url)[log])
+
+      #layout-git-log(summary: bbl(en: [Latest log], zh: [最新日志]), git.latest_log)
   ]
 }
 
