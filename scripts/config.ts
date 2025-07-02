@@ -23,7 +23,9 @@ export const extraArgs = {
     "mode=build",
     "--input",
     `x-url-base=${
-      env.NETLIFY === "true" ? "/" : (env.GITHUB_PAGES_BASE ?? "/clreq/")
+      env.NETLIFY === "true"
+        ? env.DEPLOY_URL + "/" // patch htmldiff, or assets will go to services.w3.org
+        : (env.GITHUB_PAGES_BASE ?? "/clreq/")
     }`,
     ...envArgs,
   ],
