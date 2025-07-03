@@ -20,7 +20,7 @@ bash scripts/patch-htmldiff.sh
 [[headers]]
 for = "/assets/*"
 [headers.values]
-Access-Control-Allow-Origin = "https://services.w3.org" # Allow CORS for /htmldiff
+Access-Control-Allow-Origin = "*" # Allow CORS for https://services.w3.org/htmldiff
 
 
 [[plugins]]

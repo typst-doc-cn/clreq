@@ -9,14 +9,6 @@ set -euxo pipefail
 # The commit version might be the following:
 # https://github.com/w3c/htmldiff-ui/blob/5eac9b073c66b24422df613a537da2ec2f97f457/htmldiff.pl
 
-# Set base.
-# Otherwise, CSS & JS will go to services.w3.org.
-#
-# This CGI-mode feature is missing in CLI mode.
-# https://github.com/w3c/htmldiff-ui/blob/5eac9b073c66b24422df613a537da2ec2f97f457/htmldiff.pl#L560-L563
-if [[ "${NETLIFY:-false}" == "true" ]]; then
-  sd --fixed-strings "<head>" "<head><base href='$DEPLOY_URL/'>" dist/index.html
-fi
 
 # Improve readability for `<pre>`.
 #

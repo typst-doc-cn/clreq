@@ -44,3 +44,44 @@ aside.note {
     color: var(--accent);
   }
 }
+
+/* `details.now-fixed` */
+details.now-fixed {
+  margin-block: 1em;
+  border-left: 3px solid var(--accent);
+  border-radius: 8px;
+  padding-inline-start: 1.5em;
+  padding-block: 0.5em;
+
+  > summary {
+    cursor: pointer;
+    margin-left: -0.5em;
+
+    display: grid;
+    grid-template-columns: auto 1fr;
+    align-items: center;
+
+    font-weight: bold;
+    color: var(--accent);
+
+    /* Replace ::marker with ::before */
+    list-style: none;
+
+    &::before {
+      display: block;
+      height: 2em;
+      width: 2em;
+    }
+
+    > p {
+      margin-top: 0;
+    }
+  }
+
+  > summary::before {
+    content: "▶";
+  }
+  &[open] > summary::before {
+    content: "▼";
+  }
+}

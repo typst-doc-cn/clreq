@@ -3,6 +3,7 @@
 #import "icon.typ"
 #import "templates/html-toolkit.typ": h
 #import "templates/html-fix.typ": link-in-new-tab
+#import "prioritization.typ": config as priority-config
 
 /// Multilingual
 #let _babel(en: [], zh: [], tag: "span") = {
@@ -151,3 +152,56 @@
 
   body
 })
+
+/// An issue that is now fixed
+///
+/// - last-affected (str): The last affected version, e.g. `"0.13.1"`
+/// - last-level (str): Previous priority level
+/// - body (content):
+/// -> content
+#let now-fixed(last-affected: none, last-level: none, body) = {
+  assert.ne(last-affected, none, message: "the `last-affected` version should be specified, e.g. `\"0.13.1\"`")
+  last-affected = version(last-affected.split(".").map(int))
+
+  assert(
+    last-level in priority-config.keys(),
+    message: "`last-level` should be a level in " + repr(priority-config.keys()),
+  )
+  last-level = priority-config.at(last-level)
+
+  let already-fixed = sys.version > last-affected
+
+  h.details(
+    class: "now-fixed",
+    ..if not already-fixed { (open: "") },
+    {
+      h.summary(h.p(if already-fixed {
+        bbl(
+          en: [Now fixed! (it was #last-level.human in v#last-affected)],
+          zh: [现已修复！（v#last-affected 曾为 #last-level.human）],
+        )
+      } else {
+        bbl(
+          en: [Fixed in dev! (it is #last-level.human in v#last-affected)],
+          zh: [已于开发版修复！（v#last-affected 为 #last-level.human）],
+        )
+      }))
+
+      if already-fixed {
+        babel(
+          en: [#emoji.warning The following description was written for typst v#last-affected, but the examples are rendered in v#sys.version. Results may differ.],
+          zh: [#emoji.warning 以下描述针对 typst v#last-affected，但例子采用 v#sys.version 渲染，结果可能不一致。],
+        )
+      }
+
+      body
+    },
+  )
+
+  // Make sure the `body` can be retrieved by typst query.
+  // In v0.13, typst query doesn’t respect the export format, and ignore all html elements.
+  // https://github.com/typst/typst/issues/6404
+  context if target() != "html" {
+    body
+  }
+}
