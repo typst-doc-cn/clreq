@@ -181,6 +181,43 @@
   ],
 )
 
+```example
+>>> Current: \
+正文汉字 vs. `let foo = "汉字"`
+
+>>> Expected: \
+>>> #show raw: set text(font: (
+>>>   (name: "DejaVu Sans Mono", covers: "latin-in-cjk"),
+>>>   "Noto Serif CJK SC",
+>>> ))
+>>> 正文汉字 vs. `let foo = "汉字"`
+```
+
+=== #bbl(en: [Wrong font fallback for Chinese in math equations], zh: [数学公式中汉字回落的字体不正常])
+
+#level.advanced
+#issue("typst#366")
+#workaround("https://typst-doc-cn.github.io/guide/FAQ/equation-chinese-font.html")
+
+#babel(
+  en: [This is a variant of the above issue in `math.equation`.],
+  zh: [这是以上问题在`math.equation`数学公式的变体。],
+)
+
+```example
+>>> Current: \
+因此，
+$ f(x) = y "（定义8）" $
+
+>>> Expected: \
+>>> #show math.equation: set text(font: (
+>>>   "Noto Serif CJK SC",
+>>>   "New Computer Modern Math",
+>>> ))
+>>> 因此，
+>>> $ f(x) = y "（定义8）" $
+```
+
 === #bbl(en: [Language-dependant font configuration], zh: [按语言设置字体])
 
 #level.basic
@@ -348,6 +385,42 @@
   zh: [这一问题算作 Advanced，因为 IVS 很少用，并且可用`#set text(lang: …, region: …)`等设置替代。],
 )
 
+=== #bbl(
+  en: [Links containing non ASCII characters are wrong when viewing PDF in Safari],
+  zh: [链接若包含非 ASCII 字符，用 Safari 查看 PDF 时会错],
+)
+
+#level.basic
+#issue("typst#6128")
+#workaround("https://typst.app/universe/package/percencode")
+
+#babel(
+  en: [In the typst document, if the URL of a link uses Chinese characters rather than escape sequences, then it will be wrong when viewing PDF in Safari. The UTF-8 encoded bytes are decoded as Latin-1.],
+  zh: [在 typst 文档中设置链接的 URL 时，若不加转义，直接用汉字，那么用 Safari 查看 PDF 时会错。UTF-8 编码的字节被按 Latin-1 解码。],
+)
+
+```example-page
+<<< #link("https://w3c.github.io/clreq/home#discussions-讨论-討論")[Discussions 讨论 討論]
+
+>>> #import "@preview/percencode:0.1.0": percent-decode, url-encode
+>>> #set page(width: 26em)
+>>> #show raw: set text(font: (
+>>>   (name: "DejaVu Sans Mono", covers: "latin-in-cjk"),
+>>>   "Noto Serif CJK SC",
+>>> ))
+>>> #let pretty-repr(it) = raw(repr(it), lang: "typc")
+>>>
+>>> Current in Safari: \
+>>> #let hash = "#discussions-%C3%A8%C2%AE%C2%A8%C3%A8%C2%AE%C2%BA-%C3%A8%C2%A8%C2%8E%C3%A8%C2%AB%C2%96"
+>>> #raw(hash) \
+>>> (decoded: #pretty-repr(percent-decode(hash)))
+>>>
+>>> Expected: \
+>>> #let hash = "#discussions-讨论-討論"
+>>> #raw(url-encode(hash)) \
+>>> (decoded: #pretty-repr(hash))
+```
+
 == Grapheme/word segmentation & selection
 
 #prompt(from-w3c: "https://www.w3.org/TR/clreq-gap/#segmentation")[
@@ -514,7 +587,7 @@
   Relevant here are formats related to number, currency, dates, personal names, addresses, and so forth. If the script has its own set of number digits, are there any issues in how they are used? Does the script or language use special format patterns that are problematic (eg. 12,34,000 in India)? What about date/time formats and selection - and are non-Gregorian calendars needed? Do percent signs and other symbols associated with number work correctly, and do numbers need special decorations, (like in Ethiopic or Syriac)? How about the management of personal names, addresses, etc. in typst: are there issues?
 ]
 
-=== #bbl(en: [Numbers in Chinese], zh: [中文数字])
+=== #bbl(en: [Numbers in Simplified Chinese], zh: [简体中文数字])
 
 #level.ok
 
@@ -530,6 +603,25 @@
   en: [Natively supported. Mentioned here to prevent future people from reimplementing it.],
   zh: [内置支持。为避免又有人不知道而重复开发，提及一下。],
 )
+
+=== #bbl(en: [Numbers in Traditional Chinese], zh: [繁体中文数字])
+
+#level.advanced
+#issue("typst#6484")
+
+#babel(
+  en: [The characters used for numbers are not identical between traditional and simplified Chinese, but there is no mechanism to distinguish them yet.],
+  zh: [繁简中文数字所用字符不完全一致，但尚无机制区分。],
+)
+
+```example
+>>> Current: \
+#set text(lang: "zh", region: "TW")
+#numbering("壹", 2 * calc.pow(10, 8))
+
+>>> Expected: \
+>>> 貳億
+```
 
 = #bbl(en: [Line and paragraph layout], zh: [行与段落版式])
 
@@ -879,6 +971,7 @@ $ integral f dif x $
 === #bbl(en: [Default line height is too tight for Chinese], zh: [默认行高对中文来说过小])
 
 #level.basic
+#issue("typst#5644")
 #workaround("https://typst-doc-cn.github.io/guide/FAQ/par-leading.html#typst-设置")
 
 #babel(
@@ -926,6 +1019,7 @@ $ integral f dif x $
 
 #level.basic
 #issue("typst#1204")
+#issue("typst#1610")
 #workaround("https://typst-doc-cn.github.io/guide/FAQ/enum-list-marker-fix.html")
 
 #babel(
@@ -1323,8 +1417,11 @@ $ integral f dif x $
 #level.broken
 #issue("citationberg#5")
 #issue("hayagriva#291")
+#issue("typst#3168")
 #issue("nju-lug/modern-nju-thesis#3")
 #issue("csimide/SEU-Typst-Template#1")
+#pull("biblatex#78", merged: true)
+#pull("hayagriva#126")
 #workaround("https://typst-doc-cn.github.io/guide/FAQ/bib-etal-lang.html")
 #workaround("https://typst.app/universe/package/modern-nju-thesis")
 
@@ -1426,6 +1523,7 @@ $ integral f dif x $
 
 #level.advanced
 #issue("hayagriva#259")
+#issue("hayagriva#193")
 
 #babel(
   en: [The style `gb-7714-2015-author-date` currently sorts works by Unicode code points. However, according to the standard, when using this style, the cited works should first be grouped by scripts, then arranged by author names and publication dates. For Chinese works, they may be ordered by either pinyin or strokes.],
@@ -1625,6 +1723,16 @@ $ integral f dif x $
   ),
   caption: bbl(en: [94 spelling mistakes], zh: [94个拼写错误]),
 ) <fig:webapp-misspell>
+
+=== #bbl(en: [Internationalize warning and error messages], zh: [国际化警告和错误信息])
+
+#level.advanced
+#issue("typst#6460")
+
+#babel(
+  en: [At present, there are no relevant methods, no matter the messages come from the core compiler or third-party packages.],
+  zh: [尚无任何相关措施，无论报错发自核心编译器还是第三方包。],
+)
 
 #set heading(numbering: none)
 
