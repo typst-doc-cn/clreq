@@ -11,6 +11,10 @@ export const envArgs = [
 
 export const ASSETS_SERVER_PORT = 5173;
 
+export const BUILD_URL_BASE = env.NETLIFY === "true"
+  ? env.DEPLOY_URL + "/" // patch htmldiff, or assets will go to services.w3.org
+  : (env.GITHUB_PAGES_BASE ?? "/clreq/");
+
 /** See typ/mode.typ */
 export const extraArgs = {
   pre: [
@@ -22,11 +26,7 @@ export const extraArgs = {
     "--input",
     "mode=build",
     "--input",
-    `x-url-base=${
-      env.NETLIFY === "true"
-        ? env.DEPLOY_URL + "/" // patch htmldiff, or assets will go to services.w3.org
-        : (env.GITHUB_PAGES_BASE ?? "/clreq/")
-    }`,
+    `x-url-base=${BUILD_URL_BASE}`,
     ...envArgs,
   ],
   dev: [
