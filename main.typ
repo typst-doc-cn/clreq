@@ -608,6 +608,7 @@ $ f(x) = y "（定义8）" $
 
 #level.advanced
 #issue("typst#6484")
+#workaround("https://typst.app/universe/package/conjak")
 
 #babel(
   en: [The characters used for numbers are not identical between traditional and simplified Chinese, but there is no mechanism to distinguish them yet.],
@@ -622,6 +623,9 @@ $ f(x) = y "（定义8）" $
 >>> Expected: \
 >>> 貳億
 ```
+
+// TODO
+#babel(zh: [具体期望结果可能还有地区变体和个人偏好变体，例如`叁`的写法。])
 
 = #bbl(en: [Line and paragraph layout], zh: [行与段落版式])
 
