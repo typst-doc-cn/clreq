@@ -12,9 +12,11 @@ export default defineConfig({
       input: {
         main: resolve(__dirname, "src/main.ts"),
         theme: resolve(__dirname, "src/theme.ts"),
+        htmldiff_nav: resolve(__dirname, "src/htmldiff-nav.ts"),
       },
     },
     manifest: true, // https://vite.dev/guide/backend-integration.html
+    sourcemap: true
   },
   css: {
     postcss: {

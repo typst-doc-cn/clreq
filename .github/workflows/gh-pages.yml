@@ -51,7 +51,7 @@ jobs:
             fonts-
       - uses: taiki-e/install-action@v2
         with:
-          tool: ripgrep,sd
+          tool: ripgrep
       - name: Install fonts
         shell: bash
         if: steps.cache.outputs.cache-hit != 'true'
@@ -59,7 +59,7 @@ jobs:
           bash scripts/download_fonts.sh
       - run: pnpm install
       - run: pnpm build
-      - run: bash scripts/patch-htmldiff.sh
+      - run: pnpm patch-htmldiff
       - name: Setup Pages
         uses: actions/configure-pages@v5
       - name: Upload artifact

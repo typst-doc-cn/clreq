@@ -14,7 +14,8 @@
         "build": "tsc && vite build && node --experimental-strip-types scripts/build.ts",
         "dev": "node --experimental-strip-types scripts/dev.ts",
         "preview": "vite preview --base=/clreq/",
-        "check-issues": "node --experimental-strip-types scripts/check_issues.ts"
+        "check-issues": "node --experimental-strip-types scripts/check_issues.ts",
+        "patch-htmldiff": "node --experimental-strip-types scripts/patch-htmldiff.ts"
     },
     "devDependencies": {
         "@types/glob-watcher": "^5.0.5",
