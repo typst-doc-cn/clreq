@@ -308,7 +308,8 @@ $ f(x) = y "（定义8）" $
 == Cursive text <cursive>
 
 #prompt(from-w3c: "https://www.w3.org/TR/clreq-gap/#cursive")[
-  // TODO: The apostrophe here uses the wrong font.
+  #show: html.elem.with("span", attrs: (style: "font-feature-settings: 'pwid';"))
+  // Or the width of the apostrophe here will be wrong.
   If this script is cursive (ie. letters are generally joined up, like in Arabic, N’Ko, Syriac, etc), are there problems or needed features related to the handling of cursive text? Do cursive links break if parts of a word are marked up or styled? Do Unicode joiner and non-joiner characters behave as expected?
 ]
 
