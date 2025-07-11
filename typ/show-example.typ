@@ -1,5 +1,5 @@
 #import "@preview/tidy:0.4.3": show-example as tidy-example
-#import "@preview/jumble:0.0.1": bytes-to-hex, md5
+#import "@preview/digestify:0.1.0": bytes-to-hex, md5
 
 #import "templates/html-fix.typ": reserve-text-fill
 #import "templates/html-toolkit.typ": div-frame, h
@@ -60,6 +60,10 @@
 /// https://doc.rust-lang.org/stable/std/option/enum.Option.html#method.map
 #let optional-map(f, x) = if x == none { none } else { f(x) }
 
+/// - x (str):
+/// -> str
+#let hash(x) = bytes-to-hex(md5(bytes(x)))
+
 
 /// Adds the language `example`, etc. to `raw` that can be used to render code examples side-by-side with an automatic preview.
 ///
@@ -106,7 +110,7 @@
       .replace("{GENERAL-PREAMBLE}", GENERAL-PREAMBLE)
       .replace("{executed}", executed)
 
-    let id = "example-" + bytes-to-hex(md5(full-executed))
+    let id = "example-" + hash(full-executed)
     [
       #metadata((id: id, content: full-executed)) <external-example>
     ]
@@ -145,7 +149,7 @@
       .replace("{displayed}", displayed)
       .replace("{expected}", expected.map(x => "+ " + x).join("\n"))
 
-    let id = "example-" + bytes-to-hex(md5(executed))
+    let id = "example-" + hash(executed)
     [
       #metadata((id: id, content: executed)) <external-example>
     ]
