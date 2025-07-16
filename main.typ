@@ -1184,7 +1184,7 @@ $ integral f dif x $
 
 ```example
 <<< // Current:
-<<< #set page(paper: "a4", margin: (x: (210mm - 42em) / 2))
+<<< #set page(paper: "a4", margin: (x: (100% - 42em) / 2))
 <<<
 <<< // Expected to be easier:
 <<< #set page(paper: "a4", inner-width: 42em)
