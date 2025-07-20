@@ -853,27 +853,52 @@ $ integral f dif x $
 
 === #bbl(en: [Even inter-character spacing], zh: [均排])
 
-#level.advanced
+#level.ok
 #workaround("https://typst-doc-cn.github.io/guide/FAQ/character-intersperse.html")
 #workaround("https://typst.app/universe/package/tricorder")
 
 #babel(
-  en: [Even inter-character spacing means letting several Chinese characters to occupy a fixed width and be evenly distributed.],
-  zh: [均排是指让几个汉字占固定宽度并均匀分布。],
+  en: [Even inter-character spacing means letting several Chinese characters to occupy a fixed width and be evenly distributed. It is often used for listing items.],
+  zh: [均排是指让几个汉字占固定宽度并均匀分布。常用于列出项目。],
+)
+
+#babel(
+  en: [Currently, it can be achieved by using #link("https://typst.app/docs/reference/text/linebreak/#parameters-justify")[`linebreak(justify: true)`] and aligning in the middle horizontally, as shown below.],
+  zh: [当前可用#link("https://typst.app/docs/reference/text/linebreak/#parameters-justify")[`linebreak(justify: true)`]及左右居中实现，如下例。],
 )
 
 ```example
->>> Current:
->>>
-丁声树 黎锦熙 \
-李荣 陆志韦
+>>> Current & \ Expected:
+#table(
+  align: center,
+  stroke: (_, y) => if y > 0 { (top: 0.5pt) },
+  inset: (x: 1em),
+  table.hline(),
+  ..(
+    [质量],
+    [体积],
+    [能],
+    [级差],
+    [线密度],
+    [土地面积],
+  ).map(cell => cell + linebreak(justify: true)),
+  table.hline(),
+)
+```
+#babel(
+  en: [In most cases, complex variants such as rosters can also be implemented in combination with #link("https://typst.app/docs/reference/layout/grid/")[`grid`], as shown below.],
+  zh: [花名册等复杂变体通常也可结合#link("https://typst.app/docs/reference/layout/grid/")[`grid`]实现，如下例。],
+)
 
->>> Expected:
->>> #import "@preview/tricorder:0.1.0": tricorder
->>> #tricorder(
->>>   columns: 2,
->>>   .."丁声树、黎锦熙、李荣、陆志韦".split("、"),
->>> )
+```example
+>>> Current & Expected:
+#grid(
+  columns: 2,
+  gutter: 1em,
+  .."丁声树、黎锦熙、李荣、陆志韦"
+    .split("、")
+    .map(cell => cell + linebreak(justify: true)),
+)
 ```
 
 == #bbl(en: [Text spacing], zh: [文本的间距调整])
@@ -1541,6 +1566,7 @@ $ integral f dif x $
 
 #level.advanced
 #issue("hayagriva#189", note: [mentioned])
+#issue("typst#6612")
 
 - #bbl(
     en: [The references need only be listed in the footnotes, and should not be repeated at the end of the article.],
