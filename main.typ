@@ -4,20 +4,26 @@
 #import "typ/show-example.typ": layout-git-log, render-examples
 #show: render-examples
 
+/// URL to the source repository and branch of this document
+#let repo-blob = "https://github.com/typst-doc-cn/clreq/blob/main"
+
 #babel(en: [Chinese Layout Gap Analysis for Typst.], zh: [分析 Typst 与中文排版的差距。])
 
 = #bbl(en: [Introduction], zh: [导语])
 
-#babel(
-  en: [
-    Typst is a markup-based typesetting software, and this document describes gaps or shortcomings for the support of the Chinese script within Typst.
-    In particular, it is concerned with #link("https://www.w3.org/TR/clreq/")[text layout] and #link("https://std.samr.gov.cn/gb/search/gbDetailed?id=71F772D8055ED3A7E05397BE0A0AB82A")[bibliography].
-    It examines whether needed features are supported by the typst compiler, and provides information on potential workarounds.
-  ],
-  zh: [
-    Typst 是一款基于标记的排版软件，这份文档描述了它在中文支持方面的差距，特别是#link("https://www.w3.org/TR/clreq/")[排版]和#link("https://std.samr.gov.cn/gb/search/gbDetailed?id=71F772D8055ED3A7E05397BE0A0AB82A")[参考文献著录]。本文会检查 typst 编译器是否支持所需功能，并介绍可能的临时解决方案。
-  ],
-)
+#{
+  import "@preview/cmarker:0.1.6": render
+
+  let include-intro(path) = {
+    let lines = read(path).split(regex("\r?\n"))
+    let start = lines.position(l => l.trim() == `<!-- <included #intro by="main.typ"> -->`.text) + 1
+    let end = lines.position(l => l.trim() == "<!-- </included> -->")
+
+    render(lines.slice(start, end).join("\n"))
+  }
+
+  babel(en: include-intro("README.en.md"), zh: include-intro("README.md"))
+}
 
 #babel(
   en: [This document also attempts to prioritize the gaps in terms of the impact on Chinese end authors. The prioritization is indicated by colour, as shown in @fig:level-table.],
@@ -34,10 +40,10 @@
   en: [
     #emoji.warning This document is only an early draft.
     Additionally, it is not endorsed by either #link("https://www.w3.org/")[W3C] or #link("https://typst.app/home")[Typst GmbH].
-    Please refer to it with caution.
+    Please refer to it with caution and #link(repo-blob + "/README.en.md")[give feedback at any time].
   ],
   zh: [
-    #emoji.warning 这份文档仅是早期草稿。此外，本文并无 #link("https://www.w3.org/")[W3C] 或 #link("https://typst.app/home")[Typst GmbH] 背书。请谨慎参考。
+    #emoji.warning 这份文档仅是早期草稿。此外，本文并无 #link("https://www.w3.org/")[W3C] 或 #link("https://typst.app/home")[Typst GmbH] 背书。请谨慎参考，#link(repo-blob + "/README.md")[随时反馈]。
   ],
 )
 
@@ -489,7 +495,7 @@ $ f(x) = y "（定义8）" $
   summary: bbl(en: [Note: The input method of quotation marks], zh: [注：引号的输入方法]),
   {
     babel(
-      en: [Chinese characters are not directly mapped to keys on the keyboards because there are too many of them. Instead, people press a sequence of keys on an ordinary QWERTY keyboard, and let IME (Input Methods Editors, a software built into the computer) convert them into one or more Chinese characters. Please refer to #link("https://unicode.org/faq/font_keyboard.html#Inputting_Chinese")[FAQ about inputting Chinese chracters on Unicode.org] for more details.],
+      en: [Chinese characters are not directly mapped to keys on the keyboards because there are too many of them. Instead, people press a sequence of keys on an ordinary QWERTY keyboard, and let IME (Input Methods Editors, a software built into the computer) convert them into one or more Chinese characters. Please refer to #link("https://unicode.org/faq/font_keyboard.html#Inputting_Chinese")[FAQ about inputting Chinese characters on Unicode.org] for more details.],
       zh: [汉字非常多，所以不会直接映射到键盘上。人们会在普通 QWERTY 键盘上按几个键，让输入法（input methods editors, IME，电脑内置的软件）转换成一个或一串汉字。细节请参考 #link("https://unicode.org/faq/font_keyboard.html#Inputting_Chinese")[Unicode.org 上关于输入汉字的常见问题]。],
     )
 
@@ -1862,9 +1868,7 @@ $ integral f dif x $
 
 - Live long
 
-  - Documentation
-
-    - Contributing guide
+  - Improve #link(repo-blob + "/README.md")[the contributing guide]
 
 == Umbrella/tracking issues
 

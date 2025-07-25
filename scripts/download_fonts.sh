@@ -11,6 +11,8 @@ if ! typst fonts --font-path . | rg --quiet '^Noto Serif CJK SC$'; then
   rm 09_NotoSerifCJKsc.zip
 fi
 
+# Noto Color Emoji, the CBDT/CBLC version
+# See https://github.com/typst/typst/issues/6611 for reasons.
 if ! typst fonts --font-path . | rg --quiet '^Noto Color Emoji$'; then
   curl --location --remote-name https://github.com/googlefonts/noto-emoji/raw/main/fonts/NotoColorEmoji.ttf
 fi
