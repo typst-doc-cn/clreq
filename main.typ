@@ -145,6 +145,7 @@
 #level.advanced
 #issue("typst#5040")
 #issue("typst#5900")
+#issue("webapp-issues#590")
 #workaround("https://typst-doc-cn.github.io/guide/FAQ/install-fonts.html")
 
 #babel(
@@ -1738,14 +1739,29 @@ $ integral f dif x $
   zh: [这一问题算作 Advanced，因为并非所有人都想要这种行为。],
 )
 
-=== #bbl(en: [Disable the spell checker of webapp], zh: [关闭 webapp 的拼写检查])
+=== #bbl(en: [Internationalize warning and error messages], zh: [国际化警告和错误信息])
+
+#level.advanced
+#issue("typst#6460")
+
+#babel(
+  en: [At present, there are no relevant methods, no matter the messages come from the core compiler or third-party packages.],
+  zh: [尚无任何相关措施，无论报错发自核心编译器还是第三方包。],
+)
+
+=== #bbl(en: [Web app issues], zh: [在线应用的问题])
 
 #level.advanced
 #workaround("https://typst-doc-cn.github.io/guide/FAQ/webapp-spellcheck.html")
 
+#bbl(
+  en: [There are a few issues for the official typst.app that related to the Chinese script.],
+  zh: [官方 typst.app 有些问题与中文相关。],
+)
+
 #babel(
-  en: [The spell checker embedded in the webapp does not support Chinese, marking all characters as misspelled, as shown in @fig:webapp-misspell.],
-  zh: [webapp 内嵌的拼写检查器不支持中文，每个字都会被标为拼写错误，如 @fig:webapp-misspell。],
+  en: [For example, the spell checker embedded in the web app does not support Chinese, marking all characters as misspelled, as shown in @fig:webapp-misspell.],
+  zh: [例如在线应用内嵌的拼写检查器不支持中文，每个字都会被标为拼写错误，如 @fig:webapp-misspell。],
 )
 
 #figure(
@@ -1757,15 +1773,35 @@ $ integral f dif x $
   caption: bbl(en: [94 spelling mistakes], zh: [94个拼写错误]),
 ) <fig:webapp-misspell>
 
-=== #bbl(en: [Internationalize warning and error messages], zh: [国际化警告和错误信息])
-
-#level.advanced
-#issue("typst#6460")
-
 #babel(
-  en: [At present, there are no relevant methods, no matter the messages come from the core compiler or third-party packages.],
-  zh: [尚无任何相关措施，无论报错发自核心编译器还是第三方包。],
+  en: [Considering that these issues cannot be reproduced robustly and automatically, we only list them below without further explanation.],
+  zh: [考虑到这些问题难以稳定自动复现，在此仅列出问题而不加说明。],
 )
+
+- #issue("webapp-issues#48", closed: true)
+
+  #bbl(en: [Add region option to template wizard, alongside language option], zh: [在模板向导的语言设置旁添加地区设置])
+
+- #issue("webapp-issues#483")
+
+  #bbl(
+    en: [The interaction between IME (Input Methods Editor) and the collaboration feature is confusing],
+    zh: [输入法和分享功能的相互作用很迷惑],
+  )
+
+- #issue("webapp-issues#675")
+
+  #bbl(
+    en: [Spell checker  does not respect `text.lang` if the `*.typ` is not included in `main.typ`],
+    zh: [若`*.typ`未被`main.typ`导入，则拼写检查器会忽略`text.lang`],
+  )
+
+- #issue("typst#5436")
+
+  #bbl(
+    en: [Support font name autocompletion for `set text(font: array)`],
+    zh: [在`set text(font: array)`中支持自动补全字体名称],
+  )
 
 #set heading(numbering: none)
 
