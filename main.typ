@@ -806,7 +806,7 @@ $ f(x) = y "（定义8）" $
 #issue("typst#6582")
 
 #babel(
-  en: [#link("https://www.w3.org/TR/clreq/#hanging_punctuation_marks_at_line_end")[Most Chinese publications do not use hanging punctuation at line end], and there are also certain styles prefer hanging. The #link("https://typst.app/docs/reference/text/text/#parameters-overhang")[`text.overhang`] parameter needs to be more configurable.],
+  en: [#link("https://www.w3.org/TR/clreq/#hanging_punctuation_marks_at_line_end")[Most Chinese publications do not use hanging punctuation at line end], and there are also certain styles that prefer hanging. The #link("https://typst.app/docs/reference/text/text/#parameters-overhang")[`text.overhang`] parameter needs to be more configurable.],
   zh: [#link("https://www.w3.org/TR/clreq/#hanging_punctuation_marks_at_line_end")[绝大多数的中文出版物没有悬挂行尾点号的惯例]，但也有特定体例会悬挂。#link("https://typst.app/docs/reference/text/text/#parameters-overhang")[`text.overhang`]参数需要支持更多定制。],
 )
 
