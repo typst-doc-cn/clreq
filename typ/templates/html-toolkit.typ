@@ -103,18 +103,22 @@
 ///
 /// - href (str): The URL of the CSS file.
 /// -> content
-#let preload-css(href) = to-html(xml
-  .decode(```xml
-  <link
-  rel="preload"
-  as="style"
-  href="{{href}}"
-  onload="this.rel='stylesheet'"
-  />
-  ```
-    .text
-    .replace("{{href}}", href))
-  .at(0))
+#let preload-css(href) = to-html(
+  xml
+    .decode(
+      ```xml
+      <link
+        rel="preload"
+        as="style"
+        href="{{href}}"
+        onload="this.rel='stylesheet'"
+      />
+      ```
+        .text
+        .replace("{{href}}", href),
+    )
+    .at(0),
+)
 
 
 

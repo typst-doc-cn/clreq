@@ -1,6 +1,7 @@
 name: autofix.ci  # needed to securely identify the workflow
 
 on:
+  # Sync this with `./check.yml`
   push:
     branches:
       - main
@@ -16,7 +17,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: taiki-e/install-action@v2
         with:
-          tool: fd-find,typstyle@0.13.11  # typstyle shipped with tinymist v0.13.14
+          tool: fd-find,typstyle@0.13.16  # typstyle shipped with tinymist v0.13.16
       - name: Run typstyle
         run: |
           typstyle --inplace --line-width 120 $(fd --extension typ --exclude 'html-bindings*.typ')

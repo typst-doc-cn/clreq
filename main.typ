@@ -467,7 +467,10 @@ $ f(x) = y "（定义8）" $
   )
 ]
 
-=== #bbl(en: [Quotation marks should have different widths for Chinese and Western text], zh: [中西文引号的宽度应当不同])
+=== #bbl(
+  en: [Quotation marks should have different widths for Chinese and Western text],
+  zh: [中西文引号的宽度应当不同],
+)
 
 #level.basic
 #issue("typst#5858")
@@ -1567,7 +1570,10 @@ $ integral f dif x $
 % 王楠. 在“共产主义视镜”下想象科学——“十七年”期间的中国科幻文学与科学话语[D/OL]. 新加坡: 新加坡国立大学, 2016[2025-02-15]. https://scholarbank.nus.edu.sg/handle/10635/132143.
 ```
 
-=== #bbl(en: [Discontinuous page numbers are displayed incorrectly, missing a comma], zh: [不连续页码显示错误，缺少逗号])
+=== #bbl(
+  en: [Discontinuous page numbers are displayed incorrectly, missing a comma],
+  zh: [不连续页码显示错误，缺少逗号],
+)
 
 #level.basic
 #workaround("https://typst-doc-cn.github.io/guide/FAQ/bib-missing-page-delimiter.html")
