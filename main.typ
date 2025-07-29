@@ -799,6 +799,37 @@ $ f(x) = y "（定义8）" $
 >>> ]
 ```
 
+=== #bbl(en: [Punctuation overhang], zh: [标点悬挂])
+
+#level.advanced
+#issue("typst#261")
+#issue("typst#6582")
+
+#babel(
+  en: [#link("https://www.w3.org/TR/clreq/#hanging_punctuation_marks_at_line_end")[Most Chinese publications do not use hanging punctuation at line end], and there are also certain styles that prefer hanging. The #link("https://typst.app/docs/reference/text/text/#parameters-overhang")[`text.overhang`] parameter needs to be more configurable.],
+  zh: [#link("https://www.w3.org/TR/clreq/#hanging_punctuation_marks_at_line_end")[绝大多数的中文出版物没有悬挂行尾点号的惯例]，但也有特定体例会悬挂。#link("https://typst.app/docs/reference/text/text/#parameters-overhang")[`text.overhang`]参数需要支持更多定制。],
+)
+
+```example-page
+#set page(width: 7em + 2 * 1em, margin: 1em)
+>>> #show heading: set text(1em / 1.4)
+>>> #show heading: set block(below: 1em)
+
+>>> = Current & \ Expected
+第二天我起得非常迟，午饭之后，出去看了朋友。
+
+>>> = Current & \ Expected
+#set par(justify: true)
+第二天我起得非常迟，午饭之后，出去看了朋友。
+
+// Expected to be possible:
+<<<#set text(overhang: ("、": 1.0, "，": 1.0, "。": 1.0))
+>>> = Expected
+>>> #set par(justify: false)
+<<<第二天我起得非常迟，午饭之后，出去看了朋友。
+>>> 第二天我起得非常迟，午饭之后，#h(-1em)出去看了朋友。
+```
+
 === #bbl(en: [Brackets at the beginning of paragraph], zh: [段首的方括号])
 
 #level.tbd
