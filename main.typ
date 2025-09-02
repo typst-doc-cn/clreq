@@ -648,7 +648,26 @@ $ f(x) = y "（定义8）" $
   Does typst capture the rules about the way text in your script wraps when it hits the end of a line? Does line-breaking wrap whole _words_ at a time, or characters, or something else (such as syllables in Tibetan and Javanese)? What characters should not appear at the end or start of a line, and what should be done to prevent that? Is hyphenation used for your script, or something else? If hyphenation is used, does it work as expected? (Note, this is about line-end hyphenation when text is wrapped, rather than use of the hyphen and related characters as punctuation marks.)
 ]
 
-#level.ok
+=== #bbl(en: [Interpuncts should not appear at line start], zh: [间隔号不能出现在行首])
+
+#level.advanced
+#issue("typst#6774")
+
+#babel(
+  en: [According to #link("https://www.w3.org/TR/clreq/#prohibition_rules_for_line_start_end")[prohibition rules for line start and line end] (basic), #unichar("·") should not appear at the line start.],
+  zh: [按照#link("https://www.w3.org/TR/clreq/#prohibition_rules_for_line_start_end")[行首行尾禁则]（基本处理），#unichar("·")不能出现在一行的开头。],
+)
+
+```example
+>>> Current: \
+#show: block.with(width: 7em)
+噫，克里斯蒂娜·罗塞蒂，还有阿加莎·克里斯蒂！
+
+>>> Expected: \
+>>> #show "·": it => box(width: 0.5em, align(center + horizon, text(bottom-edge: "baseline", it)))
+>>> 噫，#h(-0.5em)克里斯蒂娜·罗塞蒂，还有阿加莎·克里斯蒂！
+```
+// This example is agnostic to the region — regardless of whether the base width is 1em or 0.5em, it should be adjusted to 0.5em here.
 
 == #bbl(en: [Text alignment & justification], zh: [文本对齐]) <justification>
 
