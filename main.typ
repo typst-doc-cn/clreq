@@ -204,6 +204,7 @@
 
 #level.advanced
 #issue("typst#366")
+#issue("typst#6737")
 #workaround("https://typst-doc-cn.github.io/guide/FAQ/equation-chinese-font.html")
 
 #babel(
