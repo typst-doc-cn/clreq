@@ -204,6 +204,7 @@
 
 #level.advanced
 #issue("typst#366")
+#issue("typst#6737")
 #workaround("https://typst-doc-cn.github.io/guide/FAQ/equation-chinese-font.html")
 
 #babel(
@@ -447,7 +448,7 @@ $ f(x) = y "（定义8）" $
       What characters are used to indicate the boundaries of phrases, sentences, and sections? What about other punctuation, such as dashes, connectors, separators, etc? Are there specific problems related to punctuation or the interaction of the text with punctuation (for example, punctuation that is separated from preceding text but must not be wrapped alone to the next line)? Are there problems related to bracketing information or demarcating things such as proper nouns, etc? Some of these topics have their own sections; see also @quotations, and @abbrev.
     ],
     zh: [
-      表示短语、句子或段落的边界用什么字符？破折号、连接符、分隔符等其它标点符号呢？关于标点符号或，或者文字与标点符号相互作用，是否存在特定问题（例如某标点符号与前文分开，但不允许换至下一行）？专有名词等需要明确括住的信息，使用正常吗？其中部分话题有专门章节，参见@quotations、@abbrev。
+      表示短语、句子或段落的边界用什么字符？破折号、连接符、分隔符等其它标点符号呢？关于标点符号或者文字与标点符号相互作用，是否存在特定问题（例如某标点符号与前文分开，但不允许换至下一行）？专有名词等需要明确括住的信息，使用正常吗？其中部分话题有专门章节，参见@quotations、@abbrev。
     ],
   )
 ]
@@ -645,10 +646,36 @@ $ f(x) = y "（定义8）" $
 == #bbl(en: [Line breaking & hyphenation], zh: [换行与断词连字]) <line-breaking>
 
 #prompt(from-w3c: "https://www.w3.org/TR/clreq-gap/#line_breaking")[
-  Does typst capture the rules about the way text in your script wraps when it hits the end of a line? Does line-breaking wrap whole _words_ at a time, or characters, or something else (such as syllables in Tibetan and Javanese)? What characters should not appear at the end or start of a line, and what should be done to prevent that? Is hyphenation used for your script, or something else? If hyphenation is used, does it work as expected? (Note, this is about line-end hyphenation when text is wrapped, rather than use of the hyphen and related characters as punctuation marks.)
+  #babel(
+    en: [
+      Does typst capture the rules about the way text in your script wraps when it hits the end of a line? Does line-breaking wrap whole _words_ at a time, or characters, or something else (such as syllables in Tibetan and Javanese)? What characters should not appear at the end or start of a line, and what should be done to prevent that? Is hyphenation used for your script, or something else? If hyphenation is used, does it work as expected? (Note, this is about line-end hyphenation when text is wrapped, rather than use of the hyphen and related characters as punctuation marks.)
+    ],
+    zh: [
+      typst 是否遵循这种文字在行末的换行规则？换行按整词换行，还是按字符或其它单元（例如藏文与爪哇文的音节）？哪些字符禁止出现在一行首尾，又有哪些规避方法？这种文字是否使用断词连字或类似机制？若使用断字，其结果正常吗？（注：此处指在文本换行处用连字符标记断字，而非把连字符相关字符当作标点使用。）
+    ],
+  )
 ]
 
-#level.ok
+=== #bbl(en: [Interpuncts should not appear at line start], zh: [间隔号不能出现在行首])
+
+#level.advanced
+#issue("typst#6774")
+
+#babel(
+  en: [According to #link("https://www.w3.org/TR/clreq/#prohibition_rules_for_line_start_end")[prohibition rules for line start and line end] (basic), #unichar("·") should not appear at the line start.],
+  zh: [按照#link("https://www.w3.org/TR/clreq/#prohibition_rules_for_line_start_end")[行首行尾禁则]（基本处理），#unichar("·")不能出现在一行的开头。],
+)
+
+```example
+>>> Current: \
+#show: block.with(width: 7em)
+噫，克里斯蒂娜·罗塞蒂，还有阿加莎·克里斯蒂！
+
+>>> Expected: \
+>>> #show "·": it => box(width: 0.5em, align(center + horizon, text(bottom-edge: "baseline", it)))
+>>> 噫，#h(-0.5em)克里斯蒂娜·罗塞蒂，还有阿加莎·克里斯蒂！
+```
+// This example is agnostic to the region — regardless of whether the base width is 1em or 0.5em, it should be adjusted to 0.5em here.
 
 == #bbl(en: [Text alignment & justification], zh: [文本对齐]) <justification>
 
@@ -802,7 +829,30 @@ $ f(x) = y "（定义8）" $
 >>> ]
 ```
 
-=== #bbl(en: [Punctuation overhang], zh: [标点悬挂])
+=== #bbl(en: [Two-em dashes should not be overhung], zh: [破折号不应悬挂])
+
+#level.basic
+#issue("typst#6735")
+
+#babel(
+  en: [Two-em dashes have a width of 2 em and should not be overhung. This punctuation has two forms in Unicode: #unichar("⸺") is recommended, and two adjacent #unichar("—") characters are often used in practice. At present, the latter forms will be overhung.],
+  zh: [破折号宽 2 em， 且不应悬挂。这一标点在 Unicode 中有两种形式：#unichar("⸺") 推荐使用，而两个连续的 #unichar("—") 实际更常用。目前后者会被悬挂。],
+)
+
+```example-page
+>>> Current: \
+#set par(justify: true)
+#block(width: 9em, stroke: (right: green))[
+  娜拉走后怎样？——别人可是也发表过意见的。一个英国人曾作一篇戏剧……
+]
+
+>>> Expected: \
+>>> #block(width: 9em, stroke: (right: green))[
+>>>   娜拉走后怎样？——\ 别人可是也发表过意见的。一个英国人曾作一篇戏剧……
+>>> ]
+```
+
+=== #bbl(en: [Customize punctuation overhang], zh: [定制标点悬挂])
 
 #level.advanced
 #issue("typst#261")
@@ -1883,9 +1933,11 @@ $ integral f dif x $
   - #link("https://www.w3.org/TR/clreq/")[Requirements for Chinese Text Layout - 中文排版需求]
   - #link("https://www.w3.org/TR/clreq-gap/")[Chinese Layout Gap Analysis]
 
-- #link("https://typst-doc-cn.github.io/guide/FAQ.html")[FAQ 常见问题 | Typst Doc CN 中文社区导航]
+- #bbl(en: [Web resources], zh: [网络资源])
 
-- #link("https://www.thetype.com/kongque/")[孔雀计划：中文字体排印的思路 | The Type — 文字 / 设计 / 文化]
+  - #link("https://typst-doc-cn.github.io/guide/FAQ.html")[FAQ 常见问题 | Typst Doc CN 中文社区导航]
+  - #link("https://www.thetype.com/kongque/")[孔雀计划：中文字体排印的思路 | The Type — 文字 / 设计 / 文化]
+  - #link("https://wiki.wordsoftype.com")[Words of Type | Encyclopedia]
 
 - #bbl(en: [Standards], zh: [标准])
 
