@@ -1035,8 +1035,11 @@ $ integral f dif x $
 
 === #bbl(en: [Redundant CJK-Latin space at manual line breaks], zh: [人为换行时多余中西间距])
 
-#level.advanced
-#issue("typst#6539")
+#level.ok
+#issue("typst#6539", closed: true)
+#pull("typst#6700", merged: true)
+
+#till-next(now-fixed.with(last-affected: "0.13.1", last-level: "advanced"))
 
 #babel(
   en: [If the line is manually broken between a CJK and a Latin character, then typst will insert an extra CJK-Latin space. This space becomes noticeable when text is aligned to the right or center.],
