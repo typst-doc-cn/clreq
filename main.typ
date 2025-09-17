@@ -1547,7 +1547,7 @@ $ integral f dif x $
 #issue("nju-lug/modern-nju-thesis#3")
 #issue("csimide/SEU-Typst-Template#1")
 #pull("biblatex#78", merged: true)
-#pull("hayagriva#126")
+#pull("hayagriva#126", rejected: true)
 #workaround("https://typst-doc-cn.github.io/guide/FAQ/bib-etal-lang.html")
 #workaround("https://typst.app/universe/package/modern-nju-thesis")
 
