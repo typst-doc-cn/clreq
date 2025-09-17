@@ -58,9 +58,12 @@
 /// Link to a GitHub pull request
 ///
 /// - repo-num (str): Repo and pull request number, e.g., `"typst#5777"`
-/// - merged (bool): State of the pull request
+/// - merged (bool): Whether the pull request is merged
+/// - rejected (bool): Whether the pull request is rejected (closed but not merged)
 /// -> content
-#let pull(repo-num, merged: false) = {
+#let pull(repo-num, merged: false, rejected: false) = {
+  assert.ne((merged, rejected), (true, true), message: "a pull request cannot be both merged and rejected")
+
   let (repo, num) = repo-num.split("#")
   if not repo.contains("/") {
     repo = "typst/" + repo
@@ -68,10 +71,10 @@
 
   show link: link-in-new-tab.with(class: "unbreakable")
   link("https://github.com/" + repo + "/pull/" + num, {
-    if merged { icon.git-merge } else { icon.git-pull-request }
+    if merged { icon.git-merge } else if rejected { icon.git-pull-request-closed } else { icon.git-pull-request }
     repo-num
   })
-  [#metadata((repo: repo, num: num, merged: merged)) <pull>]
+  [#metadata((repo: repo, num: num, merged: merged, rejected: rejected)) <pull>]
 }
 
 /// Link to a workaround

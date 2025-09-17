@@ -29,6 +29,7 @@ interface IssueMeta extends RepoNum {
 }
 interface PullMeta extends RepoNum {
   merged: boolean;
+  rejected: boolean;
 }
 
 type IssueState =
@@ -360,14 +361,19 @@ function assertIssuesStateUpdated(states: [IssueMeta[], IssueState][]): Result {
 /** Checks if all pull requests’ states are up to date. */
 function assertPullsStateUpdated(states: [PullMeta[], PullState][]): Result {
   const outdated = states.filter(([meta, state]) =>
-    meta.some((m) => m.merged !== state.merged)
+    meta.some((m) =>
+      m.merged !== state.merged ||
+      m.rejected !== (state.closed && !state.merged)
+    )
   );
 
   if (outdated.length > 0) {
     const message = outdated.map(([meta, state]) => {
       const stateHuman = state.state === "OPEN"
         ? "open"
-        : `${state.state.toLowerCase()} at ${state.closedAt}`;
+        : `${
+          state.state.toLowerCase().replace("closed", "rejected")
+        } at ${state.closedAt}`;
       return `- ${meta[0].repo}#${meta[0].num} ${state.title} (${stateHuman})`;
     }).join("\n");
     return Result.Err(`Outdated pull requests found:\n${message}`);
