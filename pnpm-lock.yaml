@@ -12,8 +12,8 @@ importers:
         specifier: jsr:^1.0.8
         version: '@jsr/std__fmt@1.0.8'
       concurrently:
-        specifier: ^9.1.2
-        version: 9.1.2
+        specifier: ^9.2.1
+        version: 9.2.1
       es-toolkit:
         specifier: ^1.39.5
         version: 1.39.5
@@ -360,8 +360,8 @@ packages:
   color-name@1.1.4:
     resolution: {integrity: sha512-dOy+3AuW3a2wNbZHIuMZpTcgjGuLU/uBL/ubcZF9OXbDo8ff4O8yVp5Bf0efS8uEoYo5q4Fx7dY9OgQGXgAsQA==}
 
-  concurrently@9.1.2:
-    resolution: {integrity: sha512-H9MWcoPsYddwbOGM6difjVwVZHl63nwMEwDJG/L7VGtuaJhb12h2caPG2tVPWs7emuYix252iGfqOyrz1GczTQ==}
+  concurrently@9.2.1:
+    resolution: {integrity: sha512-fsfrO0MxV64Znoy8/l1vVIjjHa29SZyyqPgQBwhiDcaW8wJc2W3XWVOGx4M3oJBnv/zdUZIIp1gDeS98GzP8Ng==}
     engines: {node: '>=18'}
     hasBin: true
 
@@ -440,9 +440,6 @@ packages:
   is-number@7.0.0:
     resolution: {integrity: sha512-41Cifkg6e8TylSpdtTpeLVMqvSBEVzTttHvERD741+pnZ8ANv0004MRL43QKPDlK9cGvNp6NZWZUBlbGXYxxng==}
     engines: {node: '>=0.12.0'}
-
-  lodash@4.17.21:
-    resolution: {integrity: sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==}
 
   nanoid@3.3.11:
     resolution: {integrity: sha512-N8SpfPUnUp1bK+PMYW8qSWdl9U+wwNWI4QKxOYDy9JAro3WMX7p2OeVRF9v+347pnakNevPmiHhNmZ2HbFA76w==}
@@ -821,10 +818,9 @@ snapshots:
 
   color-name@1.1.4: {}
 
-  concurrently@9.1.2:
+  concurrently@9.2.1:
     dependencies:
       chalk: 4.1.2
-      lodash: 4.17.21
       rxjs: 7.8.2
       shell-quote: 1.8.3
       supports-color: 8.1.1
@@ -908,8 +904,6 @@ snapshots:
       is-extglob: 2.1.1
 
   is-number@7.0.0: {}
-
-  lodash@4.17.21: {}
 
   nanoid@3.3.11: {}
 
