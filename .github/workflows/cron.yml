@@ -7,7 +7,7 @@ on:
       # https://crontab.guru/#0_1_28_*_*
   workflow_dispatch:
 
-permissions: 
+permissions:
   issues: write
 
 jobs:
@@ -38,13 +38,18 @@ jobs:
           state: open
           labels: |
             cron-check
+      - name: Get date
+        id: date
+        shell: bash
+        run: |
+          echo "date=$(date --utc --iso-8601)" >> "$GITHUB_OUTPUT"
       - name: Create or update the report
         # If there is no last report and the check failed, create one.
         # If there was a report, update it.
         if: steps.issue.outputs.has-found == 'true' || steps.check.outcome == 'failure'
         uses: peter-evans/create-issue-from-file@v5
         with:
-          title: 🤖 Cron check
+          title: 🤖 Cron check (${{ steps.date.outputs.date }})
           # Update an existing issue if one was found (issue-number),
           # otherwise an empty value creates a new issue:
           issue-number: "${{ steps.issue.outputs.issue-number }}"
