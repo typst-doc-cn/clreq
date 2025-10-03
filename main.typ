@@ -151,7 +151,7 @@
 #level.advanced
 #issue("typst#5040")
 #issue("typst#5900")
-#issue("webapp-issues#590")
+#issue("webapp-issues#590", closed: true)
 #workaround("https://typst-doc-cn.github.io/guide/FAQ/install-fonts.html")
 
 #babel(
@@ -402,6 +402,7 @@ $ f(x) = y "（定义8）" $
 #level.basic
 #issue("typst#6128")
 #workaround("https://typst.app/universe/package/percencode")
+#workaround("https://typst.app/universe/package/lure")
 
 #babel(
   en: [In the typst document, if the URL of a link uses Chinese characters rather than escape sequences, then it will be wrong when viewing PDF in Safari. The UTF-8 encoded bytes are decoded as Latin-1.],
@@ -1966,3 +1967,4 @@ $ integral f dif x $
 
 - Advanced East-Asian layout features #issue("typst#193")
 - Better CJK support #issue("typst#276")
+- Better out-of-the-box experience for non-Latin scripts #issue("webapp-issues#720")
