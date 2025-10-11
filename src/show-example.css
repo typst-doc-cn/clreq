@@ -26,8 +26,8 @@
     justify-content: center;
     padding: 12px 16px;
 
-    > svg.typst-doc {
-      /* The visual padding is the sum of CSS padding and SVG inset. See `render-examples` in util.typ */
+    > svg.typst-frame {
+      /* The visual padding is the sum of CSS padding and SVG inset. See `render-examples` in show-example.typ */
       padding: 0.5em;
       border-radius: 8px;
       /* Copied from typst.app/docs `.preview > *` */
@@ -43,7 +43,7 @@
 .dark .example > .preview {
   background: darkgray;
 
-  > svg.typst-doc {
+  > svg.typst-frame {
     background: lightgray;
   }
 }
