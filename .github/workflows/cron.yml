@@ -23,6 +23,8 @@ jobs:
           node-version: 22
           cache: pnpm
       - uses: typst-community/setup-typst@v4
+        with:
+          typst-version: 0.14.0-rc.1
       - run: pnpm install
       - name: Check issues and generate a report
         id: check
