@@ -2,7 +2,7 @@
 ///
 /// Usage: Put `#level.ok`, etc. after a heading.
 
-#import "templates/html-toolkit.typ": h, to-html
+#import "templates/html-toolkit.typ": to-html
 #import "mode.typ": cache-dir, cache-ready
 
 /// Configuration of levels, copied from clreq-gap.
@@ -68,15 +68,20 @@
 
 #let paint-level(level) = {
   let l = config.at(level)
-  h.span(
+  // In typst v0.14, `html.span` does not support `data-*` attributes, so we have to use `html.elem("span", …)`.
+  // https://github.com/typst/typst/issues/6870
+  html.elem(
+    "span",
     {
-      h.span(style: "display: inline-block; width: 1em; height: 1em; margin: 0.25em; vertical-align: -5%", box(
+      html.span(style: "display: inline-block; width: 1em; height: 1em; margin: 0.25em; vertical-align: -5%", box(
         html.frame(circle(radius: 0.5em, stroke: none, fill: l.paint)),
       ))
       l.human
     },
-    class: "unbreakable",
-    data-priority-level: level,
+    attrs: (
+      class: "unbreakable",
+      data-priority-level: level,
+    ),
   )
 }
 

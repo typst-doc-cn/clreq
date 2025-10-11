@@ -1,7 +1,5 @@
-#import "templates/html-toolkit.typ": h
-
 /// A wrapper for SVG to avoid `html.frame` and support dark theme.
-#let _wrapper(paths) = h.span(class: "icon", html.elem(
+#let _wrapper(paths) = html.span(class: "icon", html.elem(
   "svg",
   attrs: (viewBox: "0 0 16 16", width: "16", height: "16"),
   paths,

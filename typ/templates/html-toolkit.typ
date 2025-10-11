@@ -4,7 +4,6 @@
 
 
 #import "supports-text.typ": *
-#import "../packages/html-bindings.typ": *
 
 /// The target for the HTML export.
 ///
@@ -86,8 +85,8 @@
   let head = to-html(html-children.at(0)).body
   let body = to-html(html-children.at(1), slot: body)
 
-  h.html(..html-elem.attrs, {
-    h.head({
+  html.html(..html-elem.attrs, {
+    html.head({
       head
       extra-head
       context if document.description != none {
@@ -123,4 +122,4 @@
 
 
 /// Creates an embeded block typst frame.
-#let div-frame(content, ..attrs) = div(html.frame(content), ..attrs)
+#let div-frame(content, ..attrs) = html.div(html.frame(content), ..attrs)

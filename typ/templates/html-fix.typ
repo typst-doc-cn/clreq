@@ -1,11 +1,16 @@
 /// A module providing workarounds for HTML features not supported by typst yet
 
-#import "./html-toolkit.typ": asset-url, h
+#import "./html-toolkit.typ": asset-url
 
 /// Display the linked URL in a new tab
 ///
 /// Usage: `#show link: link-in-new-tab`
-#let link-in-new-tab(class: none, it) = h.a(target: "_blank", href: it.dest, class: class, it.body)
+#let link-in-new-tab(class: none, it) = html.a(
+  target: "_blank",
+  href: it.dest,
+  ..if class != none { (class: class) },
+  it.body,
+)
 
 /// Reserve the `fill` of `text` in HTML data attrs and CSS vars
 ///
@@ -18,7 +23,7 @@
     it // Ignore default color
   } else {
     let fill = text.fill.to-hex()
-    h.span(it, data-fill: fill, style: "--data-fill:" + fill)
+    html.span(it, data-fill: fill, style: "--data-fill:" + fill)
   }
 }
 
@@ -27,8 +32,7 @@
 /// Usage: `#show image: external-image`
 #let external-image(it) = {
   if type(it.source) == str and it.source.starts-with("/public/") {
-    h.img(
-      {},
+    html.img(
       src: asset-url(it.source.trim("/public", at: start)),
       ..if it.alt != none { (alt: it.alt, title: it.alt) },
       ..if type(it.width) == relative { (style: "width:" + repr(it.width.ratio)) },
@@ -55,7 +59,7 @@
         attrs: if it.at("label", default: none) != none { (id: str(it.label)) } else { (:) },
         {
           // Wrap the numbering with a class
-          h.span(counter(heading).display(it.numbering), class: "secno")
+          html.span(counter(heading).display(it.numbering), class: "secno")
           [ ]
           it.body
         },
@@ -67,7 +71,7 @@
     let el = it.element
     if el != none and el.func() == heading {
       // Override heading references.
-      h.a(
+      html.a(
         href: "#" + str(it.target),
         // `§` is agnostic to the language
         numbering("§" + el.numbering, ..counter(heading).at(el.location())),

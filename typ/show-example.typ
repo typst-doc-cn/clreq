@@ -2,7 +2,7 @@
 #import "@preview/digestify:0.1.0": bytes-to-hex, md5
 
 #import "templates/html-fix.typ": reserve-text-fill
-#import "templates/html-toolkit.typ": div-frame, h
+#import "templates/html-toolkit.typ": div-frame
 #import "mode.typ": cache-dir, cache-ready, mode
 
 
@@ -26,7 +26,7 @@
 /// - preview (content): previewed result
 /// - annotation (str): an annotation shown when hovering
 /// -> content
-#let layout-example(code, preview, annotation: none, ..sink) = h.div(
+#let layout-example(code, preview, annotation: none, ..sink) = html.div(
   class: "example",
   ..if annotation != none { (title: annotation) },
   {
@@ -161,8 +161,8 @@
 }
 
 /// Layout a git log in a `<details>`
-#let layout-git-log(summary: [], log) = h.details(class: "example", {
-  h.summary(summary)
+#let layout-git-log(summary: [], log) = html.details(class: "example", {
+  html.summary(summary)
   show text: reserve-text-fill
   raw(log, lang: "gitlog", block: true)
 })
