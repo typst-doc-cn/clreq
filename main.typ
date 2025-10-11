@@ -219,7 +219,8 @@ $ f(x) = y "（定义8）" $
 
 >>> Expected: \
 >>> #show math.equation: set text(font: (
->>>   "Noto Serif CJK SC",
+>>>   (name: "New Computer Modern Math", covers: "latin-in-cjk"),
+>>>   (name: "Noto Serif CJK SC", covers: regex(".")),
 >>>   "New Computer Modern Math",
 >>> ))
 >>> 因此，
