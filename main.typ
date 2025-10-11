@@ -1,3 +1,4 @@
+#import "typ/templates/html-fix.typ": latin-apostrophe
 #import "typ/packages/till-next.typ": mark-till-next, till-next
 #import "typ/util.typ": babel, bbl, issue, note, now-fixed, prompt, pull, unichar, workaround
 #import "typ/prioritization.typ": level, level-table
@@ -319,8 +320,7 @@ $ f(x) = y "（定义8）" $
 == Cursive text <cursive>
 
 #prompt(from-w3c: "https://www.w3.org/TR/clreq-gap/#cursive")[
-  #show: html.span.with(style: "font-feature-settings: 'pwid';")
-  // Or the width of the apostrophe here will be wrong.
+  #show: latin-apostrophe
   If this script is cursive (ie. letters are generally joined up, like in Arabic, N’Ko, Syriac, etc), are there problems or needed features related to the handling of cursive text? Do cursive links break if parts of a word are marked up or styled? Do Unicode joiner and non-joiner characters behave as expected?
 ]
 
@@ -1143,7 +1143,10 @@ $ integral f dif x $
 ]
 
 === #bbl(
-  en: [List and enum markers are not aligned with the baseline of the item's contents],
+  en: [
+    #show: latin-apostrophe
+    List and enum markers are not aligned with the baseline of the item’s contents
+  ],
   zh: [`list`和`enum`的编号与内容未对齐基线],
 )
 

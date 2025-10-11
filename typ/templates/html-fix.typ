@@ -12,6 +12,15 @@
   it.body,
 )
 
+/// Use proportional-width apostrophes
+///
+/// The main font is for Chinese, so it uses full-width apostrophes by default.
+/// For Latin texts, it is better to use proportional-width ones.
+/// https://typst-doc-cn.github.io/guide/FAQ/smartquote-font.html#若中西统一使用相同字体
+///
+/// Usage: `#show: enable-proportional-width`
+#let latin-apostrophe = html.span.with(style: "font-feature-settings: 'pwid';")
+
 /// Reserve the `fill` of `text` in HTML data attrs and CSS vars
 ///
 /// Usage: `#show text: reserver-text-fill`
