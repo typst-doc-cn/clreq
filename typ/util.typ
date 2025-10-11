@@ -200,11 +200,4 @@
       body
     },
   )
-
-  // Make sure the `body` can be retrieved by typst query.
-  // In v0.13, typst query doesn’t respect the export format, and ignore all html elements.
-  // https://github.com/typst/typst/issues/6404
-  context if target() != "html" {
-    body
-  }
 }

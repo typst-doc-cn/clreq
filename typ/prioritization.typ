@@ -22,6 +22,9 @@
 #let level-table(lang: "en") = if cache-ready {
   to-html(xml(cache-dir + "prioritization.level-table." + lang + ".svg").first())
 } else {
+  // When preparing other caches for the html target, skip this.
+  show: it => context if target() == "paged" { it }
+
   let level = config
     .pairs()
     .map(((k, v)) => (
