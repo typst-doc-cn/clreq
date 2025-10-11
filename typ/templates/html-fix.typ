@@ -51,12 +51,13 @@
   }
 }
 
-/// Make references to headings clickable
+/// Improve references to headings
 ///
-/// Usage: `#show: make-heading-refs-clickable`
+/// Our headings are bilingual and the numbers need special formatting.
+/// Therefore, we have to override the default implementation.
 ///
-/// “non-URL links are not yet supported by HTML export.”
-#let make-heading-refs-clickable(body) = {
+/// Usage: `#show: improve-heading-refs`
+#let improve-heading-refs(body) = {
   // https://github.com/Glomzzz/typsite/blob/c5f99270eff92cfdad58bbf4a78ea127d1aed310/resources/root/lib.typ#L184-L229
   show heading: it => {
     if it.numbering == none {
@@ -80,9 +81,10 @@
     let el = it.element
     if el != none and el.func() == heading {
       // Override heading references.
-      html.a(
-        href: "#" + str(it.target),
-        // `§` is agnostic to the language
+      link(
+        el.location(),
+        // `§` is agnostic to the language.
+        // There should be no space between `§` and the numbers, so we cannot set `heading.supplement`.
         numbering("§" + el.numbering, ..counter(heading).at(el.location())),
       )
     } else {
@@ -95,7 +97,7 @@
 
 /// A collection of all fixes
 #let html-fix(body) = {
-  show: make-heading-refs-clickable
+  show: improve-heading-refs
   show image: external-image
   body
 }
