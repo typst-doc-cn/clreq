@@ -295,7 +295,7 @@ $ f(x) = y "（定义8）" $
   zh: [目前 typst 导出 SVG 会渲染成最细字重，导出 PDF、PNG 会变成豆腐块。],
 )
 
-```example
+```example-page
 >>> Current: \
 >>> #[
 #set text(font: "Source Han Serif SC VF")
@@ -305,6 +305,8 @@ $ f(x) = y "（定义8）" $
 >>> Expected: \
 >>> 可变字体
 ```
+// This example would emit a warning: variable fonts are not currently supported and may render incorrectly.
+// To avoid receiving the message repeatedly when running `pnpm dev`, we use `example-page` instead of `example`.
 
 == Context-based shaping and positioning
 
