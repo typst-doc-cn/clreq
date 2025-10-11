@@ -77,7 +77,7 @@
             </path>
           </svg>
         </div>
-        <!-- This file will be parsed as XML by typst v0.13. Therefore, `="true"` after `hidden` is necessary -->
+        <!-- This file will be parsed as XML by typst v0.13/v0.14. Therefore, `="true"` after `hidden` is necessary. https://github.com/typst/typst/issues/5890 -->
         <div title="Switch to dark theme (currently in light theme)" hidden="true" class="icon theme-icon light">
           <!-- SunRegular -->
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
@@ -102,7 +102,7 @@
         title="Go to repository"
       >
         <span class="sr-only">Go to repository</span>
-        <!-- This <span> is necessary, or typst v0.13 will wrap <svg> with a <p>. -->
+        <!-- This <span> is necessary, or typst v0.13/v0.14 will wrap <svg> with a <p>. https://github.com/typst/typst/issues/5890 -->
         <span>
           <svg viewBox="0 -0.8 16 16" aria-hidden="true">
             <path
