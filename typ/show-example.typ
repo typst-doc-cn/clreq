@@ -1,7 +1,6 @@
 #import "@preview/tidy:0.4.3": show-example as tidy-example
 #import "@preview/digestify:0.1.0": bytes-to-hex, md5
 
-#import "templates/html-fix.typ": reserve-text-fill
 #import "templates/html-toolkit.typ": div-frame
 #import "mode.typ": cache-dir, cache-ready, mode
 
@@ -30,10 +29,7 @@
   class: "example",
   ..if annotation != none { (title: annotation) },
   {
-    {
-      show text: reserve-text-fill
-      code
-    }
+    code
     div-frame(preview, class: "preview")
   },
 )
@@ -163,6 +159,5 @@
 /// Layout a git log in a `<details>`
 #let layout-git-log(summary: [], log) = html.details(class: "example", {
   html.summary(summary)
-  show text: reserve-text-fill
   raw(log, lang: "gitlog", block: true)
 })
