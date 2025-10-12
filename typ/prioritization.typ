@@ -73,9 +73,12 @@
   html.elem(
     "span",
     {
-      html.span(style: "display: inline-block; width: 1em; height: 1em; margin: 0.25em; vertical-align: -5%", box(
-        html.frame(circle(radius: 0.5em, stroke: none, fill: l.paint)),
-      ))
+      html.span(
+        style: "display: inline-block; width: 1em; height: 1em; margin-inline: 0.25em; vertical-align: -5%",
+        box(
+          html.frame(circle(radius: 0.5em * 11 / 12, stroke: none, fill: l.paint)),
+        ),
+      )
       l.human
     },
     attrs: (
