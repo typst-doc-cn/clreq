@@ -37,6 +37,6 @@ concurrently([
 ], {
   prefix: "name",
   cwd: ROOT_DIR,
-  killOthers: ["failure", "success"],
+  killOthersOn: ["failure", "success"],
   prefixColors: "auto",
 });
