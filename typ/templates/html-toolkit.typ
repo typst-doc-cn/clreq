@@ -2,21 +2,6 @@
 ///
 /// This package provides a set of utility functions for working with HTML export.
 
-
-#import "supports-text.typ": *
-
-/// The target for the HTML export.
-///
-/// Available targets:
-/// - `web-light`: Light theme for web.
-/// - `web-dark`: Dark theme for web.
-/// - `pdf`: PDF export.
-#let x-target = sys.inputs.at("x-target", default: "web-light")
-/// Whether the target uses a dark theme.
-#let x-is-dark = x-target.ends-with("dark")
-/// Whether the target uses a light theme.
-#let x-is-light = x-target.ends-with("light")
-
 /// CLI sets the `x-url-base` to the base URL for assets. This is needed if you host the website on the github pages.
 ///
 /// For example, if you host the website on `https://username.github.io/project/`, you should set `x-url-base` to `/project/`.
@@ -89,37 +74,10 @@
     html.head({
       head
       extra-head
-      context if document.description != none {
-        head-meta("description", plain-text(document.description))
-      }
     })
-    // html.elem("body", repr(body))
     body
   })
 }
-
-/// Creates a preload link for the given CSS file.
-///
-/// - href (str): The URL of the CSS file.
-/// -> content
-#let preload-css(href) = to-html(
-  xml
-    .decode(
-      ```xml
-      <link
-        rel="preload"
-        as="style"
-        href="{{href}}"
-        onload="this.rel='stylesheet'"
-      />
-      ```
-        .text
-        .replace("{{href}}", href),
-    )
-    .at(0),
-)
-
-
 
 /// Creates an embeded block typst frame.
 #let div-frame(content, ..attrs) = html.div(html.frame(content), ..attrs)
