@@ -69,9 +69,24 @@
   /// -> any
   body,
 ) = {
+  let fix-scaling(it) = {
+    // This reverts the default style for `raw`, making the result of `#context 1em.to-absolute()` in simple examples consistent with that in regular documents.
+    //
+    // We have to apply this to `layout*-example` functions in all kinds of examples.
+    //
+    // Reason: In typst v0.14.0-rc.1, `text.size` does not affect the apparent size of text in HTML, but does affect the conversion rate between the absolute lengths in Typst and HTML.
+    // If an image is sized absolutely in points, then typst will make sure its relative size to text is the same in both PNG/SVG/PDF and HTML.
+    // SVGs compiled from page and bibliography examples specify their sizes in absolute lengths.
+    // To make scales of preview images consistent, we have to apply this rule to all kinds of examples.
+    // https://github.com/typst/typst/issues/7114
+    set text(1em / 0.8)
+
+    it
+  }
+
   // Simple example, directly evaluated in main.typ.
   show raw.where(lang: "example"): it => {
-    set text(4em / 3)
+    show: fix-scaling
 
     tidy-example.show-example(
       raw(it.text, block: true, lang: "typ"),
@@ -110,7 +125,7 @@
     [
       #metadata((id: id, content: full-executed)) <external-example>
     ]
-    set text(4em / 3)
+    show: fix-scaling
     layout-external-example(optional-map(raw.with(block: true, lang: "typ"), displayed), id)
   }
 
@@ -149,7 +164,7 @@
     [
       #metadata((id: id, content: executed)) <external-example>
     ]
-    set text(4em / 3)
+    show: fix-scaling
     layout-external-example(raw(displayed, block: true, lang: "bib"), id)
   }
 
