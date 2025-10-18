@@ -1,7 +1,7 @@
 [build]
 command = """
 curl -L --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/cargo-bins/cargo-binstall/main/install-from-binstall-release.sh | bash && \
-cargo-binstall typst-cli@0.14.0-rc.1 ripgrep && \
+cargo-binstall typst-cli@0.14.0-rc.2 ripgrep && \
 \
 curl -OL https://www.7-zip.org/a/7z2409-linux-x64.tar.xz && \
 tar -xvf 7z2409-linux-x64.tar.xz 7zz && ln -s 7zz 7z && \
