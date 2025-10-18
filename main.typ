@@ -1668,9 +1668,14 @@ $ integral f dif x $
 
 === #bbl(en: [`gb-7714-2015-note` is totally broken], zh: [`gb-7714-2015-note`完全无法使用])
 
-#level.advanced
+#level.ok
 #issue("hayagriva#189", note: [mentioned])
+#issue("hayagriva#280", closed: true)
+#pull("hayagriva#301", merged: true)
 #issue("typst#6612")
+#issue("typst#7113", closed: true)
+
+#till-next(now-fixed.with(last-affected: "0.13.1", last-level: "advanced"))
 
 - #bbl(
     en: [The references need only be listed in the footnotes, and should not be repeated at the end of the article.],
