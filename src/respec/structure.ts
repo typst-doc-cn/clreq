@@ -295,7 +295,7 @@ function insertPriorityLevel(
         <p>
           <span
             style="background: #${worst
-          .paint}; display: inline-block; width: 0.8em; height: 0.8em; margin: 0.25em; vertical-align: -15%;"
+              .paint}; display: inline-block; width: 0.8em; height: 0.8em; margin-inline: 0.25em; vertical-align: -5%;"
           ></span>
           ${worst.human} — ${report}.
         </p>

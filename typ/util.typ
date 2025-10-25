@@ -1,7 +1,6 @@
 #import "@preview/unichar:0.3.0": codepoint
 
 #import "icon.typ"
-#import "templates/html-toolkit.typ": h
 #import "templates/html-fix.typ": link-in-new-tab
 #import "prioritization.typ": config as priority-config
 
@@ -105,12 +104,12 @@
 /// A formatted description of the Unicode character for a given codepoint
 ///
 /// Usage: `unichar("‘")`
-#let unichar(code) = h.span(class: "unichar", {
+#let unichar(code) = html.span(class: "unichar", {
   let c = codepoint(code)
 
-  show smallcaps: h.span.with(class: "small-caps")
+  show smallcaps: html.span.with(class: "small-caps")
 
-  h.span(class: "code-point")[U+#lower(c.id)]
+  html.span(class: "code-point")[U+#lower(c.id)]
   [~]
   raw(str.from-unicode(c.code))
   [ ]
@@ -125,17 +124,17 @@
 /// - from-w3c (str): URL to the original W3C prompt, if applicable.
 /// - body (content):
 /// -> content
-#let prompt(from-w3c: none, body) = h.article(
+#let prompt(from-w3c: none, body) = html.article(
   class: "prompt",
   {
     body
 
     if from-w3c != none {
-      h.p(class: "license")[
+      html.p(class: "license")[
         #show link: link-in-new-tab
         #bbl(
-          en: [(derived from #link(from-w3c)[a W3C document] under #h.a(target: "_blank", href: "https://www.w3.org/copyright/software-license-2023/", title: "Software and Document License")[its license])],
-          zh: [（按#h.a(target: "_blank", href: "https://www.w3.org/zh-hans/copyright/software-license-2023/", title: "软件和文档许可协议")[相应协议]修改自 #link(from-w3c)[W3C 文档]）],
+          en: [(derived from #link(from-w3c)[a W3C document] under #html.a(target: "_blank", href: "https://www.w3.org/copyright/software-license-2023/", title: "Software and Document License")[its license])],
+          zh: [（按#html.a(target: "_blank", href: "https://www.w3.org/zh-hans/copyright/software-license-2023/", title: "软件和文档许可协议")[相应协议]修改自 #link(from-w3c)[W3C 文档]）],
         )
       ]
     }
@@ -147,8 +146,8 @@
 /// - summary (content): A short summary of the note
 /// - body (content):
 /// -> content
-#let note(summary: bbl(en: [Note], zh: [注]), body) = h.aside(class: "note", role: "note", {
-  h.p(class: "note-title", {
+#let note(summary: bbl(en: [Note], zh: [注]), body) = html.aside(class: "note", role: "note", {
+  html.p(class: "note-title", {
     icon.comment
     summary
   })
@@ -174,11 +173,11 @@
 
   let already-fixed = sys.version > last-affected
 
-  h.details(
+  html.details(
     class: "now-fixed",
-    ..if not already-fixed { (open: "") },
+    open: not already-fixed,
     {
-      h.summary(h.p(if already-fixed {
+      html.summary(html.p(if already-fixed {
         bbl(
           en: [Now fixed! (it was #last-level.human in v#last-affected)],
           zh: [现已修复！（v#last-affected 曾为 #last-level.human）],
@@ -200,11 +199,4 @@
       body
     },
   )
-
-  // Make sure the `body` can be retrieved by typst query.
-  // In v0.13, typst query doesn’t respect the export format, and ignore all html elements.
-  // https://github.com/typst/typst/issues/6404
-  context if target() != "html" {
-    body
-  }
 }

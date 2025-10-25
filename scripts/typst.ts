@@ -29,18 +29,6 @@ export function typst(
       result.push(data);
     });
     proc.stderr.on("data", (data) => {
-      const text: string = data.toString("utf-8");
-      if (
-        args[0] === "query" &&
-        (text.includes(": elem was ignored during paged export") ||
-          text.includes("html-bindings-h.typ:"))
-        // `warning` might be colored, so it is not reliable
-      ) {
-        // In v0.13, typst query doesn’t respect the export format.
-        // https://github.com/typst/typst/issues/6404
-        // Suppress the warning.
-        return;
-      }
       process.stderr.write(data);
     });
     proc.on("close", (code) => {

@@ -26,8 +26,8 @@
     justify-content: center;
     padding: 12px 16px;
 
-    > svg.typst-doc {
-      /* The visual padding is the sum of CSS padding and SVG inset. See `render-examples` in util.typ */
+    > svg.typst-frame {
+      /* The visual padding is the sum of CSS padding and SVG inset. See `render-examples` in show-example.typ */
       padding: 0.5em;
       border-radius: 8px;
       /* Copied from typst.app/docs `.preview > *` */
@@ -43,41 +43,45 @@
 .dark .example > .preview {
   background: darkgray;
 
-  > svg.typst-doc {
+  > svg.typst-frame {
     background: lightgray;
   }
 }
 
-/* Load data attrs reserved by `reserve-text-fill` */
-.example [data-fill] {
-  color: var(--data-fill);
-}
-.dark .example {
+/*
+ * Adapt the syntax highlighting palette to the dark theme
+ *
+ * In typst v0.14, `text.fill` in `raw` turn into inline `style="color: #rrggbb" attributes.
+ * We have to use `!important` to override them.
+ * https://forum.typst.app/t/how-to-support-syntax-highlighting-for-html-dark-theme-in-v0-14-0-rc-1/6380/2
+ */
+.dark main code span {
   /**
    * Check all possible colors by executing the following in the browser console:
-   *   [...new Set($$("[data-fill]").map((e) => e.dataset.fill))].sort()
+   *   [...new Set($$("span[style^='color:']").map((e) => e.outerHTML.match(/style="color: (#[0-9a-f]+?)"/)[1]))].sort()
    * Then improve the contrast ratio:
    *   https://webaim.org/resources/contrastchecker/?bcolor=212737
+   * (See also https://github.com/typst/typst/blob/v0.14.0-rc.1/crates/typst-library/src/text/raw.rs#L942-L972.)
    */
-  [data-fill="#1d6c76"] {
-    color: #36bfce;
+  &[style="color: #1d6c76"] {
+    color: #36bfce !important;
   }
-  [data-fill="#298e0d"] {
-    color: #38be13;
+  &[style="color: #198810"] {
+    color: #38be13 !important;
   }
-  [data-fill="#4b69c6"] {
-    color: #92a5dd;
+  &[style="color: #4b69c6"] {
+    color: #92a5dd !important;
   }
-  [data-fill="#818181"] {
-    color: #ababab;
+  &[style="color: #6b6b6f"] {
+    color: #ababab !important;
   }
-  [data-fill="#8b41b1"] {
-    color: #c497d8;
+  &[style="color: #74747c"] {
+    color: #c497d8 !important;
   }
-  [data-fill="#b60157"] {
-    color: #fe90c7;
+  &[style="color: #b60157"] {
+    color: #fe90c7 !important;
   }
-  [data-fill="#d73a49"] {
-    color: #e5858d;
+  &[style="color: #d73a49"] {
+    color: #e5858d !important;
   }
 }

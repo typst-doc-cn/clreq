@@ -1,34 +1,32 @@
 /// A module providing workarounds for HTML features not supported by typst yet
 
-#import "./html-toolkit.typ": asset-url, h
+#import "./html-toolkit.typ": asset-url
 
 /// Display the linked URL in a new tab
 ///
 /// Usage: `#show link: link-in-new-tab`
-#let link-in-new-tab(class: none, it) = h.a(target: "_blank", href: it.dest, class: class, it.body)
+#let link-in-new-tab(class: none, it) = html.a(
+  target: "_blank",
+  href: it.dest,
+  ..if class != none { (class: class) },
+  it.body,
+)
 
-/// Reserve the `fill` of `text` in HTML data attrs and CSS vars
+/// Use proportional-width apostrophes
 ///
-/// Usage: `#show text: reserver-text-fill`
+/// The main font is for Chinese, so it uses full-width apostrophes by default.
+/// For Latin texts, it is better to use proportional-width ones.
+/// https://typst-doc-cn.github.io/guide/FAQ/smartquote-font.html#若中西统一使用相同字体
 ///
-/// Inspired by zebraw.
-/// https://github.com/hongjr03/typst-zebraw/blob/99028bf9eebe89cf0b07764e3775a4ea8aa5b5c4/src/html.typ#L21-L35
-#let reserve-text-fill(it) = {
-  if text.fill == black {
-    it // Ignore default color
-  } else {
-    let fill = text.fill.to-hex()
-    h.span(it, data-fill: fill, style: "--data-fill:" + fill)
-  }
-}
+/// Usage: `#show: enable-proportional-width`
+#let latin-apostrophe = html.span.with(style: "font-feature-settings: 'pwid';")
 
 /// Externalize images in /public/
 ///
 /// Usage: `#show image: external-image`
 #let external-image(it) = {
   if type(it.source) == str and it.source.starts-with("/public/") {
-    h.img(
-      {},
+    html.img(
       src: asset-url(it.source.trim("/public", at: start)),
       ..if it.alt != none { (alt: it.alt, title: it.alt) },
       ..if type(it.width) == relative { (style: "width:" + repr(it.width.ratio)) },
@@ -38,12 +36,13 @@
   }
 }
 
-/// Make references to headings clickable
+/// Improve references to headings
 ///
-/// Usage: `#show: make-heading-refs-clickable`
+/// Our headings are bilingual and the numbers need special formatting.
+/// Therefore, we have to override the default implementation.
 ///
-/// “non-URL links are not yet supported by HTML export.”
-#let make-heading-refs-clickable(body) = {
+/// Usage: `#show: improve-heading-refs`
+#let improve-heading-refs(body) = {
   // https://github.com/Glomzzz/typsite/blob/c5f99270eff92cfdad58bbf4a78ea127d1aed310/resources/root/lib.typ#L184-L229
   show heading: it => {
     if it.numbering == none {
@@ -55,7 +54,7 @@
         attrs: if it.at("label", default: none) != none { (id: str(it.label)) } else { (:) },
         {
           // Wrap the numbering with a class
-          h.span(counter(heading).display(it.numbering), class: "secno")
+          html.span(counter(heading).display(it.numbering), class: "secno")
           [ ]
           it.body
         },
@@ -67,9 +66,10 @@
     let el = it.element
     if el != none and el.func() == heading {
       // Override heading references.
-      h.a(
-        href: "#" + str(it.target),
-        // `§` is agnostic to the language
+      link(
+        el.location(),
+        // `§` is agnostic to the language.
+        // There should be no space between `§` and the numbers, so we cannot set `heading.supplement`.
         numbering("§" + el.numbering, ..counter(heading).at(el.location())),
       )
     } else {
@@ -82,7 +82,7 @@
 
 /// A collection of all fixes
 #let html-fix(body) = {
-  show: make-heading-refs-clickable
+  show: improve-heading-refs
   show image: external-image
   body
 }

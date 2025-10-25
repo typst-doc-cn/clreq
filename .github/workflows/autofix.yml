@@ -20,5 +20,5 @@ jobs:
           tool: fd-find,typstyle@0.13.16  # typstyle shipped with tinymist v0.13.16
       - name: Run typstyle
         run: |
-          typstyle --inplace --line-width 120 $(fd --extension typ --exclude 'html-bindings*.typ')
+          typstyle --inplace --line-width 120 .
       - uses: autofix-ci/action@635ffb0c9798bd160680f18fd73371e355b85f27

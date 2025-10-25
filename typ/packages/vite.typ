@@ -1,7 +1,7 @@
 /// Integrate typst as a backend for vite
 /// https://vite.dev/guide/backend-integration.html
 
-#import "../templates/html-toolkit.typ": asset-url, h
+#import "../templates/html-toolkit.typ": asset-url
 #import "../mode.typ": mode
 
 #let manifest-path = "/dist/.vite/manifest.json"
@@ -29,10 +29,10 @@
   let url(path) = asset-url("/" + path)
 
   if mode == "dev" {
-    h.script({}, type: "module", src: url("@vite/client"))
+    html.script(type: "module", src: url("@vite/client"))
     for raw-path in paths {
       let (path, as-module) = _parse-path(raw-path)
-      h.script({}, type: "module", src: url(path))
+      html.script(type: "module", src: url(path))
     }
   } else {
     let manifest = json(manifest-path)
@@ -43,10 +43,10 @@
 
       assert("imports" not in chunk, message: "the `imports` field is not supported yet")
 
-      h.script({}, src: url(chunk.file), ..if as-module { (type: "module") })
+      html.script(src: url(chunk.file), ..if as-module { (type: "module") })
 
       for css in chunk.at("css", default: ()) {
-        h.link({}, rel: "stylesheet", href: url(css))
+        html.link(rel: "stylesheet", href: url(css))
       }
     }
   }

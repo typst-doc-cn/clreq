@@ -1,3 +1,4 @@
+#import "typ/templates/html-fix.typ": latin-apostrophe
 #import "typ/packages/till-next.typ": mark-till-next, till-next
 #import "typ/util.typ": babel, bbl, issue, note, now-fixed, prompt, pull, unichar, workaround
 #import "typ/prioritization.typ": level, level-table
@@ -26,15 +27,15 @@
 }
 
 #babel(
-  en: [This document also attempts to prioritize the gaps in terms of the impact on Chinese end authors. The prioritization is indicated by colour, as shown in @fig:level-table.],
-  zh: [根据对中文最终作者的影响程度，本文还尝试给这些差距排出优先顺序。优先级用颜色表示，如 @fig:level-table 所示。],
+  en: [This document also attempts to prioritize the gaps in terms of the impact on Chinese end authors. The prioritization is indicated by colour, as shown in @tab-level-table.],
+  zh: [根据对中文最终作者的影响程度，本文还尝试给这些差距排出优先顺序。优先级用颜色表示，如 @tab-level-table 所示。],
 )
 
 #figure(
   bbl(en: level-table(lang: "en"), zh: level-table(lang: "zh")),
   caption: bbl(en: [Priority levels], zh: [优先级]),
   kind: table,
-) <fig:level-table>
+) <tab-level-table>
 
 #babel(
   en: [
@@ -94,11 +95,11 @@
 
 #babel(
   en: [
-    Compared with horizontal writing mode, vertical writing mode not only changes the direction of the text flow, but also adjusts the form, size, and position of punctuation marks (as shown in @fig:vertical-example-ancient and @fig:vertical-example-modern).
+    Compared with horizontal writing mode, vertical writing mode not only changes the direction of the text flow, but also adjusts the form, size, and position of punctuation marks (as shown in @fig-vertical-example-ancient and @fig-vertical-example-modern).
     Additionally, it requires adapting to mixed Chinese-Western text, captions of figures, multi-column layout, and more.
   ],
   zh: [
-    与横排相比，直排除了更改行文方向，还会调整标点符号的形态、尺寸、位置（如 @fig:vertical-example-ancient、@fig:vertical-example-modern），此外还需适配中西混排、图表标题、分栏等。
+    与横排相比，直排除了更改行文方向，还会调整标点符号的形态、尺寸、位置（如 @fig-vertical-example-ancient、@fig-vertical-example-modern），此外还需适配中西混排、图表标题、分栏等。
   ],
 )
 
@@ -110,7 +111,7 @@
 #figure(image("/public/vertical-example-ancient.jpg", alt: "《永樂大典》The Yongle Encyclopedia"), caption: link(
   "https://commons.wikimedia.org/w/index.php?title=File:Shanghai_永樂大典卷之二千三百三十七.pdf&page=1",
   bbl(en: [An ancient example of vertical text], zh: [直排的古代例子]),
-)) <fig:vertical-example-ancient>
+)) <fig-vertical-example-ancient>
 
 #figure(
   image(
@@ -121,7 +122,7 @@
     en: [A modern example of vertical text],
     zh: [直排的现代例子],
   )),
-) <fig:vertical-example-modern>
+) <fig-vertical-example-modern>
 
 
 == Bidirectional text <bidi-text>
@@ -157,18 +158,18 @@
 #babel(
   en: [
     The default main text font in typst does not include Chinese characters.
-    Therefore, when compiling locally, if you write Chinese without configuring any font using `#set text(font: …)`, the fallback result may end up mixing fonts of different writing styles (as shown in @fig:font-fallback-messy), making the text hard to read.
+    Therefore, when compiling locally, if you write Chinese without configuring any font using `#set text(font: …)`, the fallback result may end up mixing fonts of different writing styles (as shown in @fig-font-fallback-messy), making the text hard to read.
     Moreover, there is no warning or hint.
   ],
   zh: [
-    typst的正文默认字体不含汉字。因此本地编译时，若不用`#set text(font: …)`配置字体就写中文，回落结果可能混合不同风格的字体（如 @fig:font-fallback-messy），难以阅读，且无任何警告或提示。
+    typst的正文默认字体不含汉字。因此本地编译时，若不用`#set text(font: …)`配置字体就写中文，回落结果可能混合不同风格的字体（如 @fig-font-fallback-messy），难以阅读，且无任何警告或提示。
   ],
 )
 
 #figure(
   image("/public/font-fallback-messy.png", alt: "“为什么字体这么奇怪”, literally “Why is the font so strange”"),
   caption: bbl(en: [The result might be a mixture of sans and serif fonts], zh: [结果可能混合了黑体和宋体]),
-) <fig:font-fallback-messy>
+) <fig-font-fallback-messy>
 
 === #bbl(en: [Wrong monospace font fallback for Chinese in raw block], zh: [代码块内汉字回落的等宽字体不正常])
 
@@ -219,7 +220,8 @@ $ f(x) = y "（定义8）" $
 
 >>> Expected: \
 >>> #show math.equation: set text(font: (
->>>   "Noto Serif CJK SC",
+>>>   (name: "New Computer Modern Math", covers: "latin-in-cjk"),
+>>>   (name: "Noto Serif CJK SC", covers: regex(".")),
 >>>   "New Computer Modern Math",
 >>> ))
 >>> 因此，
@@ -294,7 +296,7 @@ $ f(x) = y "（定义8）" $
   zh: [目前 typst 导出 SVG 会渲染成最细字重，导出 PDF、PNG 会变成豆腐块。],
 )
 
-```example
+```example-page
 >>> Current: \
 >>> #[
 #set text(font: "Source Han Serif SC VF")
@@ -304,6 +306,8 @@ $ f(x) = y "（定义8）" $
 >>> Expected: \
 >>> 可变字体
 ```
+// This example would emit a warning: variable fonts are not currently supported and may render incorrectly.
+// To avoid receiving the message repeatedly when running `pnpm dev`, we use `example-page` instead of `example`.
 
 == Context-based shaping and positioning
 
@@ -316,8 +320,7 @@ $ f(x) = y "（定义8）" $
 == Cursive text <cursive>
 
 #prompt(from-w3c: "https://www.w3.org/TR/clreq-gap/#cursive")[
-  #show: html.elem.with("span", attrs: (style: "font-feature-settings: 'pwid';"))
-  // Or the width of the apostrophe here will be wrong.
+  #show: latin-apostrophe
   If this script is cursive (ie. letters are generally joined up, like in Arabic, N’Ko, Syriac, etc), are there problems or needed features related to the handling of cursive text? Do cursive links break if parts of a word are marked up or styled? Do Unicode joiner and non-joiner characters behave as expected?
 ]
 
@@ -1140,7 +1143,10 @@ $ integral f dif x $
 ]
 
 === #bbl(
-  en: [List and enum markers are not aligned with the baseline of the item's contents],
+  en: [
+    #show: latin-apostrophe
+    List and enum markers are not aligned with the baseline of the item’s contents
+  ],
   zh: [`list`和`enum`的编号与内容未对齐基线],
 )
 
@@ -1662,9 +1668,14 @@ $ integral f dif x $
 
 === #bbl(en: [`gb-7714-2015-note` is totally broken], zh: [`gb-7714-2015-note`完全无法使用])
 
-#level.advanced
+#level.ok
 #issue("hayagriva#189", note: [mentioned])
+#issue("hayagriva#280", closed: true)
+#pull("hayagriva#301", merged: true)
 #issue("typst#6612")
+#issue("typst#7113", closed: true)
+
+#till-next(now-fixed.with(last-affected: "0.13.1", last-level: "advanced"))
 
 - #bbl(
     en: [The references need only be listed in the footnotes, and should not be repeated at the end of the article.],
@@ -1857,8 +1868,8 @@ $ integral f dif x $
 )
 
 #babel(
-  en: [For example, the spell checker embedded in the web app does not support Chinese, marking all characters as misspelled, as shown in @fig:webapp-misspell.],
-  zh: [例如在线应用内嵌的拼写检查器不支持中文，每个字都会被标为拼写错误，如 @fig:webapp-misspell。],
+  en: [For example, the spell checker embedded in the web app does not support Chinese, marking all characters as misspelled, as shown in @fig-webapp-misspell.],
+  zh: [例如在线应用内嵌的拼写检查器不支持中文，每个字都会被标为拼写错误，如 @fig-webapp-misspell。],
 )
 
 #figure(
@@ -1868,7 +1879,7 @@ $ integral f dif x $
     width: 80%,
   ),
   caption: bbl(en: [94 spelling mistakes], zh: [94个拼写错误]),
-) <fig:webapp-misspell>
+) <fig-webapp-misspell>
 
 #babel(
   en: [Considering that these issues cannot be reproduced robustly and automatically, we only list them below without further explanation.],

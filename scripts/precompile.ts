@@ -36,6 +36,7 @@ async function renderExamples({ color }: { color?: Color }) {
       "<external-example>",
       "--field=value",
       "--diagnostic-format=short",
+      "--target=html",
       ...extraArgs.pre,
     ], { color: color }),
   ) as Example[];

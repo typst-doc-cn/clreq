@@ -20,6 +20,8 @@ jobs:
           node-version: 22
           cache: pnpm
       - uses: typst-community/setup-typst@v4
+        with:
+          typst-version: v0.14.0
       - name: Restore cached fonts
         uses: actions/cache@v4
         id: cache
@@ -57,6 +59,8 @@ jobs:
           node-version: 22
           cache: pnpm
       - uses: typst-community/setup-typst@v4
+        with:
+          typst-version: v0.14.0
       - run: pnpm install
       - run: |
           pnpm check-issues

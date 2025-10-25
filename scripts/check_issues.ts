@@ -134,6 +134,7 @@ async function queryDocument(): Promise<
       "query",
       "main.typ",
       "selector(<pull>).or(<issue>)",
+      "--target=html",
       ...extraArgs.pre,
     ]),
   ) as { func: "metadata"; value: object; label: "<issue>" | "<pull>" }[];

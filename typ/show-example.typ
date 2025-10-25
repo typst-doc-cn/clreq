@@ -1,8 +1,7 @@
 #import "@preview/tidy:0.4.3": show-example as tidy-example
 #import "@preview/digestify:0.1.0": bytes-to-hex, md5
 
-#import "templates/html-fix.typ": reserve-text-fill
-#import "templates/html-toolkit.typ": div-frame, h
+#import "templates/html-toolkit.typ": div-frame
 #import "mode.typ": cache-dir, cache-ready, mode
 
 
@@ -26,14 +25,11 @@
 /// - preview (content): previewed result
 /// - annotation (str): an annotation shown when hovering
 /// -> content
-#let layout-example(code, preview, annotation: none, ..sink) = h.div(
+#let layout-example(code, preview, annotation: none, ..sink) = html.div(
   class: "example",
   ..if annotation != none { (title: annotation) },
   {
-    {
-      show text: reserve-text-fill
-      code
-    }
+    code
     div-frame(preview, class: "preview")
   },
 )
@@ -73,9 +69,24 @@
   /// -> any
   body,
 ) = {
+  let fix-scaling(it) = {
+    // This reverts the default style for `raw`, making the result of `#context 1em.to-absolute()` in simple examples consistent with that in regular documents.
+    //
+    // We have to apply this to `layout*-example` functions in all kinds of examples.
+    //
+    // Reason: In typst v0.14.0-rc.1, `text.size` does not affect the apparent size of text in HTML, but does affect the conversion rate between the absolute lengths in Typst and HTML.
+    // If an image is sized absolutely in points, then typst will make sure its relative size to text is the same in both PNG/SVG/PDF and HTML.
+    // SVGs compiled from page and bibliography examples specify their sizes in absolute lengths.
+    // To make scales of preview images consistent, we have to apply this rule to all kinds of examples.
+    // https://github.com/typst/typst/issues/7114
+    set text(1em / 0.8)
+
+    it
+  }
+
   // Simple example, directly evaluated in main.typ.
   show raw.where(lang: "example"): it => {
-    set text(4em / 3)
+    show: fix-scaling
 
     tidy-example.show-example(
       raw(it.text, block: true, lang: "typ"),
@@ -114,7 +125,7 @@
     [
       #metadata((id: id, content: full-executed)) <external-example>
     ]
-    set text(4em / 3)
+    show: fix-scaling
     layout-external-example(optional-map(raw.with(block: true, lang: "typ"), displayed), id)
   }
 
@@ -153,7 +164,7 @@
     [
       #metadata((id: id, content: executed)) <external-example>
     ]
-    set text(4em / 3)
+    show: fix-scaling
     layout-external-example(raw(displayed, block: true, lang: "bib"), id)
   }
 
@@ -161,8 +172,7 @@
 }
 
 /// Layout a git log in a `<details>`
-#let layout-git-log(summary: [], log) = h.details(class: "example", {
-  h.summary(summary)
-  show text: reserve-text-fill
+#let layout-git-log(summary: [], log) = html.details(class: "example", {
+  html.summary(summary)
   raw(log, lang: "gitlog", block: true)
 })
