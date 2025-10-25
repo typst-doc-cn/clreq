@@ -24,7 +24,7 @@ jobs:
           cache: pnpm
       - uses: typst-community/setup-typst@v4
         with:
-          typst-version: 0.14.0-rc.2
+          typst-version: v0.14.0
       - run: pnpm install
       - name: Check issues and generate a report
         id: check
