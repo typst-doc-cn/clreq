@@ -25,8 +25,8 @@ importers:
         specifier: ^5.0.5
         version: 5.0.5
       '@types/node':
-        specifier: ^24.6.1
-        version: 24.6.1
+        specifier: ^24.9.2
+        version: 24.9.2
       postcss-nesting:
         specifier: ^13.0.2
         version: 13.0.2(postcss@8.5.6)
@@ -35,7 +35,7 @@ importers:
         version: 5.9.3
       vite:
         specifier: ^7.1.9
-        version: 7.1.9(@types/node@24.6.1)
+        version: 7.1.9(@types/node@24.9.2)
     optionalDependencies:
       netlify-plugin-cache:
         specifier: ^1.0.3
@@ -330,8 +330,8 @@ packages:
   '@types/glob-watcher@5.0.5':
     resolution: {integrity: sha512-79p9NNg/3mWMdQ0+OHdV0Yyge8BxhiYAHnVZ/Zz7/DO488osdI9Md9nNPQafAhNTwO0Hp/L8DwGrTG827r5V4g==}
 
-  '@types/node@24.6.1':
-    resolution: {integrity: sha512-ljvjjs3DNXummeIaooB4cLBKg2U6SPI6Hjra/9rRIy7CpM0HpLtG9HptkMKAb4HYWy5S7HUvJEuWgr/y0U8SHw==}
+  '@types/node@24.9.2':
+    resolution: {integrity: sha512-uWN8YqxXxqFMX2RqGOrumsKeti4LlmIMIyV0lgut4jx7KQBcBiW6vkDtIBvHnHIquwNfJhk8v2OtmO8zXWHfPA==}
 
   ansi-regex@5.0.1:
     resolution: {integrity: sha512-quJQXlTSUGL2LH9SUXo8VwsY4soanhgo6LNSm84E1LBcE8s3O0wpdiRzyR9z/ZZJMlMWv37qOOb9pdJlMUEKFQ==}
@@ -561,8 +561,8 @@ packages:
     engines: {node: '>=14.17'}
     hasBin: true
 
-  undici-types@7.13.0:
-    resolution: {integrity: sha512-Ov2Rr9Sx+fRgagJ5AX0qvItZG/JKKoBRAVITs1zk7IqZGTJUwgUr7qoYBpWwakpWilTZFM98rG/AFRocu10iIQ==}
+  undici-types@7.16.0:
+    resolution: {integrity: sha512-Zz+aZWSj8LE6zoxD+xrjh4VfkIG8Ya6LvYkZqtUQGJPZjYl53ypCaUwWqo7eI0x66KBGeRo+mlBEkMSeSZ38Nw==}
 
   util-deprecate@1.0.2:
     resolution: {integrity: sha512-EPD5q1uXyFxJpCrLnCc1nHnq3gOa6DZBocAIiI2TaSCA7VCJ1UJDMagCzIkXNsUYfD1daK//LTEQ8xiIbrHtcw==}
@@ -786,11 +786,11 @@ snapshots:
 
   '@types/glob-watcher@5.0.5':
     dependencies:
-      '@types/node': 24.6.1
+      '@types/node': 24.9.2
 
-  '@types/node@24.6.1':
+  '@types/node@24.9.2':
     dependencies:
-      undici-types: 7.13.0
+      undici-types: 7.16.0
 
   ansi-regex@5.0.1: {}
 
@@ -1044,11 +1044,11 @@ snapshots:
 
   typescript@5.9.3: {}
 
-  undici-types@7.13.0: {}
+  undici-types@7.16.0: {}
 
   util-deprecate@1.0.2: {}
 
-  vite@7.1.9(@types/node@24.6.1):
+  vite@7.1.9(@types/node@24.9.2):
     dependencies:
       esbuild: 0.25.10
       fdir: 6.5.0(picomatch@4.0.3)
@@ -1057,7 +1057,7 @@ snapshots:
       rollup: 4.52.4
       tinyglobby: 0.2.15
     optionalDependencies:
-      '@types/node': 24.6.1
+      '@types/node': 24.9.2
       fsevents: 2.3.3
 
   wrap-ansi@7.0.0:

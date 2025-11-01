@@ -19,7 +19,7 @@
     },
     "devDependencies": {
         "@types/glob-watcher": "^5.0.5",
-        "@types/node": "^24.6.1",
+        "@types/node": "^24.9.2",
         "postcss-nesting": "^13.0.2",
         "typescript": "~5.9.3",
         "vite": "^7.1.9"
