@@ -7,7 +7,7 @@
     "dependencies": {
         "@std/fmt": "jsr:^1.0.8",
         "concurrently": "^9.2.1",
-        "es-toolkit": "^1.39.10",
+        "es-toolkit": "^1.41.0",
         "glob-watcher": "^6.0.0"
     },
     "scripts": {
