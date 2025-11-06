@@ -84,6 +84,8 @@
 #let workaround(dest, note: none) = {
   let human-dest = if dest.starts-with("https://typst.app/universe/package/") {
     "universe/" + dest.trim("https://typst.app/universe/package/", at: start)
+  } else if dest.starts-with("https://typst-doc-cn.github.io/guide/FAQ/") {
+    "Chinese FAQ"
   } else {
     dest.trim("https://", at: start).split(".").at(0).trim("typst-", at: start)
   }

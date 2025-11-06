@@ -48,6 +48,11 @@
   ],
 )
 
+= #bbl(en: [Summary], zh: [概要])
+
+#import "typ/respec.typ": summary
+#summary
+
 #outline()
 
 #set heading(numbering: "1.1")
@@ -162,7 +167,7 @@
     Moreover, there is no warning or hint.
   ],
   zh: [
-    typst的正文默认字体不含汉字。因此本地编译时，若不用`#set text(font: …)`配置字体就写中文，回落结果可能混合不同风格的字体（如 @fig-font-fallback-messy），难以阅读，且无任何警告或提示。
+    typst 的正文默认字体不含汉字。因此本地编译时，若不用`#set text(font: …)`配置字体就写中文，回落结果可能混合不同风格的字体（如 @fig-font-fallback-messy），难以阅读，且无任何警告或提示。
   ],
 )
 
@@ -185,7 +190,7 @@
     Currently, this setting takes precedence over the main text font you specified, forcing you to re-declare the Chinese font by `#show raw: set text(font: …)`.
   ],
   zh: [
-    在正文之外，typst对`raw`代码块预设了另一字体，同样不含汉字。该设置目前优先于你指定的正文字体，导致必须用`#show raw: set text(font: …)`再次指定中文字体。
+    在正文之外，typst 对`raw`代码块预设了另一字体，同样不含汉字。该设置目前优先于你指定的正文字体，导致必须用`#show raw: set text(font: …)`再次指定中文字体。
   ],
 )
 
@@ -378,7 +383,10 @@ $ f(x) = y "（定义8）" $
 == #bbl(en: [Characters & encoding], zh: [字符与编码])
 
 #prompt(from-w3c: "https://www.w3.org/TR/clreq-gap/#encoding")[
-  Most languages are now supported by Unicode, but there are still occasional issues. In particular, there may be issues related to ordering of characters, or competing encodings (as in Myanmar), or standardisation of variation selectors or the encoding model (as in Mongolian). Are there any character repertoire issues preventing use of this script in typst? Do variation selectors need attention? Are there any other encoding-related issues?
+  #babel(
+    en: [Most languages are now supported by Unicode, but there are still occasional issues. In particular, there may be issues related to ordering of characters, or competing encodings (as in Myanmar), or standardisation of variation selectors or the encoding model (as in Mongolian). Are there any character repertoire issues preventing use of this script in typst? Do variation selectors need attention? Are there any other encoding-related issues?],
+    zh: [Unicode 已支持大部分语言，但仍有零星问题。特别是在字符排序、编码竞争（如缅甸文）、变体选择器及编码模型标准化（如蒙文）等方面。这种文字是否因字符集支持问题而难以使用 typst？变体选择器需要特别关注吗？还有其他编码相关的问题吗？],
+  )
 ]
 
 === #bbl(en: [Ideographic variation sequence disappears at end of line], zh: [行末的表意文字异体字序列无效])
@@ -600,7 +608,11 @@ $ f(x) = y "（定义8）" $
 == #bbl(en: [Data formats & numbers], zh: [数据格式与数字])
 
 #prompt(from-w3c: "https://www.w3.org/TR/clreq-gap/#data_formats")[
-  Relevant here are formats related to number, currency, dates, personal names, addresses, and so forth. If the script has its own set of number digits, are there any issues in how they are used? Does the script or language use special format patterns that are problematic (eg. 12,34,000 in India)? What about date/time formats and selection - and are non-Gregorian calendars needed? Do percent signs and other symbols associated with number work correctly, and do numbers need special decorations, (like in Ethiopic or Syriac)? How about the management of personal names, addresses, etc. in typst: are there issues?
+  #babel(
+    en: [
+      Relevant here are formats related to number, currency, dates, personal names, addresses, and so forth. If the script has its own set of number digits, are there any issues in how they are used? Does the script or language use special format patterns that are problematic (eg. 12,34,000 in India)? What about date/time formats and selection - and are non-Gregorian calendars needed? Do percent signs and other symbols associated with number work correctly, and do numbers need special decorations, (like in Ethiopic or Syriac)? How about the management of personal names, addresses, etc. in typst: are there issues?],
+    zh: [本节讨论数字、货币、日期、人名、地址等的格式。这种文字如果自有一套数码，使用是否有问题？这种文字或语言如果会用特殊模式的格式（例如印度的 12,34,000），它是否还有问题？是否会用公历以外的历法，时间及日期的格式和选择方式又如何？百分号等与数字一同使用的符号是否正常？数字是否需要特别装饰（如埃塞俄比亚文、叙利亚文）？在管理人名、地址等方面，typst 是否还有问题？],
+  )
 ]
 
 === #bbl(en: [Numbers in Simplified Chinese], zh: [简体中文数字])
@@ -1093,7 +1105,7 @@ $ integral f dif x $
       Does typst support requirements for baseline alignment between mixed scripts and in general? Are there issues related to line height or inter-line spacing, etc.? Are the requirements for baseline or line height in vertical text covered?
     ],
     zh: [
-      typst能否对齐多文种的基线？行高、行距等方面有无问题？直排时的基线、行高能否满足要求？
+      typst 能否对齐多文种的基线？行高、行距等方面有无问题？直排时的基线、行高能否满足要求？
     ],
   )
 ]
@@ -1128,6 +1140,35 @@ $ integral f dif x $
 >>> #box[Typst 国王] \
 >>> #box[Typst 国王]
 ```
+
+=== #bbl(
+  en: [`box` is not aligned if `text.bottom-edge` is not baseline],
+  zh: [`text.bottom-edge`不是基线时，`box`未对齐],
+)
+
+#level.advanced
+#issue("tianyi-smile/itemize#8")
+
+#babel(en: [This issue continues the above issue.], zh: [这一问题接续上一问题。])
+
+#babel(
+  en: [At present, #link("https://typst.app/docs/reference/layout/box/", `box`) is always put on the baseline, even if `text.bottom-edge` is not `"baseline"`, leading to misalignment.],
+  zh: [目前即使`text.bottom-edge`不是`"baseline"`，#link("https://typst.app/docs/reference/layout/box/", `box`)也总是放到基线上，导致对不齐。],
+)
+
+```example
+>>> Current: \
+#set text(bottom-edge: "descender")
+淇水#box[汤]汤
+
+>>> Expected: \
+>>> 淇水#box[#set text(bottom-edge: "baseline");汤]汤
+```
+
+#babel(
+  en: [This affects Chinese particularly. All Chinese characters have a square-shaped frame, so the natural definition of bottom edge is the bottom edge of the squares, and most Chinese fonts will mark it as the descender line. As a result, some people prefer `bottom-edge: "descender"` to the default `bottom-edge: "baseline"` for their Chinese documents.],
+  zh: [中文特别受此影响。汉字都是方块字，所以底线的自然定义就是方块的底边，而中文字体大多将它标成下降部的边缘线。因此，有些人会选择将中文文档从默认的`bottom-edge: "baseline"`改为`bottom-edge: "descender"`。],
+)
 
 == #bbl(en: [Lists, counters, etc.], zh: [列表、编号等])
 
@@ -1744,11 +1785,18 @@ $ integral f dif x $
 === #bbl(en: [Failed to load some CSL styles], zh: [无法加载某些 CSL 样式])
 
 #level.advanced
+#issue("hayagriva#405")
 #workaround("https://typst-doc-cn.github.io/guide/FAQ/bib-csl.html")
+#workaround("https://typst-doc-cn.github.io/csl-sanitizer/", note: "csl-sanitizer")
 
 #babel(
   en: [The compiler does not support the CSL-M standard yet, nor is it compatible with some extensions of citeproc-js.],
   zh: [编译器暂不支持 CSL-M 标准，也不兼容 citeproc-js 的一些扩展。],
+)
+
+#babel(
+  en: [As of October 2025, 222 of 302 (74%) #link("https://zotero-chinese.com/styles/")[Chinese CSL styles] are considered malformed by hayagriva. Unfortunately, hayagriva hardly provides clear error messages, making it very difficult to debug.],
+  zh: [截至2025年十月，302个#link("https://zotero-chinese.com/styles/")[中文 CSL 样式]中的222个（74%）都会被 hayagriva 判为 malformed。而且很不幸，hayagriva 提供的错误信息一般并不清晰，导致调试异常困难。],
 )
 
 = #bbl(en: [Other], zh: [杂项])
@@ -1857,6 +1905,20 @@ $ integral f dif x $
   zh: [尚无任何相关措施，无论报错发自核心编译器还是第三方包。],
 )
 
+=== #bbl(en: [A Chinese name for the Typst project], zh: [Typst 项目的中文名])
+
+#level.advanced
+
+#babel(
+  en: [The Typst project does not have an official Chinese name, which prevents its mention in certain academic or teaching scenarios where mixing languages is discouraged. In addition, the Chinese language does not have consonants like -pst, so it is difficult to pronounce _Typst_. Therefore, some people suggested that there should be a Chinese name.],
+  zh: [Typst 项目没有官方中文名，而特定学术或教学场合限制混合语言，导致无法提及。此外汉语没有 -pst 这样的辅音，导致“Typst”一词发音困难。因此，有人认为应该有个中文名。],
+)
+
+#babel(
+  en: [However, there are more reasons not to localize the name _Typst_. #link("https://forum.typst.app/t/chinese-name-for-the-typst-project/6024/13")[A naive vote in September 2025] indicated that the vast majority of people believed that there is no need for localization at present: just use _Typst_.],
+  zh: [然而还有更多理由不翻译“Typst”。#link("https://forum.typst.app/t/chinese-name-for-the-typst-project/6024/13")[2025年9月的简单投票]表明，绝大多数人认为目前没有必要翻译：直接称“Typst”即可。],
+)
+
 === #bbl(en: [Web app issues], zh: [在线应用的问题])
 
 #level.advanced
@@ -1900,8 +1962,15 @@ $ integral f dif x $
 - #issue("webapp-issues#675")
 
   #bbl(
-    en: [Spell checker  does not respect `text.lang` if the `*.typ` is not included in `main.typ`],
+    en: [Spell checker does not respect `text.lang` if the `*.typ` is not included in `main.typ`],
     zh: [若`*.typ`未被`main.typ`导入，则拼写检查器会忽略`text.lang`],
+  )
+
+- #issue("webapp-issues#733")
+
+  #bbl(
+    en: [Spell checker does not respect `text.lang` set by regex show rules],
+    zh: [用 show regex 规则设置的`text.lang`会被拼写检查器忽略],
   )
 
 - #issue("typst#5436")
@@ -1914,11 +1983,6 @@ $ integral f dif x $
 #set heading(numbering: none)
 
 = #bbl(en: [Addendum], zh: [附录])
-
-== #bbl(en: [Summary], zh: [概要])
-
-#import "typ/respec.typ": summary
-#summary
 
 == #bbl(en: [Environment of the examples], zh: [例子的环境信息])
 
@@ -1962,7 +2026,8 @@ $ integral f dif x $
 
 - #bbl(en: [Reference implementations], zh: [参考实现])
 
-  - #link("https://ctan.org/pkg/biblatex-gb7714-2015")[`biblatex-gb7714-2015`], #bbl(zh: [符合 GB/T 7714—2015 标准的 biblatex 参考文献样式], en: [A BibLaTeX implementation of the GB/T 7714—2015 bibliography style for Chinese users]) (#link("https://texdoc.org/serve/biblatex-gb7714-2015/0")[TeXdoc PDF])
+  - #link("https://ctan.org/pkg/biblatex-gb7714-2015")[`biblatex-gb7714-2015`], #bbl(zh: [符合 GB/T 7714—2015 标准的 biblatex 参考文献样式], en: [A BibLaTeX implementation of the GB/T 7714—2015 bibliography style for Chinese users]) (#link("https://texdoc.org/serve/biblatex-gb7714-2015/0")[TeXdoc PDF], #link("https://github.com/hushidong/biblatex-gb7714-2015")[GitHub])
+  - #link("https://ctan.org/pkg/gbt7714")[`gbt7714`], GB/T 7714 BibTeX style (#link("https://texdoc.org/serve/gbt7714/0")[TeXdoc PDF], #link("https://github.com/zepinglee/gbt7714-bibtex-style")[GitHub])
 
 == #bbl(en: [To be done], zh: [待办])
 
