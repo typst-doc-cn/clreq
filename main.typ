@@ -270,6 +270,7 @@ $ f(x) = y "（定义8）" $
 
 #level.advanced
 #issue("typst#6295")
+#workaround("https://typst-doc-cn.github.io/guide/FAQ/lang-font-size.html")
 
 #babel(
   en: [It is common to use different fonts for Chinese and Western characters, and the visual sizes of different fonts may need to be fine-tuned for alignment.],
