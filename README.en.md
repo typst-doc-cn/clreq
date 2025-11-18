@@ -171,6 +171,8 @@ As a result:
 
   For example, the default `text.cjk-latin-spacing` is typically `auto`, but here it is `none`.
 
+- The styles for headings etc. are affected by the global style of the document.
+
 - …
 
 If you require advanced features or 100% accuracy, please write a page example instead.

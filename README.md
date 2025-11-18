@@ -170,6 +170,8 @@ simple example 执行于容器中，且会在整篇文档中共享状态。
 
   例如，`text.cjk-latin-spacing`一般默认为`auto`，但这里是`none`。
 
+- 标题等样式会受文档全局样式影响。
+
 - ……
 
 如需高级功能或 100% 准确，请换用 page example。
