@@ -892,10 +892,10 @@ $ f(x) = y "（定义8）" $
 第二天我起得非常迟，午饭之后，出去看了朋友。
 
 // Expected to be possible:
-<<<#set text(overhang: ("、": 1.0, "，": 1.0, "。": 1.0))
+<<< #set text(overhang: ("、": 1.0, "，": 1.0, "。": 1.0))
 >>> = Expected
 >>> #set par(justify: false)
-<<<第二天我起得非常迟，午饭之后，出去看了朋友。
+<<< 第二天我起得非常迟，午饭之后，出去看了朋友。
 >>> 第二天我起得非常迟，午饭之后，#h(-1em)出去看了朋友。
 ```
 
@@ -1130,8 +1130,8 @@ $ integral f dif x $
 >>> #set box(fill: aqua.lighten(50%))
 >>> Current: \
 >>> // Default: cap-height to baseline.
-<<<Typst 国王 \
-<<<Typst 国王
+<<< Typst 国王 \
+<<< Typst 国王
 >>> #box[Typst 国王] \
 >>> #box[Typst 国王]
 

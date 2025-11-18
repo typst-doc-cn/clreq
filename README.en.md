@@ -149,7 +149,7 @@ A simple typst example.
 
   🙈 hidden from the source, but still 🚀 executed in preview.
 
-- Lines starting with `<<<`:
+- Lines starting with `<<< `:
 
   👀 shown as the source, but 🛑 not executed in the preview.
 
@@ -196,7 +196,7 @@ A standalone typst example compiled in a page.
 ````
 `````
 
-The meanings of `<<<` and `>>>` are the same as those in simple examples.
+The meanings of `<<< ` and `>>>` are the same as those in simple examples.
 
 #### Bibliography examples (`example-bib`)
 

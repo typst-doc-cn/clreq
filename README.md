@@ -148,7 +148,7 @@ pnpm dev --open # ⇒ http://localhost:3000
 
   🙈 在源代码中隐藏，但仍然 🚀 执行成预览结果。
 
-- `<<<`打头的行：
+- `<<< `打头的行：
 
   👀 显示到源代码，但 🛑 不会执行成预览结果。
 
@@ -195,7 +195,7 @@ simple example 执行于容器中，且会在整篇文档中共享状态。
 ````
 `````
 
-`<<<`与`>>>`的意义与 simple example 相同。
+`<<< `与`>>>`的意义与 simple example 相同。
 
 #### Bibliography examples (`example-bib`)
 
