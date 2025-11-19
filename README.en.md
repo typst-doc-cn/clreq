@@ -149,7 +149,7 @@ A simple typst example.
 
   🙈 hidden from the source, but still 🚀 executed in preview.
 
-- Lines starting with `<<<`:
+- Lines starting with `<<< `:
 
   👀 shown as the source, but 🛑 not executed in the preview.
 
@@ -170,6 +170,8 @@ As a result:
 - The default configuration values are those specified in `raw`, which may differ from the defaults in regular documents.
 
   For example, the default `text.cjk-latin-spacing` is typically `auto`, but here it is `none`.
+
+- The styles for headings etc. are affected by the global style of the document.
 
 - …
 
@@ -196,7 +198,7 @@ A standalone typst example compiled in a page.
 ````
 `````
 
-The meanings of `<<<` and `>>>` are the same as those in simple examples.
+The meanings of `<<< ` and `>>>` are the same as those in simple examples.
 
 #### Bibliography examples (`example-bib`)
 

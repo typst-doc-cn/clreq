@@ -148,7 +148,7 @@ pnpm dev --open # ⇒ http://localhost:3000
 
   🙈 在源代码中隐藏，但仍然 🚀 执行成预览结果。
 
-- `<<<`打头的行：
+- `<<< `打头的行：
 
   👀 显示到源代码，但 🛑 不会执行成预览结果。
 
@@ -169,6 +169,8 @@ simple example 执行于容器中，且会在整篇文档中共享状态。
 - 设置的默认值会按`raw`，可能与普通文档不同。
 
   例如，`text.cjk-latin-spacing`一般默认为`auto`，但这里是`none`。
+
+- 标题等样式会受文档全局样式影响。
 
 - ……
 
@@ -195,7 +197,7 @@ simple example 执行于容器中，且会在整篇文档中共享状态。
 ````
 `````
 
-`<<<`与`>>>`的意义与 simple example 相同。
+`<<< `与`>>>`的意义与 simple example 相同。
 
 #### Bibliography examples (`example-bib`)
 

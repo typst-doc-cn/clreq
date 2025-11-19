@@ -85,6 +85,7 @@
 
 #level.advanced
 #issue("typst#5908")
+#pull("typst#7399", rejected: true)
 
 // Ref: https://www.w3.org/TR/clreq/#writing_modes_in_chinese_composition
 #babel(en: [There are two writing modes in Chinese composition:], zh: [中文有两种行文模式：])
@@ -314,6 +315,47 @@ $ f(x) = y "（定义8）" $
 ```
 // This example would emit a warning: variable fonts are not currently supported and may render incorrectly.
 // To avoid receiving the message repeatedly when running `pnpm dev`, we use `example-page` instead of `example`.
+
+=== #bbl(
+  en: [Unable to infer the writing script across elements, making `locl` sometimes ineffective],
+  zh: [无法跨越元素推断文字种类，导致`locl`特性有时失效],
+)
+
+#level.basic
+#issue("typst#7396")
+
+#babel(
+  en: [
+    Typographical rules may have regional differences. For example, when writing Chinese horizontally, #unichar("。") is placed at the _lower left_ corner in the square space in Chinese Mainland, but placed at the _center_ in Taiwan and Hong Kong.
+    Some fonts handle these differences with the #link("https://learn.microsoft.com/typography/opentype/spec/features_ko#tag-locl")[OpenType `locl` (Localized Forms) feature], which requires the text to be properly tagged with both the language system and the writing script.
+    However, typst does not infer the script across elements, making `locl` sometimes ineffective.
+  ],
+  zh: [
+    排版规则可能存在地区差异。例如横排中文时，中国大陆把 #unichar("。") 放在字面的左下角，而港台则放在中央。有些字体使用 #link("https://learn.microsoft.com/typography/opentype/spec/features_ko#tag-locl")[OpenType 特性`locl` (Localized Forms)] 处理这种差异，而这要求文本同时正确标注了语言和文字。然而，typst 不会跨元素推断文字种类，导致`locl`特性有时失效。
+  ],
+)
+
+#babel(
+  en: [
+    In the example below, typst infers the script of the first `。` from its surrounding Han texts, and uses the correct localized glyph. However, typst fails to do so for the second `。`, whose both sides are `ref` elements, and uses the wrong default glyph.
+  ],
+  zh: [
+    在下例中，typst 从相邻汉字推断出了第一个`。`的文字种类，选用了正确的本地化字形；可是未能应对夹在两个`ref`元素中间的第二个`。`，选用了错误的默认字形。
+  ],
+)
+
+```example-page
+#set text(lang: "zh", region: "TW", font: "Noto Serif CJK SC")
+#set heading(numbering: "1")
+<<< #hide[= 何故 <a>]
+>>> #place(hide[= 何故 <a>])
+
+>>> Current: \
+句號。@a。@a
+
+>>> Expected: \
+>>> 句號。小節 1。小節 1
+```
 
 == Context-based shaping and positioning
 
@@ -680,7 +722,7 @@ $ f(x) = y "（定义8）" $
 
 #babel(
   en: [According to #link("https://www.w3.org/TR/clreq/#prohibition_rules_for_line_start_end")[prohibition rules for line start and line end] (basic), #unichar("·") should not appear at the line start.],
-  zh: [按照#link("https://www.w3.org/TR/clreq/#prohibition_rules_for_line_start_end")[行首行尾禁则]（基本处理），#unichar("·")不能出现在一行的开头。],
+  zh: [按照#link("https://www.w3.org/TR/clreq/#prohibition_rules_for_line_start_end")[行首行尾禁则]（基本处理），#unichar("·") 不能出现在一行的开头。],
 )
 
 ```example
@@ -893,10 +935,10 @@ $ f(x) = y "（定义8）" $
 第二天我起得非常迟，午饭之后，出去看了朋友。
 
 // Expected to be possible:
-<<<#set text(overhang: ("、": 1.0, "，": 1.0, "。": 1.0))
+<<< #set text(overhang: ("、": 1.0, "，": 1.0, "。": 1.0))
 >>> = Expected
 >>> #set par(justify: false)
-<<<第二天我起得非常迟，午饭之后，出去看了朋友。
+<<< 第二天我起得非常迟，午饭之后，出去看了朋友。
 >>> 第二天我起得非常迟，午饭之后，#h(-1em)出去看了朋友。
 ```
 
@@ -1131,8 +1173,8 @@ $ integral f dif x $
 >>> #set box(fill: aqua.lighten(50%))
 >>> Current: \
 >>> // Default: cap-height to baseline.
-<<<Typst 国王 \
-<<<Typst 国王
+<<< Typst 国王 \
+<<< Typst 国王
 >>> #box[Typst 国王] \
 >>> #box[Typst 国王]
 
@@ -1786,6 +1828,7 @@ $ integral f dif x $
 === #bbl(en: [Failed to load some CSL styles], zh: [无法加载某些 CSL 样式])
 
 #level.advanced
+#issue("citationberg#35", closed: true)
 #issue("hayagriva#405")
 #workaround("https://typst-doc-cn.github.io/guide/FAQ/bib-csl.html")
 #workaround("https://typst-doc-cn.github.io/csl-sanitizer/", note: "csl-sanitizer")
@@ -1984,6 +2027,15 @@ $ integral f dif x $
 #set heading(numbering: none)
 
 = #bbl(en: [Addendum], zh: [附录])
+
+== #bbl(en: [List of sites], zh: [站点列表])
+
+- #bbl(en: [Main site], zh: [主站]) \
+  #link("https://typst-doc-cn.github.io/clreq/")[typst-doc-cn.github.io/clreq]
+- #bbl(en: [Mirror site], zh: [镜像站]) \
+  #link("https://gap.zhtyp.art")[gap.zhtyp.art]
+- #bbl(en: [Test site], zh: [测试站]) \
+  #link("https://clreq-gap-typst.netlify.app")[clreq-gap-typst.netlify.app]
 
 == #bbl(en: [Environment of the examples], zh: [例子的环境信息])
 
