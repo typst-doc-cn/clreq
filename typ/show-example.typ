@@ -1,4 +1,3 @@
-#import "@preview/tidy:0.4.3": show-example as tidy-example
 #import "@preview/digestify:0.1.0": bytes-to-hex, md5
 
 #import "templates/html-toolkit.typ": div-frame
@@ -69,6 +68,42 @@
   /// -> any
   body,
 ) = {
+  /// - raw (str): The source of a simple or page example.
+  /// -> dictionary `(displayed, executed)`
+  let parse-example(raw) = {
+    let lines = raw
+      .split("\n")
+      .map(x => if x.starts-with(">>>") {
+        (
+          displayed: none,
+          executed: x.trim(">>>", at: start),
+        )
+      } else if x.starts-with("<<<") {
+        (
+          displayed: if x == "<<<" {
+            "" // Support displaying an empty line
+          } else {
+            // The space after `<<<` is intentional. It is consistent with the official, but different with tidy.
+            assert(
+              x.starts-with("<<< "),
+              message: "this line in the example is ambiguous; consider adding a space after `<<<`:\n" + x,
+            )
+            x.trim("<<< ", at: start)
+          },
+          executed: none,
+        )
+      } else {
+        // Regular lines
+        (displayed: x, executed: x)
+      })
+
+
+    let displayed = lines.map(x => x.displayed).filter(x => x != none).join("\n")
+    let executed = lines.map(x => x.executed).filter(x => x != none).join("\n")
+
+    (displayed: displayed, executed: executed)
+  }
+
   let fix-scaling(it) = {
     // This reverts the default style for `raw`, making the result of `#context 1em.to-absolute()` in simple examples consistent with that in regular documents.
     //
@@ -86,29 +121,29 @@
 
   // Simple example, directly evaluated in main.typ.
   show raw.where(lang: "example"): it => {
-    show: fix-scaling
+    let (displayed, executed) = parse-example(it.text)
 
-    tidy-example.show-example(
-      raw(it.text, block: true, lang: "typ"),
-      mode: "markup",
-      preamble: ```typ
-      // Some browsers hide the border. Therefore, the inset is necessary.
-      #show: block.with(inset: 0.5em)
-      {GENERAL-PREAMBLE}
-      ```
-        .text
-        .replace("{GENERAL-PREAMBLE}", GENERAL-PREAMBLE)
-        + "\n",
-      layout: layout-example,
+    let full-executed = ````typ
+    // Some browsers hide the border. Therefore, the inset is necessary.
+    #show: block.with(inset: 0.5em)
+    {GENERAL-PREAMBLE}
+
+    {executed}
+    ````
+      .text
+      .replace("{GENERAL-PREAMBLE}", GENERAL-PREAMBLE)
+      .replace("{executed}", executed)
+
+    show: fix-scaling
+    layout-example(
+      optional-map(raw.with(block: true, lang: "typ"), displayed),
+      [#eval(full-executed, mode: "markup")],
     )
   }
 
   // Page example, compiled by scripts/compile.ts.
   show raw.where(lang: "example-page"): it => {
-    let lines = it.text.split("\n")
-
-    let displayed = lines.filter(x => not x.starts-with(">>>")).map(x => x.trim("<<<", at: start)).join("\n")
-    let executed = lines.filter(x => not x.starts-with("<<<")).map(x => x.trim(">>>", at: start)).join("\n")
+    let (displayed, executed) = parse-example(it.text)
 
     let full-executed = ````typ
     // Some browsers hide the border. Therefore, the margin is necessary.
