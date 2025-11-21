@@ -2026,7 +2026,7 @@ $ integral f dif x $
 
 #set heading(numbering: none)
 
-= #bbl(en: [Addendum], zh: [附录])
+= #bbl(en: [Addendum], zh: [附录]) <addendum>
 
 == #bbl(en: [List of sites], zh: [站点列表])
 
