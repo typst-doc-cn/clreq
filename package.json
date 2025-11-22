@@ -11,10 +11,11 @@
         "glob-watcher": "^6.0.0"
     },
     "scripts": {
-        "build": "tsc && vite build && node --experimental-strip-types scripts/build.ts",
+        "build": "tsc && vite build && node --experimental-strip-types scripts/build.ts && pnpm generate-json-index",
         "dev": "node --experimental-strip-types scripts/dev.ts",
         "preview": "vite preview --base=/clreq/",
         "check-issues": "node --experimental-strip-types scripts/check_issues.ts",
+        "generate-json-index": "node --experimental-strip-types scripts/generate-json-index.ts > dist/index.json",
         "patch-htmldiff": "node --experimental-strip-types scripts/patch-htmldiff.ts"
     },
     "devDependencies": {
