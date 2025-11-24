@@ -246,8 +246,29 @@ function collectSections(data: (Heading | GeneralMetadata)[]): Section[] {
   return sections;
 }
 
+/** Warn sections without `id` */
+function warnUnlabelledSections(sections: Section[]): void {
+  const unlabelled = sections.filter(({ id, priority }) =>
+    id === undefined && !["tbd", "na"].includes(priority)
+  );
+
+  if (unlabelled.length > 0) {
+    console.warn(
+      `Found ${unlabelled.length} unlabelled sections:\n${
+        unlabelled.map(({ title, level, priority }) =>
+          `${"  ".repeat(level)}- ${
+            priority === "(inherited)" ? "" : `[${priority}] `
+          }${title.en} | ${title["zh-Hans"]}`
+        ).join("\n")
+      }`,
+    );
+  }
+}
+
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
   const data = await queryDocument();
   const sections = collectSections(data);
   console.log(JSON.stringify({ version: "2025-11-24", sections }, null, 2));
+
+  warnUnlabelledSections(sections);
 }

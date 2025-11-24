@@ -41,17 +41,27 @@
 /// Our headings are bilingual and the numbers need special formatting.
 /// Therefore, we have to override the default implementation.
 ///
+/// Also, we want labeled headings to have anchors for permalinks.
+/// https://github.com/typst/typst/issues/7381
+///
 /// Usage: `#show: improve-heading-refs`
 #let improve-heading-refs(body) = {
-  // https://github.com/Glomzzz/typsite/blob/c5f99270eff92cfdad58bbf4a78ea127d1aed310/resources/root/lib.typ#L184-L229
   show heading: it => {
+    let has-label = it.at("label", default: none) != none
+    let tag = "h" + str(it.level + 1)
+
     if it.numbering == none {
-      it
+      if has-label {
+        // Add id to headings in html if there exists a label
+        html.elem(tag, attrs: (id: str(it.label)), it.body)
+      } else {
+        it
+      }
     } else {
       html.elem(
-        "h" + str(it.level + 1),
+        tag,
         // Add id to headings in html if there exists a label
-        attrs: if it.at("label", default: none) != none { (id: str(it.label)) } else { (:) },
+        attrs: if has-label { (id: str(it.label)) } else { (:) },
         {
           // Wrap the numbering with a class
           html.span(counter(heading).display(it.numbering), class: "secno")
