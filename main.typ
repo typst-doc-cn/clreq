@@ -59,7 +59,7 @@
 #show heading.where(level: 3): set heading(numbering: none)
 #show: mark-till-next
 
-= #bbl(en: [Text direction], zh: [文本方向])
+= #bbl(en: [Text direction], zh: [文本方向]) <direction>
 
 #prompt(from-w3c: "https://www.w3.org/TR/clreq-gap/#direction")[
   #babel(
@@ -68,7 +68,7 @@
   )
 ]
 
-== #bbl(en: [Writing mode], zh: [行文模式])
+== #bbl(en: [Writing mode], zh: [行文模式]) <writing-mode>
 
 #prompt(from-w3c: "https://www.w3.org/TR/clreq-gap/#writing_mode")[
   #babel(
@@ -139,9 +139,9 @@
 
 #level.na
 
-= #bbl(en: [Glyph shaping & positioning], zh: [字形的变形与定位])
+= #bbl(en: [Glyph shaping & positioning], zh: [字形的变形与定位]) <h-shaping>
 
-== #bbl(en: [Fonts selection], zh: [字体选择])
+== #bbl(en: [Fonts selection], zh: [字体选择]) <font-select>
 
 #prompt[
   #babel(
@@ -357,7 +357,7 @@ $ f(x) = y "（定义8）" $
 >>> 句號。小節 1。小節 1
 ```
 
-== Context-based shaping and positioning
+== Context-based shaping and positioning <glyphs>
 
 #prompt(from-w3c: "https://www.w3.org/TR/clreq-gap/#glyphs")[
   If context-sensitive rendering support is needed to shape combinations of letters or position certain glyphs relative to others, is this adequately provided for? Does the script in question require additional user control features to support alterations to the position or shape of glyphs, for example adjusting the distance between the base text and diacritics, or changing the glyphs used in a systematic way? Do you need to be able to compose/decompose conjuncts or ligatures, or show characters that are otherwise hidden, etc? If text is cursive, see the separate @cursive.
@@ -413,7 +413,7 @@ $ f(x) = y "（定义8）" $
 >>> 想做出*最好的*灯泡。
 ```
 
-== Case & other character transforms
+== Case & other character transforms <transforms>
 
 #prompt(from-w3c: "https://www.w3.org/TR/clreq-gap/#transforms")[
   Does your script need special text transforms that are not supported? For example, do you need to to convert between half-width and full-width presentation forms? Does your script convert letters to uppercase, capitalised and lowercase alternatives according to your typographic needs? How about other transforms?
@@ -421,9 +421,9 @@ $ f(x) = y "（定义8）" $
 
 #level.na
 
-= #bbl(en: [Typographic units], zh: [排版单元])
+= #bbl(en: [Typographic units], zh: [排版单元]) <h-units>
 
-== #bbl(en: [Characters & encoding], zh: [字符与编码])
+== #bbl(en: [Characters & encoding], zh: [字符与编码]) <encoding>
 
 #prompt(from-w3c: "https://www.w3.org/TR/clreq-gap/#encoding")[
   #babel(
@@ -485,7 +485,7 @@ $ f(x) = y "（定义8）" $
 >>> (decoded: #pretty-repr(hash))
 ```
 
-== Grapheme/word segmentation & selection
+== Grapheme/word segmentation & selection <segmentation>
 
 #prompt(from-w3c: "https://www.w3.org/TR/clreq-gap/#segmentation")[
   This is about how text is divided into graphemes, words, sentences, etc., and behaviour associated with that. Are there special requirements for the following operations: forwards/backwards deletion, cursor movement & selection, character counts, searching & matching, text insertion, line-breaking, justification, case conversions, sorting? Are words separated by spaces, or other characters? Are there special requirements when double-clicking or triple-clicking on the text? Are words hyphenated? (Some of the answers to these questions may be picked up in other sections, such as @line-breaking, or @initials.)
@@ -493,9 +493,9 @@ $ f(x) = y "（定义8）" $
 
 #level.ok
 
-= #bbl(en: [Punctuation & inline features], zh: [标点符号及其它行内特性])
+= #bbl(en: [Punctuation & inline features], zh: [标点符号及其它行内特性]) <h-inline>
 
-== #bbl(en: [Phrase & section boundaries], zh: [短语与章节边界])
+== #bbl(en: [Phrase & section boundaries], zh: [短语与章节边界]) <punctuation-etc>
 
 #prompt(from-w3c: "https://www.w3.org/TR/clreq-gap/#punctuation_etc")[
   #babel(
@@ -565,7 +565,7 @@ $ f(x) = y "（定义8）" $
   },
 )
 
-== #bbl(en: [Emphasis & highlighting], zh: [强调与突出显示])
+== #bbl(en: [Emphasis & highlighting], zh: [强调与突出显示]) <emphasis>
 
 #prompt(from-w3c: "https://www.w3.org/TR/clreq-gap/#emphasis")[
   #babel(
@@ -640,7 +640,7 @@ $ f(x) = y "（定义8）" $
 #level.advanced
 #issue("typst#193", note: [mentioned])
 
-== #bbl(en: [Text decoration & other inline features], zh: [文本标示与其他行内特性])
+== #bbl(en: [Text decoration & other inline features], zh: [文本标示与其他行内特性]) <text-decoration>
 
 #prompt(from-w3c: "https://www.w3.org/TR/clreq-gap/#text_decoration")[
   This section is a catch-all for inline features that do not fit under the previous sections. It can also be used to describe in one place a set of general requirements related to inline features when those features appear in more than one of the sections above. It covers characters or methods (eg. text decoration) that are used to convey information about a range of text. Are all needed forms of highlighting or marking of text available, such as wavy underlining, numeric overbars, etc. If lines are drawn alongside, over or through the text, do they need to be a special distance from the text itself? Is it important to skip characters when underlining, etc? How do things change for vertically set text? Are there other punctuation marks that were not covered in preceding sections? Are lines correctly drawn relative to vertical text?
@@ -648,7 +648,7 @@ $ f(x) = y "（定义8）" $
 
 #level.tbd
 
-== #bbl(en: [Data formats & numbers], zh: [数据格式与数字])
+== #bbl(en: [Data formats & numbers], zh: [数据格式与数字]) <data-formats>
 
 #prompt(from-w3c: "https://www.w3.org/TR/clreq-gap/#data_formats")[
   #babel(
@@ -700,7 +700,7 @@ $ f(x) = y "（定义8）" $
   zh: [具体期望结果可能还有地区变体和个人偏好变体，例如`#numbering("壹", 3)`会有 #"叁參叄".clusters().map(unichar).intersperse("、").join() 多种写法。],
 )
 
-= #bbl(en: [Line and paragraph layout], zh: [行与段落版式])
+= #bbl(en: [Line and paragraph layout], zh: [行与段落版式]) <h-lines-and-paragraphs>
 
 == #bbl(en: [Line breaking & hyphenation], zh: [换行与断词连字]) <line-breaking>
 
@@ -1051,7 +1051,7 @@ $ integral f dif x $
 )
 ```
 
-== #bbl(en: [Text spacing], zh: [文本的间距调整])
+== #bbl(en: [Text spacing], zh: [文本的间距调整]) <spacing>
 
 #prompt(from-w3c: "https://www.w3.org/TR/clreq-gap/#spacing")[
   #babel(
@@ -1140,7 +1140,7 @@ $ integral f dif x $
 // #workaround("https://typst-doc-cn.github.io/guide/FAQ/weird-punct.html")
 // This issue has not been reproduced yet.
 
-== #bbl(en: [Baselines, line-height, etc.], zh: [基线、行高等])
+== #bbl(en: [Baselines, line-height, etc.], zh: [基线、行高等]) <baselines>
 
 #prompt(from-w3c: "https://www.w3.org/TR/clreq-gap/#baselines")[
   #babel(
@@ -1213,7 +1213,7 @@ $ integral f dif x $
   zh: [中文特别受此影响。汉字都是方块字，所以底线的自然定义就是方块的底边，而中文字体大多将它标成下降部的边缘线。因此，有些人会选择将中文文档从默认的`bottom-edge: "baseline"`改为`bottom-edge: "descender"`。],
 )
 
-== #bbl(en: [Lists, counters, etc.], zh: [列表、编号等])
+== #bbl(en: [Lists, counters, etc.], zh: [列表、编号等]) <lists>
 
 #prompt(from-w3c: "https://www.w3.org/TR/clreq-gap/#lists")[
   #babel(
@@ -1322,7 +1322,7 @@ $ integral f dif x $
 
 #level.tbd
 
-= #bbl(en: [Page & book layout], zh: [页面与书籍版式])
+= #bbl(en: [Page & book layout], zh: [页面与书籍版式]) <h-pages>
 
 == #bbl(en: [General page layout & progression], zh: [基本页面版式与装订方向]) <page-layout>
 
@@ -1440,7 +1440,7 @@ $ integral f dif x $
 
 #level.tbd
 
-== #bbl(en: [Page headers, footers, etc.], zh: [页眉、页脚等])
+== #bbl(en: [Page headers, footers, etc.], zh: [页眉、页脚等]) <headers-footers>
 
 #prompt(from-w3c: "https://www.w3.org/TR/clreq-gap/#headers_footers")[
   Are there special conventions for page numbering, or the way that running headers and the like are handled?
@@ -1448,7 +1448,7 @@ $ integral f dif x $
 
 #level.tbd
 
-== #bbl(en: [Forms & user interaction], zh: [表单和用户交互])
+== #bbl(en: [Forms & user interaction], zh: [表单和用户交互]) <interaction>
 
 #prompt(from-w3c: "https://www.w3.org/TR/clreq-gap/#interaction")[
   Are vertical form controls well supported? In right-to-left scripts, is it possible to set the base direction for a form field? Is the scroll bar on the correct side? etc. Are there other aspects related to user interaction that need to be addressed?
@@ -1456,7 +1456,7 @@ $ integral f dif x $
 
 #level.tbd
 
-= #bbl(en: [Bibliography], zh: [参考文献管理])
+= #bbl(en: [Bibliography], zh: [参考文献管理]) <bibliography>
 
 #prompt[
   #babel(
@@ -1483,7 +1483,7 @@ $ integral f dif x $
   zh: [第一种方法应用最广。下文默认指这种方法。],
 )
 
-== #bbl(en: [Citing], zh: [参考文献引注])
+== #bbl(en: [Citing], zh: [参考文献引注]) <cite>
 
 #prompt[
   #babel(
@@ -1620,7 +1620,7 @@ $ integral f dif x $
   zh: [这一问题算作 Advanced，因为带页码引用并不常见。根据 GB/T 7714—2015 §10.1.3，大多数情况下页码应当记录在参考文献表中；只有多次引用同一文献的不同页码时，才需在引用处标注页码。],
 )
 
-== #bbl(en: [Bibliography listing], zh: [参考文献表])
+== #bbl(en: [Bibliography listing], zh: [参考文献表]) <bib-list>
 
 #prompt[
   #babel(
@@ -1792,7 +1792,7 @@ $ integral f dif x $
 >>> 上大人#footnote[AUTHOR. Title[Z]. 2025.]
 ```
 
-== #bbl(en: [Bibliography file], zh: [参考文献文件])
+== #bbl(en: [Bibliography file], zh: [参考文献文件]) <bib-file>
 
 #prompt[
   #babel(
@@ -1843,9 +1843,9 @@ $ integral f dif x $
   zh: [截至2025年十月，302个#link("https://zotero-chinese.com/styles/")[中文 CSL 样式]中的222个（74%）都会被 hayagriva 判为 malformed。而且很不幸，hayagriva 提供的错误信息一般并不清晰，导致调试异常困难。],
 )
 
-= #bbl(en: [Other], zh: [杂项])
+= #bbl(en: [Other], zh: [杂项]) <h-other>
 
-== #bbl(en: [Culture-specific features], zh: [文化独有特性])
+== #bbl(en: [Culture-specific features], zh: [文化独有特性]) <culture-specific>
 
 #prompt(from-w3c: "https://www.w3.org/TR/clreq-gap/#culturespecific")[
   #babel(
@@ -1912,7 +1912,7 @@ $ integral f dif x $
 >>> ]
 ```
 
-== #bbl(en: [What else?], zh: [其它])
+== #bbl(en: [What else?], zh: [其它]) <other>
 
 #prompt(from-w3c: "https://www.w3.org/TR/clreq-gap/#other")[
   There are many other modules and specifications which may need review for script-specific requirements. What else is likely to cause problems for worldwide usage of typst, and what requirements need to be addressed to make typst function well locally?
