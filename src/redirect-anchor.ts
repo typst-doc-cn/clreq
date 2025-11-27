@@ -1,0 +1,97 @@
+/**
+ * Redirect old anchors (`id` attributes) to the current ones.
+ */
+
+/** A map from old anchors to current anchors. */
+const REDIRECTS: Record<string, string> = {
+  // Initial normalization
+  "#x1-text-direction": "#direction",
+  "#x1-1-writing-mode": "#writing-mode",
+  "#vertical-writing-mode": "#vertical",
+  "#x2-glyph-shaping-positioning": "#h-shaping",
+  "#x2-1-fonts-selection": "#font-select",
+  "#writing-chinese-without-configuring-any-font-leads-to-messy-font-fallback": "#font-fallback",
+  "#wrong-monospace-font-fallback-for-chinese-in-raw-block": "#font-fallback-raw",
+  "#wrong-font-fallback-for-chinese-in-math-equations": "#font-fallback-math",
+  "#language-dependant-font-configuration": "#lang-font",
+  "#size-per-font": "#per-font-size",
+  "#unable-to-infer-the-writing-script-across-elements-making-locl-sometimes-ineffective-locl": "#across-element-script",
+  "#x2-3-context-based-shaping-and-positioning": "#glyphs",
+  "#fake-synthesized-bold": "#synthesized-bold",
+  "#x2-6-case-other-character-transforms": "#transforms",
+  "#x3-typographic-units": "#h-units",
+  "#x3-1-characters-encoding": "#encoding",
+  "#ideographic-variation-sequence-disappears-at-end-of-line": "#ivs-line-end",
+  "#links-containing-non-ascii-characters-are-wrong-when-viewing-pdf-in-safari-ascii-safari-pdf": "#link-encoding",
+  "#x3-2-grapheme-word-segmentation-selection": "#segmentation",
+  "#x4-punctuation-inline-features": "#h-inline",
+  "#x4-1-phrase-section-boundaries": "#punctuation-etc",
+  "#quotation-marks-should-have-different-widths-for-chinese-and-western-text": "#quotation-mark-width",
+  "#x4-3-emphasis-highlighting": "#emphasis",
+  "#underline-breaks-when-mixing-chinese-and-western-text": "#underline-misalign",
+  "#add-support-for-ruby-cjk-e-g-furigana-for-japanese": "#pinyin",
+  "#x4-6-text-decoration-other-inline-features": "#text-decoration",
+  "#x4-7-data-formats-numbers": "#data-formats",
+  "#numbers-in-simplified-chinese": "#number-simplified",
+  "#numbers-in-traditional-chinese": "#number-traditional",
+  "#x5-line-and-paragraph-layout": "#h-lines-and-paragraphs",
+  "#interpuncts-should-not-appear-at-line-start": "#interpunct-line-start",
+  "#cjk-latin-glues-stretch-only-before-latin-characters": "#cjk-latin-stretch-before",
+  "#strict-grid-aligned-in-both-horizontal-and-vertical-axes": "#strict-2d-grid",
+  "#two-em-dashes-should-not-be-overhung": "#two-em-dash-overhung",
+  "#customize-punctuation-overhang": "#customize-overhang",
+  "#parenthetical-indication-punctuation-marks-at-the-start-of-paragraphs-are-not-adjusted-sometimes": "#paren-par-start",
+  "#unexpected-indentation-after-figures-lists-and-block-equations": "#indent-after-block",
+  "#even-inter-character-spacing": "#even-spacing",
+  "#x5-3-text-spacing": "#spacing",
+  "#cjk-latin-spacing-not-working-around-raw-raw": "#cjk-latin-around-raw",
+  "#cjk-latin-spacing-not-working-around-inline-equations": "#cjk-latin-around-math",
+  "#redundant-cjk-latin-space-at-manual-line-breaks": "#cjk-latin-manual-linebreak",
+  "#punctuation-compression-is-interrupted-by-show-show": "#show-interrupt-punct",
+  "#x5-4-baselines-line-height-etc": "#baselines",
+  "#default-line-height-is-too-tight-for-chinese": "#default-line-height",
+  "#box-is-not-aligned-if-text-bottom-edge-is-not-baseline-text-bottom-edge-box": "#box-align-bottom-edge",
+  "#x5-5-lists-counters-etc": "#lists",
+  "#list-and-enum-markers-are-not-aligned-with-the-baseline-of-the-item-s-contents-list-enum": "#list-enum-marker-align",
+  "#too-wide-spacing-between-heading-numbering-and-title": "#heading-spacing-to-numbering",
+  "#the-auto-hanging-indents-of-multiline-headings-are-inaccurate": "#heading-hanging-indent",
+  "#x6-page-book-layout": "#h-pages",
+  "#chinese-size-system-hao-system": "#zihao",
+  "#directly-setting-the-width-of-the-type-area-instead-of-the-paper-width": "#type-area-width",
+  "#x6-4-page-headers-footers-etc": "#headers-footers",
+  "#x6-5-forms-user-interaction": "#interaction",
+  "#x7-bibliography": "#bibliography",
+  "#x7-1-citing": "#cite",
+  "#citation-numbers-are-flying-over-their-brackets": "#cite-number-flying",
+  "#compression-of-continuous-citation-numbers": "#cite-number-compress",
+  "#superscript-and-non-superscript-forms-should-coexist": "#paren-cite",
+  "#cite-with-page-numbers": "#cite-page-number",
+  "#x7-2-bibliography-listing": "#bib-list",
+  "#use-et-al-for-english-and-for-chinese-et-al": "#et-al-lang",
+  "#institution-and-school-are-not-shown-institution-school": "#publisher-alias",
+  "#discontinuous-page-numbers-are-displayed-incorrectly-missing-a-comma": "#cite-discontinuous-page",
+  "#chinese-works-should-be-ordered-by-the-pinyin-or-strokes-of-the-authors-for-gb-7714-2015-author-date-gb-7714-2015-author-date": "#bib-order",
+  "#gb-7714-2015-note-is-totally-broken-gb-7714-2015-note": "#bib-note",
+  "#x7-3-bibliography-file": "#bib-file",
+  "#standard-is-not-correctly-interpreted-standard": "#bib-standard-misc",
+  "#failed-to-load-some-csl-styles-csl": "#csl-load",
+  "#x8-other": "#h-other",
+  "#x8-1-culture-specific-features": "#culture-specific",
+  "#for-references-to-headings-the-supplement-should-not-be-put-before-the-number": "#ref-number-supplement",
+  "#bilingual-figure-captions": "#bilingual-caption",
+  "#x8-2-what-else": "#other",
+  "#ignore-linebreaks-between-cjk-characters-in-source-code-cjk": "#ignore-linebreak",
+  "#internationalize-warning-and-error-messages": "#i18n-diag",
+  "#a-chinese-name-for-the-typst-project-typst": "#chinese-name",
+  "#web-app-issues": "#webapp-issues",
+};
+
+function replaceAnchor(): void {
+  const old = window.location.hash;
+  if (old in REDIRECTS) {
+    window.location.hash = REDIRECTS[old];
+  }
+}
+
+replaceAnchor();
+window.addEventListener("hashchange", replaceAnchor);
