@@ -246,6 +246,21 @@ function collectSections(data: (Heading | GeneralMetadata)[]): Section[] {
   return sections;
 }
 
+/** Clean sections in place. */
+function cleanSections(sections: Section[]): void {
+  // Deduplicate links but keep the order.
+  // Links in `babel` might be duplicate, so this is necessary.
+  for (const section of sections) {
+    const seen = new Set<string>();
+    section.links = section.links.filter((link) => {
+      const key = `${link.type}:${JSON.stringify(link)}`;
+      if (seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    });
+  }
+}
+
 /** Warn sections without `id` */
 function warnUnlabelledSections(sections: Section[]): void {
   const unlabelled = sections.filter(({ id, priority }) =>
@@ -268,6 +283,8 @@ function warnUnlabelledSections(sections: Section[]): void {
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
   const data = await queryDocument();
   const sections = collectSections(data);
+  cleanSections(sections);
+
   console.log(JSON.stringify({ version: "2025-11-24", sections }, null, 2));
 
   warnUnlabelledSections(sections);
