@@ -23,11 +23,11 @@ interface RepoNum {
   repo: string;
   num: string;
 }
-interface IssueMeta extends RepoNum {
+export interface IssueMeta extends RepoNum {
   note: string;
   closed: boolean;
 }
-interface PullMeta extends RepoNum {
+export interface PullMeta extends RepoNum {
   merged: boolean;
   rejected: boolean;
 }

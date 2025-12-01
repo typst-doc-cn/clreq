@@ -51,7 +51,7 @@
       if anchor != "" { [~(comment)] }
     } else { [~(#note)] }
   })
-  [#metadata((repo: repo, num: num, note: repr(note), closed: closed)) <issue>]
+  [#metadata((repo: repo, num: num, note: repr(note), closed: closed))<issue>]
 }
 
 /// Link to a GitHub pull request
@@ -73,7 +73,7 @@
     if merged { icon.git-merge } else if rejected { icon.git-pull-request-closed } else { icon.git-pull-request }
     repo-num
   })
-  [#metadata((repo: repo, num: num, merged: merged, rejected: rejected)) <pull>]
+  [#metadata((repo: repo, num: num, merged: merged, rejected: rejected))<pull>]
 }
 
 /// Link to a workaround
@@ -101,6 +101,7 @@
     icon.light-bulb
     body
   })
+  [#metadata((dest: dest, note: note))<workaround>]
 }
 
 /// A formatted description of the Unicode character for a given codepoint

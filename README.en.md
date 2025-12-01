@@ -75,17 +75,35 @@ For each issue, please try to:
 
   For example, typing Chinese characters requires an IME. You can link to [Unicode FAQ on Chinese and Japanese](https://unicode.org/faq/han_cjk.html).
 
-
 But in most cases:
 
 - No need to provide a solution directly
 
   Just link it as `#workaround("https://…")`.
 
-
 - No need to describe comprehensively, nor is it recommended to propose improvements too much
 
   These contents can be initially proposed at [GitHub Issues](https://github.com/typst-doc-cn/clreq/issues/), and should eventually be forwarded to the Typst official.
+
+### Maintaining
+
+GitHub Actions are watching `#issue` and `#pull` annotated in the document, and will report in [🤖 Cron check · Issue #22](https://github.com/typst-doc-cn/clreq/issues/22) and pull request if their states change.
+
+We can update the document once we notice. There is no need to wait until Typst releases a new version.
+
+An example update is as below.
+
+```diff
+- #level.basic
++ #level.ok
+- #issue("typst#633")
+- #pull("typst#5777")
++ #issue("typst#633", closed: true)
++ #pull("typst#5777", merged: true)
+  #workaround("https://typst-doc-cn.github.io/guide/FAQ/cite-flying.html")
++
++ #till-next(now-fixed.with(last-affected: "0.13.1", last-level: "basic"))
+```
 
 ### Multilingual content (`babel`/`bbl`)
 
@@ -111,6 +129,30 @@ Tips:
 - Not all content needs to be translated. Some terms are not possible to be translated, or might be ambiguous when only read in a single language. In such cases, there is no need to wrap `bbl`; just write them directly.
 
 - Don’t pay special attention to line breaks and indentation. Just use tinymist (VS Code) / typstyle default settings. To make version comparison easier, we have set up a pull request robot to automatically format them.
+
+### Title formats
+
+- Top-level sections representing **categories**
+
+  The title should be as consistent as possible with [W3C Gap Analysis documents](https://www.w3.org/TR/clreq-gap/).
+
+- Low-level sections derscribing **specific gaps**
+
+  - For features that are needed but **not yet supported**, express titles as **phrases** whenever possible.
+
+    Examples:
+
+    - Vertical writing mode | 直排
+    - Customizing punctuation overhang | 定制标点悬挂
+
+  - For issues of **existing** features, express titles as **sentences** whenever possible.
+
+    Examples:
+
+    - Spacing between heading numbering and title is too wide | 标题编号与内容之间的空隙过宽
+    - Citation numbers are flying over their brackets | 引用编号的数字高于括号
+
+  - Do not edit the title after the gap is resolved, unless you have a good reason.
 
 ### Adding a code example
 
@@ -159,7 +201,7 @@ Simple examples are evaluated in a container and their states are shared across 
 
 As a result:
 
-- Any page configuration is not allowed. 
+- Any page configuration is not allowed.
 
   If you just want to `#set page(width: …)`, then use `#show: block.with(width: …)` instead.
 

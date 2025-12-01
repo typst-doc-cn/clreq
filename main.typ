@@ -59,7 +59,7 @@
 #show heading.where(level: 3): set heading(numbering: none)
 #show: mark-till-next
 
-= #bbl(en: [Text direction], zh: [文本方向])
+= #bbl(en: [Text direction], zh: [文本方向]) <direction>
 
 #prompt(from-w3c: "https://www.w3.org/TR/clreq-gap/#direction")[
   #babel(
@@ -68,7 +68,7 @@
   )
 ]
 
-== #bbl(en: [Writing mode], zh: [行文模式])
+== #bbl(en: [Writing mode], zh: [行文模式]) <writing-mode>
 
 #prompt(from-w3c: "https://www.w3.org/TR/clreq-gap/#writing_mode")[
   #babel(
@@ -81,7 +81,7 @@
   )
 ]
 
-=== #bbl(en: [Vertical Writing Mode], zh: [直排])
+=== #bbl(en: [Vertical writing mode], zh: [直排]) <vertical>
 
 #level.advanced
 #issue("typst#5908")
@@ -139,9 +139,9 @@
 
 #level.na
 
-= #bbl(en: [Glyph shaping & positioning], zh: [字形的变形与定位])
+= #bbl(en: [Glyph shaping & positioning], zh: [字形的变形与定位]) <h-shaping>
 
-== #bbl(en: [Fonts selection], zh: [字体选择])
+== #bbl(en: [Fonts selection], zh: [字体选择]) <font-select>
 
 #prompt[
   #babel(
@@ -153,7 +153,7 @@
 === #bbl(
   en: [Writing Chinese without configuring any font leads to messy font fallback],
   zh: [若不配置字体就写中文，回落出的字体会很混乱],
-)
+) <font-fallback>
 
 #level.advanced
 #issue("typst#5040")
@@ -177,7 +177,10 @@
   caption: bbl(en: [The result might be a mixture of sans and serif fonts], zh: [结果可能混合了黑体和宋体]),
 ) <fig-font-fallback-messy>
 
-=== #bbl(en: [Wrong monospace font fallback for Chinese in raw block], zh: [代码块内汉字回落的等宽字体不正常])
+=== #bbl(
+  en: [The monospace font fallback for Chinese in raw block is wrong],
+  zh: [代码块内汉字回落的等宽字体不正常],
+) <font-fallback-raw>
 
 #level.advanced
 #issue("typst#3385")
@@ -207,7 +210,10 @@
 >>> 正文汉字 vs. `let foo = "汉字"`
 ```
 
-=== #bbl(en: [Wrong font fallback for Chinese in math equations], zh: [数学公式中汉字回落的字体不正常])
+=== #bbl(
+  en: [The font fallback for Chinese in math equations is wrong],
+  zh: [数学公式中汉字回落的字体不正常],
+) <font-fallback-math>
 
 #level.advanced
 #issue("typst#366")
@@ -234,7 +240,7 @@ $ f(x) = y "（定义8）" $
 >>> $ f(x) = y "（定义8）" $
 ```
 
-=== #bbl(en: [Language-dependant font configuration], zh: [按语言设置字体])
+=== #bbl(en: [Language-dependant font configuration], zh: [按语言设置字体]) <lang-font>
 
 #level.basic
 #issue("typst#794")
@@ -267,7 +273,7 @@ $ f(x) = y "（定义8）" $
   )
 ]
 
-=== #bbl(en: [Size per font], zh: [按字体设置字号])
+=== #bbl(en: [Size per font], zh: [按字体设置字号]) <per-font-size>
 
 #level.advanced
 #issue("typst#6295")
@@ -286,7 +292,7 @@ $ f(x) = y "（定义8）" $
 >>> 共#text(1.1em)[10]人
 ```
 
-=== #bbl(en: [Variable font], zh: [可变字体])
+=== #bbl(en: [Variable font], zh: [可变字体]) <variable-font>
 
 #level.advanced
 #issue("typst#185")
@@ -319,10 +325,11 @@ $ f(x) = y "（定义8）" $
 === #bbl(
   en: [Unable to infer the writing script across elements, making `locl` sometimes ineffective],
   zh: [无法跨越元素推断文字种类，导致`locl`特性有时失效],
-)
+) <across-element-script>
 
 #level.basic
 #issue("typst#7396")
+#pull("typst#7415")
 
 #babel(
   en: [
@@ -357,7 +364,7 @@ $ f(x) = y "（定义8）" $
 >>> 句號。小節 1。小節 1
 ```
 
-== Context-based shaping and positioning
+== Context-based shaping and positioning <glyphs>
 
 #prompt(from-w3c: "https://www.w3.org/TR/clreq-gap/#glyphs")[
   If context-sensitive rendering support is needed to shape combinations of letters or position certain glyphs relative to others, is this adequately provided for? Does the script in question require additional user control features to support alterations to the position or shape of glyphs, for example adjusting the distance between the base text and diacritics, or changing the glyphs used in a systematic way? Do you need to be able to compose/decompose conjuncts or ligatures, or show characters that are otherwise hidden, etc? If text is cursive, see the separate @cursive.
@@ -387,7 +394,7 @@ $ f(x) = y "（定义8）" $
   )
 ]
 
-=== #bbl(en: [Fake (synthesized) bold], zh: [伪粗体])
+=== #bbl(en: [Fake (synthesized) bold], zh: [伪粗体]) <synthesized-bold>
 
 #level.basic
 #issue("typst#394")
@@ -413,7 +420,7 @@ $ f(x) = y "（定义8）" $
 >>> 想做出*最好的*灯泡。
 ```
 
-== Case & other character transforms
+== Case & other character transforms <transforms>
 
 #prompt(from-w3c: "https://www.w3.org/TR/clreq-gap/#transforms")[
   Does your script need special text transforms that are not supported? For example, do you need to to convert between half-width and full-width presentation forms? Does your script convert letters to uppercase, capitalised and lowercase alternatives according to your typographic needs? How about other transforms?
@@ -421,9 +428,9 @@ $ f(x) = y "（定义8）" $
 
 #level.na
 
-= #bbl(en: [Typographic units], zh: [排版单元])
+= #bbl(en: [Typographic units], zh: [排版单元]) <h-units>
 
-== #bbl(en: [Characters & encoding], zh: [字符与编码])
+== #bbl(en: [Characters & encoding], zh: [字符与编码]) <encoding>
 
 #prompt(from-w3c: "https://www.w3.org/TR/clreq-gap/#encoding")[
   #babel(
@@ -432,7 +439,10 @@ $ f(x) = y "（定义8）" $
   )
 ]
 
-=== #bbl(en: [Ideographic variation sequence disappears at end of line], zh: [行末的表意文字异体字序列无效])
+=== #bbl(
+  en: [Ideographic variation sequence disappears at end of line],
+  zh: [行末的表意文字异体字序列无效],
+) <ivs-line-end>
 
 #level.advanced
 #issue("typst#5319")
@@ -451,7 +461,7 @@ $ f(x) = y "（定义8）" $
 === #bbl(
   en: [Links containing non ASCII characters are wrong when viewing PDF in Safari],
   zh: [链接若包含非 ASCII 字符，用 Safari 查看 PDF 时会错],
-)
+) <link-encoding>
 
 #level.basic
 #issue("typst#6128")
@@ -485,7 +495,7 @@ $ f(x) = y "（定义8）" $
 >>> (decoded: #pretty-repr(hash))
 ```
 
-== Grapheme/word segmentation & selection
+== Grapheme/word segmentation & selection <segmentation>
 
 #prompt(from-w3c: "https://www.w3.org/TR/clreq-gap/#segmentation")[
   This is about how text is divided into graphemes, words, sentences, etc., and behaviour associated with that. Are there special requirements for the following operations: forwards/backwards deletion, cursor movement & selection, character counts, searching & matching, text insertion, line-breaking, justification, case conversions, sorting? Are words separated by spaces, or other characters? Are there special requirements when double-clicking or triple-clicking on the text? Are words hyphenated? (Some of the answers to these questions may be picked up in other sections, such as @line-breaking, or @initials.)
@@ -493,9 +503,9 @@ $ f(x) = y "（定义8）" $
 
 #level.ok
 
-= #bbl(en: [Punctuation & inline features], zh: [标点符号及其它行内特性])
+= #bbl(en: [Punctuation & inline features], zh: [标点符号及其它行内特性]) <h-inline>
 
-== #bbl(en: [Phrase & section boundaries], zh: [短语与章节边界])
+== #bbl(en: [Phrase & section boundaries], zh: [短语与章节边界]) <punctuation-etc>
 
 #prompt(from-w3c: "https://www.w3.org/TR/clreq-gap/#punctuation_etc")[
   #babel(
@@ -526,7 +536,7 @@ $ f(x) = y "（定义8）" $
 === #bbl(
   en: [Quotation marks should have different widths for Chinese and Western text],
   zh: [中西文引号的宽度应当不同],
-)
+) <quotation-mark-width>
 
 #level.basic
 #issue("typst#5858")
@@ -565,7 +575,7 @@ $ f(x) = y "（定义8）" $
   },
 )
 
-== #bbl(en: [Emphasis & highlighting], zh: [强调与突出显示])
+== #bbl(en: [Emphasis & highlighting], zh: [强调与突出显示]) <emphasis>
 
 #prompt(from-w3c: "https://www.w3.org/TR/clreq-gap/#emphasis")[
   #babel(
@@ -578,7 +588,7 @@ $ f(x) = y "（定义8）" $
   )
 ]
 
-=== #bbl(en: [Underline breaks when mixing Chinese and Western text], zh: [中西文下划线错位])
+=== #bbl(en: [Underline breaks when mixing Chinese and Western text], zh: [中西文下划线错位]) <underline-misalign>
 
 #level.advanced
 #issue("typst#1210")
@@ -630,17 +640,27 @@ $ f(x) = y "（定义8）" $
   )
 ]
 
-=== #bbl(en: [Add support for ruby (CJK, e.g., furigana for Japanese)], zh: [支持标注拼音])
+=== #bbl(en: [Annotating pinyin], zh: [标注拼音]) <pinyin>
 
 #level.advanced
 #issue("typst#1489")
 
-=== #bbl(en: [warichu], zh: [割注])
+#babel(
+  en: [At present, there is no native support for ruby (e.g., #link("https://www.w3.org/TR/clreq/#h_inline_notes")[pinyin for Chinese], or #link("https://www.w3.org/TR/jlreq/#usage_of_ruby")[furigana for Japanese]), and community packages often have issues on alignment and text selection in PDF.],
+  zh: [目前，行间注（例如#link("https://www.w3.org/TR/clreq/#h_inline_notes")[中文的汉语拼音]或者#link("https://www.w3.org/TR/jlreq/#usage_of_ruby")[日文的振り仮名]）缺乏内置支持，而社区包通常在对齐、PDF文本选择等方面存在问题。],
+)
+
+=== #bbl(en: [Inline cutting note (warichu)], zh: [割注]) <warichu>
 
 #level.advanced
 #issue("typst#193", note: [mentioned])
 
-== #bbl(en: [Text decoration & other inline features], zh: [文本标示与其他行内特性])
+#babel(
+  en: [See #link("https://www.w3.org/TR/jlreq/#inline_cutting_note")[the section in JLReq].],
+  zh: [参考#link("https://www.w3.org/TR/jlreq/#inline_cutting_note")[JLReq 相应章节]。],
+)
+
+== #bbl(en: [Text decoration & other inline features], zh: [文本标示与其他行内特性]) <text-decoration>
 
 #prompt(from-w3c: "https://www.w3.org/TR/clreq-gap/#text_decoration")[
   This section is a catch-all for inline features that do not fit under the previous sections. It can also be used to describe in one place a set of general requirements related to inline features when those features appear in more than one of the sections above. It covers characters or methods (eg. text decoration) that are used to convey information about a range of text. Are all needed forms of highlighting or marking of text available, such as wavy underlining, numeric overbars, etc. If lines are drawn alongside, over or through the text, do they need to be a special distance from the text itself? Is it important to skip characters when underlining, etc? How do things change for vertically set text? Are there other punctuation marks that were not covered in preceding sections? Are lines correctly drawn relative to vertical text?
@@ -648,7 +668,7 @@ $ f(x) = y "（定义8）" $
 
 #level.tbd
 
-== #bbl(en: [Data formats & numbers], zh: [数据格式与数字])
+== #bbl(en: [Data formats & numbers], zh: [数据格式与数字]) <data-formats>
 
 #prompt(from-w3c: "https://www.w3.org/TR/clreq-gap/#data_formats")[
   #babel(
@@ -658,7 +678,7 @@ $ f(x) = y "（定义8）" $
   )
 ]
 
-=== #bbl(en: [Numbers in Simplified Chinese], zh: [简体中文数字])
+=== #bbl(en: [Numbers in Simplified Chinese], zh: [简体中文数字]) <number-simplified>
 
 #level.ok
 
@@ -675,7 +695,7 @@ $ f(x) = y "（定义8）" $
   zh: [内置支持。为避免又有人不知道而重复开发，提及一下。],
 )
 
-=== #bbl(en: [Numbers in Traditional Chinese], zh: [繁体中文数字])
+=== #bbl(en: [Numbers in Traditional Chinese], zh: [繁体中文数字]) <number-traditional>
 
 #level.advanced
 #issue("typst#6484")
@@ -700,7 +720,7 @@ $ f(x) = y "（定义8）" $
   zh: [具体期望结果可能还有地区变体和个人偏好变体，例如`#numbering("壹", 3)`会有 #"叁參叄".clusters().map(unichar).intersperse("、").join() 多种写法。],
 )
 
-= #bbl(en: [Line and paragraph layout], zh: [行与段落版式])
+= #bbl(en: [Line and paragraph layout], zh: [行与段落版式]) <h-lines-and-paragraphs>
 
 == #bbl(en: [Line breaking & hyphenation], zh: [换行与断词连字]) <line-breaking>
 
@@ -715,7 +735,7 @@ $ f(x) = y "（定义8）" $
   )
 ]
 
-=== #bbl(en: [Interpuncts should not appear at line start], zh: [间隔号不能出现在行首])
+=== #bbl(en: [Interpuncts should not appear at line start], zh: [间隔号不能出现在行首]) <interpunct-line-start>
 
 #level.advanced
 #issue("typst#6774")
@@ -818,7 +838,10 @@ $ f(x) = y "（定义8）" $
 >>> )
 ```
 
-=== #bbl(en: [CJK-latin glues stretch only before latin characters], zh: [中西间距只在拉丁字母之前拉伸])
+=== #bbl(
+  en: [CJK-latin glues stretch only before latin characters],
+  zh: [中西间距只在拉丁字母之前拉伸],
+) <cjk-latin-stretch-before>
 
 #level.advanced
 #issue("typst#6062")
@@ -833,7 +856,7 @@ $ f(x) = y "（定义8）" $
 >>> #block(width: 3em)[第 1 回成段]
 ```
 
-=== #bbl(en: [Strict grid aligned in both horizontal and vertical axes], zh: [严格纵横对齐的网格])
+=== #bbl(en: [Strict grid aligned in both horizontal and vertical axes], zh: [严格纵横对齐的网格]) <strict-2d-grid>
 
 #level.advanced
 #issue("typst#4404")
@@ -888,7 +911,7 @@ $ f(x) = y "（定义8）" $
 >>> ]
 ```
 
-=== #bbl(en: [Two-em dashes should not be overhung], zh: [破折号不应悬挂])
+=== #bbl(en: [Two-em dashes are overhung], zh: [破折号被错误悬挂]) <two-em-dash-overhung>
 
 #level.basic
 #issue("typst#6735")
@@ -911,7 +934,7 @@ $ f(x) = y "（定义8）" $
 >>> ]
 ```
 
-=== #bbl(en: [Customize punctuation overhang], zh: [定制标点悬挂])
+=== #bbl(en: [Customizing punctuation overhang], zh: [定制标点悬挂]) <customize-overhang>
 
 #level.advanced
 #issue("typst#261")
@@ -942,7 +965,7 @@ $ f(x) = y "（定义8）" $
 >>> 第二天我起得非常迟，午饭之后，#h(-1em)出去看了朋友。
 ```
 
-=== #bbl(en: [Brackets at the beginning of paragraph], zh: [段首的方括号])
+=== #bbl(en: [Brackets at the beginning of paragraph are not aligned], zh: [段首的方括号未对齐])
 
 #level.tbd
 #issue("typst#4011")
@@ -950,7 +973,7 @@ $ f(x) = y "（定义8）" $
 === #bbl(
   en: [Parenthetical indication punctuation marks at the start of paragraphs are not adjusted sometimes],
   zh: [段首的夹注符号有时不会调整间距],
-)
+) <paren-par-start>
 
 #level.advanced
 #issue("typst#2348")
@@ -973,7 +996,10 @@ $ f(x) = y "（定义8）" $
 >>> #h(1.5em)《新生》#h(-0.5em)的出版之期接近了……
 ```
 
-=== #bbl(en: [Unexpected indentation after figures, lists and block equations], zh: [图表、列表、块级公式后异常缩进])
+=== #bbl(
+  en: [There are unexpected indentations after figures, lists and block equations],
+  zh: [图表、列表、块级公式后有异常缩进],
+) <indent-after-block>
 
 #level.basic
 #issue("typst#3206")
@@ -1001,7 +1027,7 @@ $ integral f dif x $
 >>> 此处应当仍在段内，不该缩进。
 ```
 
-=== #bbl(en: [Even inter-character spacing], zh: [均排])
+=== #bbl(en: [Even inter-character spacing], zh: [均排]) <even-spacing>
 
 #level.ok
 #workaround("https://typst-doc-cn.github.io/guide/FAQ/character-intersperse.html")
@@ -1051,7 +1077,7 @@ $ integral f dif x $
 )
 ```
 
-== #bbl(en: [Text spacing], zh: [文本的间距调整])
+== #bbl(en: [Text spacing], zh: [文本的间距调整]) <spacing>
 
 #prompt(from-w3c: "https://www.w3.org/TR/clreq-gap/#spacing")[
   #babel(
@@ -1064,7 +1090,7 @@ $ integral f dif x $
   )
 ]
 
-=== #bbl(en: [CJK-Latin-spacing not working around `raw`], zh: [`raw`两边缺少中西间距])
+=== #bbl(en: [CJK-Latin-spacing does not work around `raw`], zh: [`raw`两边缺少中西间距]) <cjk-latin-around-raw>
 
 #level.advanced
 #issue("typst#2702")
@@ -1078,7 +1104,10 @@ $ integral f dif x $
 >>> 汉字#h(0.25em)`(code)`#h(0.25em)汉字
 ```
 
-=== #bbl(en: [CJK-Latin-spacing not working around inline equations], zh: [行内公式两边缺少中西间距])
+=== #bbl(
+  en: [CJK-Latin-spacing does not work around inline equations],
+  zh: [行内公式两边缺少中西间距],
+) <cjk-latin-around-math>
 
 #level.advanced
 #issue("typst#2703")
@@ -1092,7 +1121,10 @@ $ integral f dif x $
 >>> 汉字#h(0.25em)$A$#h(0.25em)汉字
 ```
 
-=== #bbl(en: [Redundant CJK-Latin space at manual line breaks], zh: [人为换行时多余中西间距])
+=== #bbl(
+  en: [There is redundant CJK-Latin space at manual line breaks],
+  zh: [人为换行时多余中西间距],
+) <cjk-latin-manual-linebreak>
 
 #level.ok
 #issue("typst#6539", closed: true)
@@ -1114,7 +1146,7 @@ $ integral f dif x $
 >>> #box(width: 3em, stroke: (right: green), align(right, [国国TT]))
 ```
 
-=== #bbl(en: [Punctuation compression is interrupted by `#show`], zh: [`#show`会打断标点挤压])
+=== #bbl(en: [Punctuation compression is interrupted by `#show`], zh: [`#show`会打断标点挤压]) <show-interrupt-punct>
 
 #level.basic
 #issue("typst#5474")
@@ -1140,7 +1172,7 @@ $ integral f dif x $
 // #workaround("https://typst-doc-cn.github.io/guide/FAQ/weird-punct.html")
 // This issue has not been reproduced yet.
 
-== #bbl(en: [Baselines, line-height, etc.], zh: [基线、行高等])
+== #bbl(en: [Baselines, line-height, etc.], zh: [基线、行高等]) <baselines>
 
 #prompt(from-w3c: "https://www.w3.org/TR/clreq-gap/#baselines")[
   #babel(
@@ -1153,7 +1185,7 @@ $ integral f dif x $
   )
 ]
 
-=== #bbl(en: [Default line height is too tight for Chinese], zh: [默认行高对中文来说过小])
+=== #bbl(en: [Default line height is too tight for Chinese], zh: [默认行高对中文来说过小]) <default-line-height>
 
 #level.basic
 #issue("typst#5644")
@@ -1187,7 +1219,7 @@ $ integral f dif x $
 === #bbl(
   en: [`box` is not aligned if `text.bottom-edge` is not baseline],
   zh: [`text.bottom-edge`不是基线时，`box`未对齐],
-)
+) <box-align-bottom-edge>
 
 #level.advanced
 #issue("tianyi-smile/itemize#8")
@@ -1213,7 +1245,7 @@ $ integral f dif x $
   zh: [中文特别受此影响。汉字都是方块字，所以底线的自然定义就是方块的底边，而中文字体大多将它标成下降部的边缘线。因此，有些人会选择将中文文档从默认的`bottom-edge: "baseline"`改为`bottom-edge: "descender"`。],
 )
 
-== #bbl(en: [Lists, counters, etc.], zh: [列表、编号等])
+== #bbl(en: [Lists, counters, etc.], zh: [列表、编号等]) <lists>
 
 #prompt(from-w3c: "https://www.w3.org/TR/clreq-gap/#lists")[
   #babel(
@@ -1232,7 +1264,7 @@ $ integral f dif x $
     List and enum markers are not aligned with the baseline of the item’s contents
   ],
   zh: [`list`和`enum`的编号与内容未对齐基线],
-)
+) <list-enum-marker-align>
 
 #level.basic
 #issue("typst#1204")
@@ -1267,7 +1299,10 @@ $ integral f dif x $
 >>> #box[鲁镇]
 ```
 
-=== #bbl(en: [Too wide spacing between heading numbering and title], zh: [标题编号与内容之间的空隙过宽])
+=== #bbl(
+  en: [Spacing between heading numbering and title is too wide],
+  zh: [标题编号与内容之间的空隙过宽],
+) <heading-spacing-to-numbering>
 
 #level.basic
 #issue("typst#5778")
@@ -1289,7 +1324,10 @@ $ integral f dif x $
 >>> = 一、标题
 ```
 
-=== #bbl(en: [The auto hanging indents of multiline headings are inaccurate], zh: [多行标题的自动悬挂缩进不准确])
+=== #bbl(
+  en: [The auto hanging indents of multiline headings are inaccurate],
+  zh: [多行标题的自动悬挂缩进不准确],
+) <heading-hanging-indent>
 
 #level.advanced
 #issue("typst#6527")
@@ -1322,7 +1360,7 @@ $ integral f dif x $
 
 #level.tbd
 
-= #bbl(en: [Page & book layout], zh: [页面与书籍版式])
+= #bbl(en: [Page & book layout], zh: [页面与书籍版式]) <h-pages>
 
 == #bbl(en: [General page layout & progression], zh: [基本页面版式与装订方向]) <page-layout>
 
@@ -1330,7 +1368,7 @@ $ integral f dif x $
   How are the main text area and ancillary areas positioned and defined? Are there any special requirements here, such as dimensions in characters for the Japanese kihon hanmen? The book cover for scripts that are read right-to-left scripts is on the right of the spine, rather than the left. Is that provided for? When content can flow vertically and to the left or right, how do you specify the location of objects, text, etc. relative to the flow? For example, keywords `left` and `right` are likely to need to be reversed for pages written in English and page written in Arabic. Do tables and grid layouts work as expected? How do columns work in vertical text? Can you mix block of vertical and horizontal text correctly? Does text scroll in the expected direction? Other topics that belong here include any local requirements for things such as printer marks, tables of contents and indexes. See also @grids-tables.
 ]
 
-=== #bbl(en: [Chinese size system (hào-system)], zh: [中文字号的号数制])
+=== #bbl(en: [Chinese size system (hào-system)], zh: [中文字号的号数制]) <zihao>
 
 #level.advanced
 #workaround("https://typst.app/universe/package/pointless-size")
@@ -1382,7 +1420,7 @@ $ integral f dif x $
 === #bbl(
   en: [Directly setting the width of the type area, instead of the paper width],
   zh: [直接设置版心宽度而非纸张宽度],
-)
+) <type-area-width>
 
 #level.advanced
 
@@ -1440,7 +1478,7 @@ $ integral f dif x $
 
 #level.tbd
 
-== #bbl(en: [Page headers, footers, etc.], zh: [页眉、页脚等])
+== #bbl(en: [Page headers, footers, etc.], zh: [页眉、页脚等]) <headers-footers>
 
 #prompt(from-w3c: "https://www.w3.org/TR/clreq-gap/#headers_footers")[
   Are there special conventions for page numbering, or the way that running headers and the like are handled?
@@ -1448,7 +1486,7 @@ $ integral f dif x $
 
 #level.tbd
 
-== #bbl(en: [Forms & user interaction], zh: [表单和用户交互])
+== #bbl(en: [Forms & user interaction], zh: [表单和用户交互]) <interaction>
 
 #prompt(from-w3c: "https://www.w3.org/TR/clreq-gap/#interaction")[
   Are vertical form controls well supported? In right-to-left scripts, is it possible to set the base direction for a form field? Is the scroll bar on the correct side? etc. Are there other aspects related to user interaction that need to be addressed?
@@ -1456,7 +1494,7 @@ $ integral f dif x $
 
 #level.tbd
 
-= #bbl(en: [Bibliography], zh: [参考文献管理])
+= #bbl(en: [Bibliography], zh: [参考文献管理]) <bibliography>
 
 #prompt[
   #babel(
@@ -1483,7 +1521,7 @@ $ integral f dif x $
   zh: [第一种方法应用最广。下文默认指这种方法。],
 )
 
-== #bbl(en: [Citing], zh: [参考文献引注])
+== #bbl(en: [Citing], zh: [参考文献引注]) <cite>
 
 #prompt[
   #babel(
@@ -1492,7 +1530,7 @@ $ integral f dif x $
   )
 ]
 
-=== #bbl(en: [Citation numbers are flying over their brackets], zh: [引用编号的数字高于括号])
+=== #bbl(en: [Citation numbers are flying over their brackets], zh: [引用编号的数字高于括号]) <cite-number-flying>
 
 #level.ok
 #issue("typst#633", closed: true)
@@ -1554,7 +1592,7 @@ $ integral f dif x $
 >>> #bibliography(bytes(bib), style: "gb-7714-2015-numeric")
 ````
 
-=== #bbl(en: [Compression of continuous citation numbers], zh: [压缩连续的引用编号])
+=== #bbl(en: [Compression of continuous citation numbers], zh: [压缩连续的引用编号]) <cite-number-compress>
 
 #level.basic
 #issue("hayagriva#189", note: [mentioned])
@@ -1579,7 +1617,7 @@ $ integral f dif x $
 #bibliography(bytes(bib), style: "gb-7714-2015-numeric")
 ````
 
-=== #bbl(en: [Superscript and non-superscript forms should coexist], zh: [共存上标和非上标形式])
+=== #bbl(en: [Superscript and non-superscript forms should coexist], zh: [共存上标和非上标形式]) <paren-cite>
 
 #level.broken
 #workaround("https://typst-doc-cn.github.io/guide/FAQ/ref-superscript.html")
@@ -1595,7 +1633,7 @@ $ integral f dif x $
 >>> 孔乙己#super[[1]]，另见文献#h(0.25em)#[[1]]。
 ````
 
-=== #bbl(en: [Cite with page numbers], zh: [带页码引用])
+=== #bbl(en: [Citing with page numbers], zh: [带页码引用]) <cite-page-number>
 
 #level.advanced
 #workaround("https://forum.typst.app/t/how-to-cite-with-a-page-number-in-gb-t-7714-2015-style/1501/4")
@@ -1620,7 +1658,7 @@ $ integral f dif x $
   zh: [这一问题算作 Advanced，因为带页码引用并不常见。根据 GB/T 7714—2015 §10.1.3，大多数情况下页码应当记录在参考文献表中；只有多次引用同一文献的不同页码时，才需在引用处标注页码。],
 )
 
-== #bbl(en: [Bibliography listing], zh: [参考文献表])
+== #bbl(en: [Bibliography listing], zh: [参考文献表]) <bib-list>
 
 #prompt[
   #babel(
@@ -1629,7 +1667,7 @@ $ integral f dif x $
   )
 ]
 
-=== #bbl(en: [Use `et al.` for English and `等` for Chinese], zh: [英文用`et al.`，中文用`等`])
+=== #bbl(en: [Use `et al.` for English and `等` for Chinese], zh: [英文用`et al.`，中文用`等`]) <et-al-lang>
 
 #level.broken
 #issue("citationberg#5")
@@ -1679,7 +1717,10 @@ $ integral f dif x $
 % SU B, CHEN Y, WANG Z, et al. South Pole–Aitken Massive Impact 4.25 Billion Years Ago Revealed by #text(font: "New Computer Modern")[Chang’e-6] Samples[J/OL]. National Science Review, 2025: nwaf103. DOI:10.1093/nsr/nwaf103.
 ```
 
-=== #bbl(en: [`institution` and `school` are not shown], zh: [`institution`机构名称和`school`学校名称不显示])
+=== #bbl(
+  en: [`institution` and `school` are not shown],
+  zh: [`institution`机构名称和`school`学校名称不显示],
+) <publisher-alias>
 
 #level.broken
 #issue("hayagriva#112")
@@ -1717,7 +1758,7 @@ $ integral f dif x $
 === #bbl(
   en: [Discontinuous page numbers are displayed incorrectly, missing a comma],
   zh: [不连续页码显示错误，缺少逗号],
-)
+) <cite-discontinuous-page>
 
 #level.basic
 #workaround("https://typst-doc-cn.github.io/guide/FAQ/bib-missing-page-delimiter.html")
@@ -1739,7 +1780,7 @@ $ integral f dif x $
 === #bbl(
   en: [Chinese works should be ordered by the pinyin or strokes of the authors for `gb-7714-2015-author-date`],
   zh: [采用`gb-7714-2015-author-date`时，中文文献应按著者汉语拼音字顺或笔画笔顺排列],
-)
+) <bib-order>
 
 #level.advanced
 #issue("hayagriva#259")
@@ -1750,7 +1791,7 @@ $ integral f dif x $
   zh: [目前`gb-7714-2015-author-date`样式按Unicode码位排序。而标准规定，采用这种样式时，各篇文献首先按文种集中，然后按著者字顺和出版年排列，其中中文文献可按著者汉语拼音字顺或笔画笔顺排列。],
 )
 
-=== #bbl(en: [`gb-7714-2015-note` is totally broken], zh: [`gb-7714-2015-note`完全无法使用])
+=== #bbl(en: [`gb-7714-2015-note` is totally broken], zh: [`gb-7714-2015-note`完全无法使用]) <bib-note>
 
 #level.ok
 #issue("hayagriva#189", note: [mentioned])
@@ -1792,16 +1833,16 @@ $ integral f dif x $
 >>> 上大人#footnote[AUTHOR. Title[Z]. 2025.]
 ```
 
-== #bbl(en: [Bibliography file], zh: [参考文献文件])
+== #bbl(en: [Bibliography file], zh: [参考文献文件]) <bib-file>
 
 #prompt[
   #babel(
-    en: [Are there difficulties creating files related to bibliography? Including the database of reference entires (Hayagriva `*.yml`, BibTeX `*.bib`) and the #link("https://docs.citationstyles.org/en/stable/specification.html")[Citation Style Language] style `*.csl`.],
+    en: [Are there difficulties creating files related to bibliography? Including the database of reference entries (Hayagriva `*.yml`, BibTeX `*.bib`) and the #link("https://docs.citationstyles.org/en/stable/specification.html")[Citation Style Language] style `*.csl`.],
     zh: [准备参考文献相关的文件是否存在困难？包括参考文件数据库（Hayagriva `*.yml`、BibTeX `*.bib`）和 #link("https://docs.citationstyles.org/en/stable/specification.html")[Citation Style Language] 样式 `*.csl`。],
   )
 ]
 
-=== #bbl(en: [`@standard` is not correctly interpreted], zh: [`@standard`被错误解释])
+=== #bbl(en: [`@standard` is not correctly interpreted], zh: [`@standard`被错误解释]) <bib-standard-misc>
 
 #level.basic
 #issue("hayagriva#312")
@@ -1825,7 +1866,7 @@ $ integral f dif x $
 % ISO/IEC. Information Technology — Dynamic Adaptive Streaming over HTTP (DASH) — Part 1: Media Presentation Description and Segment Formats[S/OL]. International Organization for Standardization, 2022. https://www.iso.org/standard/83314.html. Published.
 ```
 
-=== #bbl(en: [Failed to load some CSL styles], zh: [无法加载某些 CSL 样式])
+=== #bbl(en: [Failed to load some CSL styles], zh: [无法加载某些 CSL 样式]) <csl-load>
 
 #level.advanced
 #issue("citationberg#35", closed: true)
@@ -1843,9 +1884,9 @@ $ integral f dif x $
   zh: [截至2025年十月，302个#link("https://zotero-chinese.com/styles/")[中文 CSL 样式]中的222个（74%）都会被 hayagriva 判为 malformed。而且很不幸，hayagriva 提供的错误信息一般并不清晰，导致调试异常困难。],
 )
 
-= #bbl(en: [Other], zh: [杂项])
+= #bbl(en: [Other], zh: [杂项]) <h-other>
 
-== #bbl(en: [Culture-specific features], zh: [文化独有特性])
+== #bbl(en: [Culture-specific features], zh: [文化独有特性]) <culture-specific>
 
 #prompt(from-w3c: "https://www.w3.org/TR/clreq-gap/#culturespecific")[
   #babel(
@@ -1861,7 +1902,7 @@ $ integral f dif x $
 === #bbl(
   en: [For references to headings, the supplement should not be put before the number],
   zh: [引用章节时，名称不该在编号之前],
-)
+) <ref-number-supplement>
 
 #level.broken
 #issue("typst#5102")
@@ -1897,7 +1938,7 @@ $ integral f dif x $
   zh: [此外，若在 show 规则中用`link(it.element.location(), …)`替代`ref`，又会引发其它问题，例如难以给`link`、`ref`分别上色。],
 )
 
-=== #bbl(en: [Bilingual figure captions], zh: [双语插图标题])
+=== #bbl(en: [Bilingual figure captions], zh: [双语插图标题]) <bilingual-caption>
 
 #level.advanced
 #workaround("https://typst-doc-cn.github.io/guide/FAQ/dual_language_caption.html")
@@ -1912,16 +1953,20 @@ $ integral f dif x $
 >>> ]
 ```
 
-== #bbl(en: [What else?], zh: [其它])
+== #bbl(en: [What else?], zh: [其它]) <other>
 
 #prompt(from-w3c: "https://www.w3.org/TR/clreq-gap/#other")[
   There are many other modules and specifications which may need review for script-specific requirements. What else is likely to cause problems for worldwide usage of typst, and what requirements need to be addressed to make typst function well locally?
 ]
 
-=== #bbl(en: [Ignore linebreaks between CJK characters in source code], zh: [忽略源码中CJK字符间的换行])
+=== #bbl(
+  en: [Ignoring linebreaks between CJK characters in source code],
+  zh: [忽略源码中CJK字符间的换行],
+) <ignore-linebreak>
 
 #level.advanced
 #issue("typst#792")
+#pull("typst#7350")
 #workaround("https://typst-doc-cn.github.io/guide/FAQ/chinese-remove-space.html")
 #workaround("https://typst.app/universe/package/cjk-unbreak")
 
@@ -1939,7 +1984,7 @@ $ integral f dif x $
   zh: [这一问题算作 Advanced，因为并非所有人都想要这种行为。],
 )
 
-=== #bbl(en: [Internationalize warning and error messages], zh: [国际化警告和错误信息])
+=== #bbl(en: [Internationalizing warning and error messages], zh: [国际化警告和错误信息]) <i18n-diag>
 
 #level.advanced
 #issue("typst#6460")
@@ -1949,7 +1994,7 @@ $ integral f dif x $
   zh: [尚无任何相关措施，无论报错发自核心编译器还是第三方包。],
 )
 
-=== #bbl(en: [A Chinese name for the Typst project], zh: [Typst 项目的中文名])
+=== #bbl(en: [A Chinese name for the Typst project], zh: [Typst 项目的中文名]) <chinese-name>
 
 #level.advanced
 
@@ -1963,7 +2008,7 @@ $ integral f dif x $
   zh: [然而还有更多理由不翻译“Typst”。#link("https://forum.typst.app/t/chinese-name-for-the-typst-project/6024/13")[2025年9月的简单投票]表明，绝大多数人认为目前没有必要翻译：直接称“Typst”即可。],
 )
 
-=== #bbl(en: [Web app issues], zh: [在线应用的问题])
+=== #bbl(en: [Web app issues], zh: [在线应用的问题]) <webapp-issues>
 
 #level.advanced
 #workaround("https://typst-doc-cn.github.io/guide/FAQ/webapp-spellcheck.html")
@@ -2026,7 +2071,7 @@ $ integral f dif x $
 
 #set heading(numbering: none)
 
-= #bbl(en: [Addendum], zh: [附录])
+= #bbl(en: [Addendum], zh: [附录]) <addendum>
 
 == #bbl(en: [List of sites], zh: [站点列表])
 

@@ -86,6 +86,26 @@ pnpm dev --open # ⇒ http://localhost:3000
 
   这些内容可初步在 [GitHub Issues](https://github.com/typst-doc-cn/clreq/issues/) 提出，最终应反馈给 Typst 官方。
 
+### 维护更新
+
+GitHub Actions 会监控文档中标记的`#issue`和`#pull`，发现状态变化就会在 [🤖 Cron check · Issue #22](https://github.com/typst-doc-cn/clreq/issues/22) 和 pull request 提醒。
+
+收到提醒即可更新文档，不必等到 Typst 发布新版本。
+
+更新示例如下。
+
+```diff
+- #level.basic
++ #level.ok
+- #issue("typst#633")
+- #pull("typst#5777")
++ #issue("typst#633", closed: true)
++ #pull("typst#5777", merged: true)
+  #workaround("https://typst-doc-cn.github.io/guide/FAQ/cite-flying.html")
++
++ #till-next(now-fixed.with(last-affected: "0.13.1", last-level: "basic"))
+```
+
 ### 多语言内容（`babel`/`bbl`）
 
 - `en`、`zh`两字段分别在 English、中文模式显示。
@@ -110,6 +130,30 @@ pnpm dev --open # ⇒ http://localhost:3000
 - 不是所有内容都要翻译。某些术语无法翻译，或者只看单一语言会有歧义，这种就没必要套`bbl`，直接写即可。
 
 - 不用刻意关注换行与缩进，按 tinymist (VS Code) / typstyle 默认即可。为方便对比版本，已设置 pull request 机器人自动统一格式。
+
+### 标题格式
+
+- 表示**分类**的大章节
+
+  标题尽量与 [W3C 差距分析文档](https://www.w3.org/TR/clreq-gap/)保持一致。
+
+- 描述**具体差距**的小章节
+
+  - 对于需要支持但**尚不支持**的功能，标题尽量用**短语**表达。
+
+    示例：
+
+    - Vertical writing mode | 直排
+    - Customizing punctuation overhang | 定制标点悬挂
+
+  - 对于**已支持**功能存在的问题，标题尽量用**句子**表达。
+
+    示例：
+
+    - Spacing between heading numbering and title is too wide | 标题编号与内容之间的空隙过宽
+    - Citation numbers are flying over their brackets | 引用编号的数字高于括号
+
+  - 差距解决之后，尽量不再修改标题。
 
 ### 添加代码例子
 

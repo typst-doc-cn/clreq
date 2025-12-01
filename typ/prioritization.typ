@@ -86,6 +86,7 @@
       data-priority-level: level,
     ),
   )
+  [#metadata(level)<priority>]
 }
 
 /// Priority levels
