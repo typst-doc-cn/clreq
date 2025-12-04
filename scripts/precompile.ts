@@ -7,7 +7,7 @@ import { envArgs, extraArgs, ROOT_DIR } from "./config.ts";
 import { type Color, typst } from "./typst.ts";
 import { duration_fmt } from "./util.ts";
 
-const CACHE_DIR = `${ROOT_DIR}/target/cache`;
+const CACHE_DIR = `${ROOT_DIR}/public/generated`;
 
 /**
  * The main entrypoint of precompilation.
