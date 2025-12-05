@@ -13,7 +13,7 @@ import { html } from "./utils.ts";
 type Language = "zh" | "en" | "all";
 
 const $root = document.documentElement;
-const $main = $root.querySelector("main") as HTMLElement;
+const $title = $root.querySelector("main > h1") as HTMLHeadingElement;
 
 function setRoot(lang: Language): void {
   $root.lang = lang === "all" ? "zh-CN" : lang;
@@ -84,7 +84,8 @@ export function createLanguageSwitch(): void {
     menu,
   );
 
-  $main.append(menu);
+  // Make the menu easily accessible by pressing tab key.
+  $title.insertAdjacentElement("afterend", menu);
 }
 
 function getSystemLanguage(): Language {
