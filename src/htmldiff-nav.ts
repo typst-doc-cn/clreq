@@ -105,7 +105,7 @@ class UI_State {
   }
 
   /** Scroll the current change into view */
-  private scroll_to(current: HTMLElement, forward: boolean) {
+  private scroll_to(current: HTMLElement) {
     // Update texts and styles
     this.set_style(current);
     this.update_position_text();
@@ -125,10 +125,9 @@ class UI_State {
       document.documentElement.clientHeight;
     if (
       bCR.top < 0 || // we've scrolled past element
-      bCR.bottom > height
-    ) { // element is below the fold
-      current.scrollIntoView(forward);
-      globalThis.scrollBy(0, (forward ? -1 : 1) * 50);
+      bCR.bottom > height // element is below the fold
+    ) {
+      current.scrollIntoView({ block: "center" });
     }
   }
 
@@ -145,12 +144,12 @@ class UI_State {
 
   to_next() {
     this.clear_style(this.state.current());
-    this.scroll_to(this.state.next(), true);
+    this.scroll_to(this.state.next());
   }
 
   to_previous() {
     this.clear_style(this.state.current());
-    this.scroll_to(this.state.previous(), false);
+    this.scroll_to(this.state.previous());
   }
 
   stop() {
