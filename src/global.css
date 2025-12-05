@@ -30,6 +30,9 @@
   --accent-dark: oklch(51.51% .2307 257.85);
 }
 
+html {
+  scroll-behavior: smooth;
+}
 body {
   --vp-font-family-base: "Inter Variable", "Noto Sans SC", "PingFang SC",
     "Microsoft Yahei", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji",
