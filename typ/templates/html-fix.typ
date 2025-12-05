@@ -26,6 +26,7 @@
 /// Usage: `#show image: external-image`
 #let external-image(it) = {
   if type(it.source) == str and it.source.starts-with("/public/") {
+    // Do not enable lazy loading here. Lazy images without explicit sizes will cause the page to flush, making links with hash anchors being unable to locate accurately.
     html.img(
       src: asset-url(it.source.trim("/public", at: start)),
       ..if it.alt != none { (alt: it.alt, title: it.alt) },
@@ -49,6 +50,7 @@
     let (width, height) = xml(it.source).first().attrs
     html.img(
       src: asset-url(it.source.trim("/public", at: start)),
+      loading: "lazy",
       // Copy the behaviour of `html.frame`.
       // https://github.com/typst/typst/blob/6312c6636064466556fe79bb0bf5479977fafc9b/crates/typst-svg/src/lib.rs#L70-L77
       style: "overflow: visible; width: {width}em; height: {height}em;"
