@@ -1,5 +1,6 @@
 import { env } from "node:process";
 import { fileURLToPath } from "node:url";
+import { build as vite_build } from "vite";
 
 import { extraArgs } from "./config.ts";
 import { precompile } from "./precompile.ts";
@@ -50,7 +51,13 @@ function as_input(info: GitInfo | null): string[] {
 }
 
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
+  // These steps should be executed sequentially.
+  // 1. `precompile` writes `/public/generated/` processed by `vite_build`.
+  // 2. `vite_build` writes `/dist/.vite/manifest.json` depended by `index.typ`.
+
   await precompile();
+
+  await vite_build();
 
   const timeStart = Date.now();
   await typst([

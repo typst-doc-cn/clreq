@@ -26,7 +26,7 @@
     justify-content: center;
     padding: 12px 16px;
 
-    > svg.typst-frame {
+    > svg.typst-frame, img {
       /* The visual padding is the sum of CSS padding and SVG inset. See `render-examples` in show-example.typ */
       padding: 0.5em;
       border-radius: 8px;

@@ -11,4 +11,4 @@
 #let cache-ready = ("build", "dev").contains(mode)
 
 /// Path to the external cache root.
-#let cache-dir = "/target/cache/"
+#let cache-dir = "/public/generated/"

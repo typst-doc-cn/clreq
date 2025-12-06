@@ -1,6 +1,7 @@
 #import "@preview/digestify:0.1.0": bytes-to-hex, md5
 
 #import "templates/html-toolkit.typ": div-frame
+#import "templates/html-fix.typ": external-svg
 #import "mode.typ": cache-dir, cache-ready, mode
 
 
@@ -22,11 +23,9 @@
 ///
 /// - code (content): a `raw` element containing the displayed code
 /// - preview (content): previewed result
-/// - annotation (str): an annotation shown when hovering
 /// -> content
-#let layout-example(code, preview, annotation: none, ..sink) = html.div(
+#let layout-example(code, preview) = html.div(
   class: "example",
-  ..if annotation != none { (title: annotation) },
   {
     code
     div-frame(preview, class: "preview")
@@ -43,10 +42,17 @@
 /// -> content
 #let layout-external-example(code, id) = {
   let path = cache-dir + "{id}.svg".replace("{id}", id)
-  layout-example(
-    code,
-    if cache-ready { image(path) },
-    ..if mode == "dev" { (annotation: path) },
+  html.div(
+    class: "example",
+    // Put an annotation when hovering
+    ..if mode == "dev" { (title: path) },
+    {
+      code
+      html.div(class: "preview", if cache-ready {
+        show image: external-svg
+        image(path)
+      })
+    },
   )
 }
 
