@@ -240,6 +240,34 @@ $ f(x) = y "（定义8）" $
 >>> $ f(x) = y "（定义8）" $
 ```
 
+=== #bbl(en: [Selecting font via localized family name], zh: [按本地化名称选择字体]) <local-family-name>
+
+#level.advanced
+#issue("typst#7468")
+
+#babel(
+  en: [Some fonts provide their names in multiple languages. However, typst supports selecting font via only one of them, and it is difficult to predict which name typst supports. The font set in the example below provides two versions, SC and TC. The former only supports the English name _Source Han Serif SC_ but not the localized name 思源宋体, while the latter only supports the localized name 思源宋體 but not the English name _Source Han Serif TC_.],
+  zh: [有些字体提供多种语言的名称。然而用 typst 选择字体时，只有其中之一支持，而且很难预测是哪个名称支持。下例这套字体提供了 SC、TC 两个版本，前者只支持英文名称“Source Han Serif SC”而不支持本地化名称“思源宋体”，后者却只支持本地化名称“思源宋體”而不支持英文名称“Source Han Serif TC”。],
+)
+
+```example-page
+>>> Current: \
+#set text(fallback: false)
+#table(
+  columns: 2,
+<<<   text(font: "Source Han Serif SC")[和平],
+>>>   text(font: "Noto Serif CJK SC")[和平],
+  text(font: "思源宋体")[和平],
+  text(font: "Source Han Serif TC")[和平],
+<<<   text(font: "思源宋體")[和平],
+>>>   text(font: "Noto Serif CJK SC")[和平],
+)
+
+>>> Expected: \
+>>> #set text(font: "Noto Serif CJK SC")
+>>> #table(columns: 2, ..([和平],) * 4)
+```
+
 === #bbl(en: [Language-dependant font configuration], zh: [按语言设置字体]) <lang-font>
 
 #level.basic
@@ -321,6 +349,30 @@ $ f(x) = y "（定义8）" $
 ```
 // This example would emit a warning: variable fonts are not currently supported and may render incorrectly.
 // To avoid receiving the message repeatedly when running `pnpm dev`, we use `example-page` instead of `example`.
+
+=== #bbl(en: [MOESongUN cannot be underlined normally], zh: [MOESongUN 无法正常使用下划线]) <edu-song-underline>
+
+#level.advanced
+#issue("typst#7449")
+
+#babel(
+  en: [MOESongUN (aka. eduSong) is a famous font for Traditional Chinese. Using underline with it generates scary rectangles.],
+  zh: [MOESongUN（又名 eduSong）是繁体中文一款著名字体。它使用下划线时会出现诡异条块。],
+)
+
+```example-page
+>>> Current: \
+#set text(font: "MOESongUN", lang: "zh", region: "TW")
+#set underline(stroke: orange.transparentize(30%))
+#underline[今天晚上，很好的月光。 ]
+
+>>> Expected: \
+>>> #set text(bottom-edge: "descender")
+>>> #box(
+>>>   stroke: (bottom: orange.transparentize(30%)),
+>>>   inset: (bottom: 1pt),
+>>> )[今天晚上，很好的月光。 ]
+```
 
 === #bbl(
   en: [Unable to infer the writing script across elements, making `locl` sometimes ineffective],
@@ -610,6 +662,26 @@ $ f(x) = y "（定义8）" $
 >>> Expected: \
 >>> #set underline(offset: .15em, stroke: .05em)
 >>> #underline[中文和English]
+```
+
+=== #bbl(en: [Underlines extend to CJK-Latin spacing], zh: [下划线延长到了中西间距]) <underline-cjk-latin>
+
+#level.advanced
+#issue("typst#7475")
+#pull("typst#7521")
+
+#babel(
+  en: [If an underline starts or ends at CJK-Latin spacing, then it will extend to the spacing, which is unwanted.],
+  zh: [若下划线边缘处是中西间距，那么线会延长过去。这并不符合习惯。],
+)
+
+```example-page
+>>> #set underline(offset: .15em)
+>>> Current: \
+#underline[总票房]500亿元
+
+>>> Expected: \
+>>> #underline[总票房] 500亿元
 ```
 
 == #bbl(en: [Abbreviation, ellipsis, & repetition], zh: [缩写、省略与重复]) <abbrev>
