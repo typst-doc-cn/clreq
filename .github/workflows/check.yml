@@ -19,9 +19,12 @@ jobs:
         with:
           node-version: 22
           cache: pnpm
+      - name: Load typst-version
+        run: |
+          echo "TYPST_VERSION=$(jq . scripts/typst-version.json --raw-output)" >> "$GITHUB_ENV"
       - uses: typst-community/setup-typst@v4
         with:
-          typst-version: v0.14.1
+          typst-version: v${{ env.TYPST_VERSION }}
       - name: Restore cached fonts
         uses: actions/cache@v4
         id: cache
@@ -58,9 +61,12 @@ jobs:
         with:
           node-version: 22
           cache: pnpm
+      - name: Load typst-version
+        run: |
+          echo "TYPST_VERSION=$(jq . scripts/typst-version.json --raw-output)" >> "$GITHUB_ENV"
       - uses: typst-community/setup-typst@v4
         with:
-          typst-version: v0.14.1
+          typst-version: v${{ env.TYPST_VERSION }}
       - run: pnpm install
       - run: |
           pnpm check-issues
