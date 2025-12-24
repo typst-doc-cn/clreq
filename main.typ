@@ -325,6 +325,7 @@ $ f(x) = y "（定义8）" $
 #level.advanced
 #issue("typst#185")
 #issue("typst#6054")
+#pull("typst#6771", rejected: true)
 #workaround("https://github.com/typst/typst/discussions/2508")
 
 #babel(
@@ -917,6 +918,7 @@ $ f(x) = y "（定义8）" $
 
 #level.advanced
 #issue("typst#6062")
+#pull("typst#7606")
 
 ```example
 >>> Current:
@@ -2041,6 +2043,7 @@ $ integral f dif x $
 #pull("typst#7350")
 #workaround("https://typst-doc-cn.github.io/guide/FAQ/chinese-remove-space.html")
 #workaround("https://typst.app/universe/package/cjk-unbreak")
+#workaround("https://typst.app/universe/package/cjk-spacer")
 
 ```example
 >>> Current: \
