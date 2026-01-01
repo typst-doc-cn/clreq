@@ -45,7 +45,7 @@ jobs:
         with:
           typst-version: v${{ env.TYPST_VERSION }}
       - name: Restore cached fonts
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         id: cache
         with:
           path: |
