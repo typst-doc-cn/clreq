@@ -252,15 +252,24 @@ simple example 执行于容器中，且会在整篇文档中共享状态。
 @book{key,
   title = {标题},
   author = {作者},
-  year = {2025}
+  date = {2025}
 }
 % 作者. 标题. 2025.
 ```
+
+```example-bib
+key:
+  type: book
+  title: 标题
+  author: 作者
+  date: 2025
+# 作者. 标题. 2025.
+```
 ````
 
-- 普通行：BibTeX 项目。
+- 普通行：BibTeX/YAML 项目。
 
-- `%`打头的行：预期输出。
+- `%`/`#`打头的行：预期输出。
 
 ## 许可
 

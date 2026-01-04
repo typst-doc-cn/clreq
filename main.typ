@@ -985,6 +985,32 @@ $ f(x) = y "（定义8）" $
 >>> ]
 ```
 
+=== #bbl(en: [Customize punctuation width], zh: [定制标点宽度]) <customize-punct-width>
+
+#level.advanced
+#issue("typst#7643")
+
+#babel(
+  en: [Currently, typst controls the punctuation width based on `text.region`, but sometimes further customization is required.],
+  zh: [当前 typst 会根据`text.region`控制标点宽度，但有时还需进一步定制。],
+)
+
+```example-page
+>>> Current & Expected: \
+#set text(region: "HK")
+（甲乙丙丁）\ （甲乙丙？）\ （甲乙？丁）
+
+>>> Current & Expected: \
+#set text(region: "CN")
+（甲乙丙丁）\ （甲乙丙？）\ （甲乙？丁）
+
+>>> Expected: \
+// Expected to be possible:
+<<< #set text(punct-style: "plain")
+<<< （甲乙丙丁）\ （甲乙丙？）\ （甲乙？丁）
+>>> （甲乙丙丁）\ （甲乙丙#box(width: 1em)[？]）\ （甲乙？丁）
+```
+
 === #bbl(en: [Two-em dashes are overhung], zh: [破折号被错误悬挂]) <two-em-dash-overhung>
 
 #level.basic
@@ -1851,6 +1877,31 @@ $ integral f dif x $
 % 不二咲千尋. 基于图书室的笔记本电脑的 Alter Ego 系统[D]. 某地: 私立希望ヶ峰学園, 2010: 1–3, 5.
 ```
 
+=== #bbl(en: [`第1卷` is incorrectly treated as numeric], zh: [`第1卷`被错当为数值]) <csl-is-numeric>
+
+#level.advanced
+#issue("hayagriva#439")
+
+#babel(
+  en: [The `volume` field of an entry can be either numeric (e.g., `2`, `2a`) or non-numeric (e.g., `第2卷`, `2nd volume`), and the CSL style may use ```xml <if is-numeric="volume">``` to implement conditional rendering.],
+  zh: [条目的`volume`字段既可能是数值（例：`2`、`2a`），也可能并非数值（例：`第2卷`、`2nd volume`）。CSL 样式可用```xml <if is-numeric="volume">```实现条件渲染。],
+)
+
+#babel(
+  en: [However, typst distinguishes _non-numeric contents_ from _numbers with suffixes_ by scanning whitespaces. As a result, it treats `第1卷` as numeric incorrectly, generating a redundant `卷`.],
+  zh: [然而，typst 通过扫描空格来区分“非数值内容”与“带后缀的数字”，于是`第1卷`被错当为数值，生成多余`卷`字。],
+)
+
+```example-bib
+gbt7714.04.1.2:01.simplified:
+  type: book
+  title: 国史旧闻
+  volume: 第2卷
+  author:
+    - 陈登原
+# 陈登原. 国史旧闻: 第2卷[M].
+```
+
 === #bbl(
   en: [Chinese works should be ordered by the pinyin or strokes of the authors for `gb-7714-2015-author-date`],
   zh: [采用`gb-7714-2015-author-date`时，中文文献应按著者汉语拼音字顺或笔画笔顺排列],
@@ -1920,6 +1971,7 @@ $ integral f dif x $
 
 #level.basic
 #issue("hayagriva#312")
+#issue("tzhtaylor/modern-sjtu-thesis#9")
 
 #babel(
   en: [`@standard` is the `[S]` type in GB/T 7714—2015. It is #link("https://docs.citationstyles.org/en/stable/specification.html#appendix-iii-types")[a regular type in CSL], and a non-standard type in BibTeX (but accepted by biber). However, typst interprets it as `@misc` (`[Z]`) or `@webpage` (`[EB]`).],
@@ -1937,7 +1989,23 @@ $ integral f dif x $
   pubstate = {Published},
   version = {5},
 }
-% ISO/IEC. Information Technology — Dynamic Adaptive Streaming over HTTP (DASH) — Part 1: Media Presentation Description and Segment Formats[S/OL]. International Organization for Standardization, 2022. https://www.iso.org/standard/83314.html. Published.
+% ISO/IEC. Information technology — Dynamic adaptive streaming over HTTP (DASH) — Part 1: Media presentation description and segment formats: ISO/IEC 23009-1:2022(E)[S/OL]. International Organization for Standardization, 2022. https://www.iso.org/standard/83314.html.
+```
+// 注：https://ctan.org/pkg/gbt7714 (bibtex) 和 https://www.ctan.org/pkg/biblatex-gb7714-2015 (biblatex) 要求的`*.bib`格式不同。以上采用前者；后者要求把标准号加到`title`里。
+
+=== #bbl(
+  en: [Whitespaces and zeros before numbers are trimmed unexpectedly],
+  zh: [数字之前的空格和零被意外删除],
+) <bib-num-trim-before>
+
+#level.advanced
+#issue("hayagriva#440")
+
+```example-bib
+key:
+  type: report
+  serial-number: GB/X 03792
+# GB/X 03792
 ```
 
 === #bbl(en: [Failed to load some CSL styles], zh: [无法加载某些 CSL 样式]) <csl-load>

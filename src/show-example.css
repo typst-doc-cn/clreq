@@ -43,7 +43,7 @@
 .dark .example > .preview {
   background: darkgray;
 
-  > svg.typst-frame {
+  > svg.typst-frame, img {
     background: lightgray;
   }
 }

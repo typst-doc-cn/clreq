@@ -174,8 +174,11 @@
   show raw.where(lang: "example-bib"): it => {
     let lines = it.text.split("\n")
 
-    let displayed = lines.filter(x => not x.starts-with("%")).join("\n")
-    let expected = lines.filter(x => x.starts-with("%")).map(x => x.trim("%", at: start).trim())
+    let lang = if it.text.trim().starts-with("@") { "bib" } else { "yaml" }
+    let comment = if lang == "bib" { "%" } else { "#" }
+
+    let displayed = lines.filter(x => not x.starts-with(comment)).join("\n")
+    let expected = lines.filter(x => x.starts-with(comment)).map(x => x.trim(comment, at: start).trim())
 
     let executed = ````typ
     // Some browsers hide the border. Therefore, the margin is necessary.
@@ -185,7 +188,9 @@
     Current:
 
     #bibliography(
-      bytes(```{displayed}```.text),
+      bytes(```{lang}
+    {displayed}
+    ```.text),
       style: "gb-7714-2015-numeric",
       title: none,
       full: true,
@@ -198,6 +203,7 @@
     ````
       .text
       .replace("{GENERAL-PREAMBLE}", GENERAL-PREAMBLE)
+      .replace("{lang}", lang) // `lang` is unnecessary here, but helps debugging
       .replace("{displayed}", displayed)
       .replace("{expected}", expected.map(x => "+ " + x).join("\n"))
 
@@ -206,7 +212,7 @@
       #metadata((id: id, content: executed)) <external-example>
     ]
     show: fix-scaling
-    layout-external-example(raw(displayed, block: true, lang: "bib"), id)
+    layout-external-example(raw(displayed, block: true, lang: lang), id)
   }
 
   body
