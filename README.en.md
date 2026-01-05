@@ -249,15 +249,24 @@ The meanings of `<<< ` and `>>>` are the same as those in simple examples.
 @book{key,
   title = {标题},
   author = {作者},
-  year = {2025}
+  date = {2025}
 }
 % 作者. 标题. 2025.
 ```
+
+```example-bib
+key:
+  type: book
+  title: 标题
+  author: 作者
+  date: 2025
+# 作者. 标题. 2025.
+```
 ````
 
-- Regular lines: BibTeX entries.
+- Regular lines: BibTeX/YAML entries.
 
-- Lines starting with `%`: Expected output.
+- Lines starting with `%`/`#`: Expected output.
 
 ## License
 
