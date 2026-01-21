@@ -357,8 +357,8 @@ $ f(x) = y "（定义8）" $
 #issue("typst#7449")
 
 #babel(
-  en: [MOESongUN (aka. eduSong) is a famous font for Traditional Chinese. Using underline with it generates scary rectangles.],
-  zh: [MOESongUN（又名 eduSong）是繁体中文一款著名字体。它使用下划线时会出现诡异条块。],
+  en: [MOESongUN (aka. eduSong) is a famous font for Traditional Chinese. Due to wrong font metrics, using underline with it generates scary rectangles.],
+  zh: [MOESongUN（又名 eduSong）是繁体中文一款著名字体。由于字体度量信息错误，它使用下划线时会出现诡异条块。],
 )
 
 ```example-page
@@ -374,6 +374,21 @@ $ f(x) = y "（定义8）" $
 >>>   inset: (bottom: 1pt),
 >>> )[今天晚上，很好的月光。 ]
 ```
+
+=== #bbl(en: [Sub/superscripts for STSong is too small], zh: [STSong 的上下标太小]) <st-song-super>
+
+#level.basic
+#issue("typst#7664")
+
+#babel(
+  en: [STSong (aka. 华文宋体, Songti SC/TC, 宋体-简/繁) is one of the default Chinese fonts on macOS. When using `#super` or `#sub` with it, the text size becomes 1/10 of the original size, and can barely be noticed.],
+  zh: [STSong（又名“华文宋体”、Songti SC/TC、宋体-简/繁）是 macOS 默认中文字体之一。使用`#super`或`#sub`时，字号会变成原来的十分之一，根本看不清。],
+)
+
+#babel(
+  en: [This issue is marked as basic, because the style `gb-7714-2015-numeric` formats citations as superscripts.],
+  zh: [这一问题算作 Basic，因为`gb-7714-2015-numeric`样式的引用采用上标。],
+)
 
 === #bbl(
   en: [Unable to infer the writing script across elements, making `locl` sometimes ineffective],
@@ -669,7 +684,7 @@ $ f(x) = y "（定义8）" $
 
 #level.advanced
 #issue("typst#7475")
-#pull("typst#7521")
+#pull("typst#7521", rejected: true)
 
 #babel(
   en: [If an underline starts or ends at CJK-Latin spacing, then it will extend to the spacing, which is unwanted.],
@@ -717,6 +732,7 @@ $ f(x) = y "（定义8）" $
 
 #level.advanced
 #issue("typst#1489")
+#workaround("https://typst.app/universe/package/hundouk")
 
 #babel(
   en: [At present, there is no native support for ruby (e.g., #link("https://www.w3.org/TR/clreq/#h_inline_notes")[pinyin for Chinese], or #link("https://www.w3.org/TR/jlreq/#usage_of_ruby")[furigana for Japanese]), and community packages often have issues on alignment and text selection in PDF.],
@@ -916,9 +932,11 @@ $ f(x) = y "（定义8）" $
   zh: [中西间距只在拉丁字母之前拉伸],
 ) <cjk-latin-stretch-before>
 
-#level.advanced
-#issue("typst#6062")
-#pull("typst#7606")
+#level.ok
+#issue("typst#6062", closed: true)
+#pull("typst#7606", merged: true)
+
+#till-next(now-fixed.with(last-affected: "0.14.2", last-level: "advanced"))
 
 ```example
 >>> Current:

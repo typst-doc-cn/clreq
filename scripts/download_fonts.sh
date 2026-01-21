@@ -31,11 +31,7 @@ fi
 
 # MOESongUN
 if ! typst fonts --font-path . | rg --quiet '^MOESongUN$'; then
-  curl --location --remote-name https://language.moe.gov.tw/001/Upload/Files/site_content/M0001/eduSong_Unicode.zip
-  7z x eduSong_Unicode.zip -ofonts
-  rm eduSong_Unicode.zip
-  # The original filename in the zip has (2024年12月) encoded in Big5, resulting in garbage characters.
-  mv fonts/eduSong_Unicode*.ttf 'fonts/eduSong_Unicode(2024年12月).ttf'
+  curl --location --remote-name https://github.com/typst-doc-cn/moe-tw-fonts/raw/main/fonts/eduSong_Unicode-v4.4-2025-12.ttf
 fi
 
 # Check
