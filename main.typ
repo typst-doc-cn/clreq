@@ -1797,6 +1797,8 @@ $ integral f dif x $
 #pull("hayagriva#126", rejected: true)
 #workaround("https://typst-doc-cn.github.io/guide/FAQ/bib-etal-lang.html")
 #workaround("https://typst.app/universe/package/modern-nju-thesis")
+#workaround("https://github.com/Shuenhoy/citext", note: "citext")
+#workaround("https://typst.app/universe/package/gb7714-bilingual")
 
 #babel(
   en: [It is extremely common to cite both Chinese and English works in an article. For multi-author literature, some authors may be omitted. In such cases, we should use `et al.` for English and `等` for Chinese.],
@@ -2032,6 +2034,7 @@ key:
 #issue("citationberg#35", closed: true)
 #issue("hayagriva#405")
 #workaround("https://typst-doc-cn.github.io/guide/FAQ/bib-csl.html")
+#workaround("https://typst-doc-cn.github.io/csl-validator/", note: "csl-validator")
 #workaround("https://typst-doc-cn.github.io/csl-sanitizer/", note: "csl-sanitizer")
 
 #babel(
