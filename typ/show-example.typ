@@ -103,7 +103,6 @@
         (displayed: x, executed: x)
       })
 
-
     let displayed = lines.map(x => x.displayed).filter(x => x != none).join("\n")
     let executed = lines.map(x => x.executed).filter(x => x != none).join("\n")
 
