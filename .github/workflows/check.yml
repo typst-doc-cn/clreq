@@ -46,7 +46,7 @@ jobs:
           bash scripts/download_fonts.sh
       - run: pnpm install
       - run: pnpm build
-      - uses: actions/upload-artifact@v6
+      - uses: actions/upload-artifact@v7
         with:
           name: dist
           path: "./dist"
