@@ -7,8 +7,8 @@ curl -L --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/cargo-
 cargo-binstall "typst-cli@$TYPST_VERSION" ripgrep
 # Remarks: `cargo-binstall` works, but `cargo binstall` does not.
 
-curl -OL https://www.7-zip.org/a/7z2409-linux-x64.tar.xz
-tar -xvf 7z2409-linux-x64.tar.xz 7zz && ln -s 7zz 7z
+curl -OL https://github.com/ip7z/7zip/releases/download/26.00/7z2600-linux-x64.tar.xz
+tar -xvf 7z2600-linux-x64.tar.xz 7zz && ln -s 7zz 7z
 export PATH=$PATH:$(pwd)
 
 bash scripts/download_fonts.sh
