@@ -1991,7 +1991,7 @@ gbt7714.04.1.2:01.simplified:
 
 #level.basic
 #issue("hayagriva#312")
-#issue("tzhtaylor/modern-sjtu-thesis#9")
+#issue("tzhtaylor/modern-sjtu-thesis#9", closed: true)
 
 #babel(
   en: [`@standard` is the `[S]` type in GB/T 7714—2015. It is #link("https://docs.citationstyles.org/en/stable/specification.html#appendix-iii-types")[a regular type in CSL], and a non-standard type in BibTeX (but accepted by biber). However, typst interprets it as `@misc` (`[Z]`) or `@webpage` (`[EB]`).],
