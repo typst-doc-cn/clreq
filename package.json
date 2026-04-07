@@ -23,7 +23,7 @@
         "@types/node": "^25.5.0",
         "postcss-nesting": "^14.0.0",
         "typescript": "~5.9.3",
-        "vite": "^8.0.1"
+        "vite": "^8.0.6"
     },
     "optionalDependencies": {
         "netlify-plugin-cache": "^1.0.3"
