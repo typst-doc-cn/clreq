@@ -1286,9 +1286,51 @@ $ integral f dif x $
 >>> 噫）．嘘）．唏
 ```
 
-// === #bbl(zh: [连续标点会挤压在一起])
-// #workaround("https://typst-doc-cn.github.io/guide/FAQ/weird-punct.html")
-// This issue has not been reproduced yet.
+=== #bbl(en: [Tracking across elements], zh: [跨元素字距]) <across-element-tracking>
+
+#level.advanced
+#issue("typst#7976")
+
+```example
+>>> Current: \
+#set text(tracking: 0.25em)
+*勇踏*前人未至之境
+
+>>> #set text(tracking: 0em)
+>>> Expected: \
+>>> #block(width: 8 * 1.25em - 0.25em)[*勇踏*前人未至之境#linebreak(justify: true)]
+```
+
+=== #bbl(
+  en: [When region and font settings mismatch, consecutive punctuation marks are improperly compressed],
+  zh: [地区与字体设置不匹配时，连续标点挤压不当],
+) <region-compress-punct>
+
+#level.ok
+#workaround("https://typst-doc-cn.github.io/guide/FAQ/weird-punct.html")
+
+#babel(
+  en: [The width of consecutive punctuation marks may be adjusted, but the style of adjustment varies by region. If the font design does not match the adjustment style controlled by `text.region`, punctuation marks might be improperly compressed.],
+  zh: [标点符号连续出现时，可以调整宽度，但各地风格不同。如果字体设计与`text.region`控制的调整风格不匹配，那么标点符号可能被错误地挤到一起。],
+)
+
+#babel(
+  en: [In the example below, MOESongUN, a font designed in Taiwan, does not support punctuation width adjustment, because many publications in Taiwan do not adjust punctuation width. As a result, applying the Chinese Mainland style yields poor results. To resolve the issue, apply the Taiwan style, or switch to a font that supports adjustment.],
+  zh: [在下例中，台湾设计的 MOESongUN 未考虑标点符号宽度调整，因为当地书籍通常不调整。若强行按中国大陆风格调整，则效果不佳。要解决此问题，可按台湾风格调整，或者换成考虑标点符号宽度调整的字体。],
+)
+
+```example
+>>> Current & Expected:
+>>>
+#set text(region: "CN", font: "MOESongUN")
+「完了！」“完了！”
+
+#set text(region: "TW", font: "MOESongUN")
+「完了！」“完了！”
+
+#set text(region: "CN", font: "Noto Serif CJK SC")
+「完了！」“完了！”
+```
 
 == #bbl(en: [Baselines, line-height, etc.], zh: [基线、行高等]) <baselines>
 
