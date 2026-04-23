@@ -22,8 +22,9 @@ if ! typst fonts --font-path . | rg --quiet '^Source Han Serif SC VF$'; then
   curl --location --remote-name https://mirrors.cernet.edu.cn/adobe-fonts/source-han-serif/Variable/OTF/SourceHanSerifSC-VF.otf
 fi
 
-# A specific version of SimSun
-if ! typst fonts --font-path . | rg --quiet '^SimSun$'; then
+# KaiTi and a specific version of SimSun
+if ! typst fonts --font-path . | rg --quiet '^KaiTi$' || \
+   ! typst fonts --font-path . | rg --quiet '^SimSun$'; then
   curl --location --remote-name https://github.com/typst-doc-cn/guide/releases/download/files/fonts.7z
   7z x fonts.7z -ofonts
   rm fonts.7z
