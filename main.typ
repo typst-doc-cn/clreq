@@ -2143,7 +2143,7 @@ key:
   zh: [此外，若在 show 规则中用`link(it.element.location(), …)`替代`ref`，又会引发其它问题，例如难以给`link`、`ref`分别上色。],
 )
 
-=== #bbl(en: [Bilingual figure captions], zh: [插图标题]) <bilingual-caption>
+=== #bbl(en: [Bilingual figure captions], zh: [双语插图标题]) <bilingual-caption>
 
 #level.advanced
 #workaround("https://typst-doc-cn.github.io/guide/FAQ/dual_language_caption.html")
