@@ -391,6 +391,39 @@ $ f(x) = y "（定义8）" $
 )
 
 === #bbl(
+  en: [KaiTi and Noto Serif CJK are misaligned in sub/superscripts],
+  zh: [在上下标中，楷体与思源宋体对不齐],
+) <mix-super-metric>
+
+#level.ok
+#issue("typst#8090", closed: true)
+#pull("typst#8095", merged: true)
+// TODO: Link to typst.app/docs when Typst v0.15 is released.
+
+#babel(
+  en: [KaiTi (aka. 中易楷体, 楷体, simkai) and Noto Serif CJK (思源宋体) are two common fonts. They set incompatible metrics for superscripts and subscripts, resulting in misalignment when used together.],
+  zh: [KaiTi（又名“中易楷体”、楷体、simkai）和 Noto Serif CJK（思源宋体）是两种常见字体。它们设置的上下标度量信息不兼容，导致混合使用时对不齐。],
+)
+
+```example-page
+>>> #set par(leading: 1em) // for displaying superscripts
+#set text(font: "Noto Serif CJK SC")
+#show emph: set text(font: "KaiTi")
+
+>>> Current: \
+标#super[字_词_]
+
+>>> Expected: \
+>>> #set super(baseline: -0.5em, size: 0.6em)
+>>> 标#super[字_词_]
+```
+
+#babel(
+  en: [This affects Chinese particularly, because switching from Song (Serif) to Kai is a common way to express emphasis. However, this issue is still marked as OK. After all, it is straightforward to fix, and superscripts and subscripts rarely use emphasis.],
+  zh: [中文特别受此影响，因为从宋体切换为楷体是表达强调的常见手段。不过这一问题仍算作 OK，毕竟它很容易修复，而且上下标很少需要强调。],
+)
+
+=== #bbl(
   en: [Unable to infer the writing script across elements, making `locl` sometimes ineffective],
   zh: [无法跨越元素推断文字种类，导致`locl`特性有时失效],
 ) <across-element-script>
