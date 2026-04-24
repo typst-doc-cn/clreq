@@ -401,7 +401,7 @@ $ f(x) = y "（定义8）" $
 // TODO: Link to typst.app/docs when Typst v0.15 is released.
 
 #babel(
-  en: [Kaiti (aka. 中易楷体, 楷体, simkai) and Noto Serif CJK (思源宋体) are two common fonts. They set incompatible metrics for superscripts and subscripts, resulting in misalignment when used together.],
+  en: [KaiTi (aka. 中易楷体, 楷体, simkai) and Noto Serif CJK (思源宋体) are two common fonts. They set incompatible metrics for superscripts and subscripts, resulting in misalignment when used together.],
   zh: [KaiTi（又名“中易楷体”、楷体、simkai）和 Noto Serif CJK（思源宋体）是两种常见字体。它们设置的上下标度量信息不兼容，导致混合使用时对不齐。],
 )
 
