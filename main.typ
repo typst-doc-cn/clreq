@@ -676,6 +676,29 @@ $ f(x) = y "（定义8）" $
   },
 )
 
+=== #bbl(en: [Some smart quotes among Chinese texts are wrong], zh: [汉字之间某些智能引号不对])
+
+#level.advanced
+#issue("typst#8191")
+
+#babel(
+  en: [Chinese texts do not use word spaces. The smart quoting algorithm in Typst is not yet fully compatible with Chinese.],
+  zh: [中文不用空格分词，而 typst 的智能引号算法尚不完全适配。],
+)
+
+```example-page
+>>> Current: \
+"掌柜说，'还欠钱呢！'到了端午又说'还欠钱呢！'到中秋可是没有说。"
+
+>>> Expected: \
+>>> “掌柜说，‘还欠钱呢！’到了端午又说‘还欠钱呢！’到中秋可是没有说。”
+```
+
+#babel(
+  en: [This issue is marked as advanced, because the smart quote feature is rarely used for Chinese. In fact, `'"` is more difficult to input than `‘’“”` with IME. See the note in the above issue.],
+  zh: [这一问题算作 Advanced，因为中文很少会用智能引号——使用输入法时，其实`'"`比`‘’“”`更难输入，详见前一问题中的注。],
+)
+
 == #bbl(en: [Emphasis & highlighting], zh: [强调与突出显示]) <emphasis>
 
 #prompt(from-w3c: "https://www.w3.org/TR/clreq-gap/#emphasis")[
@@ -877,6 +900,21 @@ $ f(x) = y "（定义8）" $
 >>> 噫，#h(-0.5em)克里斯蒂娜·罗塞蒂，还有阿加莎·克里斯蒂！
 ```
 // This example is agnostic to the region — regardless of whether the base width is 1em or 0.5em, it should be adjusted to 0.5em here.
+
+=== #bbl(en: [Phrase-based line breaking], zh: [按词断行])
+
+#level.advanced
+#issue("typst#8097")
+
+#babel(
+  en: [In certain special cases, phrase-based line breaking is required for Chinese. Take 中文需要按词断行 as an example. This line breaking rule allows breaking between 中文 and 需要, but not between 中 and 文, because 中文 and 需要 are natural phrases.],
+  zh: [在某些特殊情况下，中文需要按词断行。以前一句话为例，这种断行规则允许在“中文”与“需要”之间断行，但不允许在“中”与“文”之间断行。],
+)
+
+#babel(
+  en: [This issue is marked as advanced, because phrase-based line breaking is extremely rare in Chinese.],
+  zh: [这一问题算作 Advanced，因为按词断行在中文极其罕见。],
+)
 
 == #bbl(en: [Text alignment & justification], zh: [文本对齐]) <justification>
 
@@ -1414,8 +1452,11 @@ $ integral f dif x $
   zh: [`text.bottom-edge`不是基线时，`box`未对齐],
 ) <box-align-bottom-edge>
 
-#level.advanced
+#level.ok
 #issue("tianyi-smile/itemize#8")
+#pull("typst#8150", merged: true)
+
+#till-next(now-fixed.with(last-affected: "0.14.2", last-level: "advanced"))
 
 #babel(en: [This issue continues the above issue.], zh: [这一问题接续上一问题。])
 
@@ -1459,10 +1500,13 @@ $ integral f dif x $
   zh: [`list`和`enum`的编号与内容未对齐基线],
 ) <list-enum-marker-align>
 
-#level.basic
-#issue("typst#1204")
+#level.ok
+#issue("typst#1204", closed: true)
+#pull("typst#7895", merged: true)
 #issue("typst#1610")
 #workaround("https://typst-doc-cn.github.io/guide/FAQ/enum-list-marker-fix.html")
+
+#till-next(now-fixed.with(last-affected: "0.14.2", last-level: "basic"))
 
 #babel(
   en: [This issue occurs when the marker and the content have different heights. It is common in mixed Chinese-Western text layouts to use different fonts for Chinese and Western characters. As a result, the height of Western (numeric) markers is likely to differ from that of the Chinese content, triggering the issue. ],
@@ -1606,7 +1650,7 @@ $ integral f dif x $
 ```
 
 #babel(
-  en: [This issue should have been marked as Basic. However, considering that the hào-system was not standardized by the various foundries in the past (for example, nowadays, #link("https://github.com/YDX-2147483647/typst-pointless-size/blob/main/docs/ref.md")[四号 is 14 pt in CTeX, MS Word, WPS, and Adobe], but others may prefer 13.75 pt), we mark it as Advanced for the moment.],
+  en: [This issue should have been marked as basic. However, considering that the hào-system was not standardized by the various foundries in the past (for example, nowadays, #link("https://github.com/YDX-2147483647/typst-pointless-size/blob/main/docs/ref.md")[四号 is 14 pt in CTeX, MS Word, WPS, and Adobe], but others may prefer 13.75 pt), we mark it as advanced for the moment.],
   zh: [这一问题本该算作 Basic，但由于号数制当年在各地金属活字厂家并未统一（例如今日 #link("https://github.com/YDX-2147483647/typst-pointless-size/blob/main/docs/ref.md")[CTeX、MS Word、WPS、Adobe 的四号是14点]，但其它可能用13.75点），暂且算作 Advanced。],
 )
 
@@ -2093,14 +2137,17 @@ gbt7714.04.1.2:01.simplified:
   zh: [数字之前的空格和零被意外删除],
 ) <bib-num-trim-before>
 
-#level.advanced
-#issue("hayagriva#440")
+#level.ok
+#issue("hayagriva#440", closed: true)
+#pull("hayagriva#445", merged: true)
+
+#till-next(now-fixed.with(last-affected: "0.14.2", last-level: "advanced"))
 
 ```example-bib
 key:
   type: report
   serial-number: GB/X 03792
-# GB/X 03792
+# GB/X 03792[R].
 ```
 
 === #bbl(en: [Failed to load some CSL styles], zh: [无法加载某些 CSL 样式]) <csl-load>
@@ -2252,7 +2299,7 @@ key:
 #level.advanced
 #workaround("https://typst-doc-cn.github.io/guide/FAQ/webapp-spellcheck.html")
 
-#bbl(
+#babel(
   en: [There are a few issues for the official typst.app that related to the Chinese script.],
   zh: [官方 typst.app 有些问题与中文相关。],
 )
@@ -2381,3 +2428,17 @@ key:
 - Advanced East-Asian layout features #issue("typst#193")
 - Better CJK support #issue("typst#276")
 - Better out-of-the-box experience for non-Latin scripts #issue("webapp-issues#720")
+
+#{
+  import "typ/mode.typ": mode
+  if mode == "pre" [
+    == Intentionally excluded issues
+    These issues are labeled with cjk or i18n, but are excluded intentionally.
+
+    They are recorded here to tell `pnpm check-issues --assert-all-covered` to ignore them. They will not appear in the final document.
+
+    If any of the following issues is closed in the future, it can be removed.
+
+    - Latvian smart quotes are not applied consistently in bibliography output #issue("hayagriva#471")
+  ]
+}
