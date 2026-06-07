@@ -136,7 +136,7 @@ Tips:
 
   The title should be as consistent as possible with [W3C Gap Analysis documents](https://www.w3.org/TR/clreq-gap/).
 
-- Low-level sections derscribing **specific gaps**
+- Low-level sections describing **specific gaps**
 
   - For features that are needed but **not yet supported**, express titles as **phrases** whenever possible.
 
@@ -153,6 +153,8 @@ Tips:
     - Citation numbers are flying over their brackets | 引用编号的数字高于括号
 
   - Do not edit the title after the gap is resolved, unless you have a good reason.
+
+In addition, to fix the URL `#hash` for sections, titles should be labelled with `<label>`. The labels for top-level sections should be as consistent as possible with W3C Gap Analysis documents, while the labels for low-level sections can be composed of keywords. Refer to [Links in HTML export - Link Function – Typst Documentation](https://typst.app/docs/reference/model/link/#links-in-html-export) for allowable characters. When changing the titles, generally the labels should remain unchanged; if it is necessary to change the labels, the redirection should be added to [`anchor-redirect.ts`](./src/anchor-redirect.ts).
 
 ### Adding a code example
 
