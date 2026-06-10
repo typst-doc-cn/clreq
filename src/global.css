@@ -256,6 +256,7 @@ figure {
 }
 figure > img {
   width: 40%;
+  margin-inline: auto;
 }
 @media (max-width: 720px) {
   figure > img {
@@ -264,6 +265,10 @@ figure > img {
 }
 figcaption {
   text-align: center;
+}
+figure > figcaption:last-child {
+  /* Separate captions from images */
+  margin-top: 0.25em;
 }
 .code-image svg {
   max-width: 100%;

@@ -27,11 +27,11 @@
 #let external-image(it) = {
   if type(it.source) == str and it.source.starts-with("/public/") {
     // Do not enable lazy loading here. Lazy images without explicit sizes will cause the page to flush, making links with hash anchors being unable to locate accurately.
-    html.img(
+    block(html.img(
       src: asset-url(it.source.trim("/public", at: start)),
       ..if it.alt != none { (alt: it.alt, title: it.alt) },
       ..if type(it.width) == relative { (style: "width:" + repr(it.width.ratio)) },
-    )
+    ))
   } else {
     it
   }
