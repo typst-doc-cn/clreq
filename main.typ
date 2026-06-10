@@ -1406,6 +1406,28 @@ $ integral f dif x $
 「完了！」“完了！”
 ```
 
+=== #bbl(
+  en: [Compression for centered punctuations],
+  zh: [居中标点之挤压],
+) <center-punct-compress>
+
+#level.basic
+#issue("typst#8390")
+
+#babel(
+  en: [The position of punctuation marks has regional differences. For example, when writing Chinese horizontally, #unichar("。") is placed at the _lower left_ corner in the square space in Chinese Mainland, but placed at the _center_ in Taiwan and Hong Kong. The compression rule used by the current typst is not ideal in the latter case],
+  zh: [各地标点符号位置存在差异。例如横排中文时，中国大陆把 #unichar("。") 放在字面的左下角，而港台则放在中央。目前 typst 对后者的标点挤压规则不甚理想。],
+)
+
+```example-page
+>>> Current: \
+#set text(lang: "zh", region: "TW", font: "jf open 粉圓 2.1")
+朋友告訴我，「這是極富潛力的軟體。」
+
+>>> #text(font: "New Computer Modern")[Expected:] \
+>>> 朋友告訴我，#h(-0.25em)「這是極富潛力的軟體。#h(-0.25em)」
+```
+
 == #bbl(en: [Baselines, line-height, etc.], zh: [基线、行高等]) <baselines>
 
 #prompt(from-w3c: "https://www.w3.org/TR/clreq-gap/#baselines")[
