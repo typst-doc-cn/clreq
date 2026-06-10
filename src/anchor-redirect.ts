@@ -4,6 +4,9 @@
 
 /** A map from old anchors to current anchors. */
 const REDIRECTS: Record<string, string> = {
+  // Oversights in https://github.com/typst-doc-cn/clreq/pull/103
+  "#some-smart-quotes-among-chinese-texts-are-wrong": "#smartquote-wrong",
+  "#phrase-based-line-breaking": "#phrase-line-break",
   // Initial normalization
   "#x1-text-direction": "#direction",
   "#x1-1-writing-mode": "#writing-mode",

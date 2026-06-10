@@ -322,11 +322,14 @@ $ f(x) = y "（定义8）" $
 
 === #bbl(en: [Variable font], zh: [可变字体]) <variable-font>
 
-#level.advanced
-#issue("typst#185")
-#issue("typst#6054")
+#level.ok
+#issue("typst#185", closed: true)
+#issue("typst#6054", closed: true)
 #pull("typst#6771", rejected: true)
+#pull("typst#8425", merged: true)
 #workaround("https://github.com/typst/typst/discussions/2508")
+
+#till-next(now-fixed.with(last-affected: "0.14.2", last-level: "advanced"))
 
 #babel(
   en: [Variable fonts offer more creative possibilities and have higher storage efficiency. Given the vast number of Chinese characters, designing and storing traditional static fonts can be challenging — for example, a static Noto Sans CJK OTF/TTC is often \~100 MB. This makes variable fonts especially valuable for the Chinese language.],
@@ -676,7 +679,7 @@ $ f(x) = y "（定义8）" $
   },
 )
 
-=== #bbl(en: [Some smart quotes among Chinese texts are wrong], zh: [汉字之间某些智能引号不对])
+=== #bbl(en: [Some smart quotes among Chinese texts are wrong], zh: [汉字之间某些智能引号不对]) <smartquote-wrong>
 
 #level.advanced
 #issue("typst#8191")
@@ -901,7 +904,7 @@ $ f(x) = y "（定义8）" $
 ```
 // This example is agnostic to the region — regardless of whether the base width is 1em or 0.5em, it should be adjusted to 0.5em here.
 
-=== #bbl(en: [Phrase-based line breaking], zh: [按词断行])
+=== #bbl(en: [Phrase-based line breaking], zh: [按词断行]) <phrase-line-break>
 
 #level.advanced
 #issue("typst#8097")
@@ -1401,6 +1404,28 @@ $ integral f dif x $
 
 #set text(region: "CN", font: "Noto Serif CJK SC")
 「完了！」“完了！”
+```
+
+=== #bbl(
+  en: [Compression for centered punctuations],
+  zh: [居中标点之挤压],
+) <center-punct-compress>
+
+#level.basic
+#issue("typst#8390")
+
+#babel(
+  en: [The position of punctuation marks has regional differences. For example, when writing Chinese horizontally, #unichar("。") is placed at the _lower left_ corner in the square space in Chinese Mainland, but placed at the _center_ in Taiwan and Hong Kong. The compression rule used by the current typst is not ideal in the latter case],
+  zh: [各地标点符号位置存在差异。例如横排中文时，中国大陆把 #unichar("。") 放在字面的左下角，而港台则放在中央。目前 typst 对后者的标点挤压规则不甚理想。],
+)
+
+```example-page
+>>> Current: \
+#set text(lang: "zh", region: "TW", font: "jf open 粉圓 2.1")
+朋友告訴我，「這是極富潛力的軟體。」
+
+>>> #text(font: "New Computer Modern")[Expected:] \
+>>> 朋友告訴我，#h(-0.25em)「這是極富潛力的軟體。#h(-0.25em)」
 ```
 
 == #bbl(en: [Baselines, line-height, etc.], zh: [基线、行高等]) <baselines>
@@ -1963,11 +1988,17 @@ $ integral f dif x $
 
 #level.broken
 #issue("hayagriva#112")
+#pull("hayagriva#484")
 #workaround("https://typst-doc-cn.github.io/guide/FAQ/bib-missing-school.html")
 
 #babel(
-  en: [`institution` and `school` are not recognized as aliases of `publisher`, and typst does not understand `institute` in CSL either. The `school` field is conventionally associated with `@thesis` (`[D]`), and the `institute` field with `@report` (`[R]`). These fields should be placed between the location and the date after `[D]`/`[R]`.],
-  zh: [`institution`机构名称和`school`学校名称未被识别成`publisher`的别名，typst 亦不支持解析 CSL 中的 `institution`。`school`字段常用于学位论文`@thesis`（`[D]`），`institute`字段常用于报告`@report`（`[R]`），它们应显示在`[D]`/`[R]`后的地点与日期之间。],
+  en: [In `*.bib`, the `school` field is conventionally associated with `@thesis` (`[D]`), and the `institution` field with `@report` (`[R]`). These fields should be placed between the location and the date after `[D]`/`[R]` when citing the works.],
+  zh: [在`*.bib`中，`school`字段常用于学位论文`@thesis`（`[D]`），而`institution`字段常用于报告`@report`（`[R]`）。著录这些文献时，它们应显示在`[D]`/`[R]`后的地点与日期之间。],
+)
+
+#babel(
+  en: [Currently, Hayagriva maps these two fields to the CSL variable `authority`, but the GB CSL styles only display the CSL variable `publisher`, resulting in the loss of the fields.],
+  zh: [目前 Hayagriva 会将这两个字段映射到 CSL 变量`authority`，而国标 CSL 样式只输出 CSL 变量`publisher`，导致字段丢失。],
 )
 
 ```example-bib
@@ -2046,14 +2077,49 @@ gbt7714.04.1.2:01.simplified:
   zh: [采用`gb-7714-2015-author-date`时，中文文献应按著者汉语拼音字顺或笔画笔顺排列],
 ) <bib-order>
 
-#level.advanced
-#issue("hayagriva#259")
-#issue("hayagriva#193")
+#level.ok
+#issue("hayagriva#259", closed: true)
+#issue("hayagriva#193", closed: true)
+#pull("hayagriva#314", merged: true)
+
+#till-next(now-fixed.with(last-affected: "0.14.2", last-level: "advanced"))
 
 #babel(
   en: [The style `gb-7714-2015-author-date` currently sorts works by Unicode code points. However, according to the standard, when using this style, the cited works should first be grouped by scripts, then arranged by author names and publication dates. For Chinese works, they may be ordered by either pinyin or strokes.],
   zh: [目前`gb-7714-2015-author-date`样式按Unicode码位排序。而标准规定，采用这种样式时，各篇文献首先按文种集中，然后按著者字顺和出版年排列，其中中文文献可按著者汉语拼音字顺或笔画笔顺排列。],
 )
+
+````example-page
+>>> = Current
+#bibliography(
+  bytes(
+    ```bib
+    @article{wang, author = {汪冰} }
+    @article{d, author = {Dowler} }
+    @article{b, author = {Baker} }
+    @article{yang, author = {杨宗英} }
+    @article{c, author = {Chernik} }
+    @article{ni, author = {尼葛洛庞帝} }
+    ```.text,
+  ),
+  style: "gb-7714-2015-author-date",
+  full: true,
+  title: none,
+)
+
+>>> = Expected
+>>> 尼葛洛庞帝. [J].
+>>>
+>>> 汪冰. [J].
+>>>
+>>> 杨宗英. [J].
+>>>
+>>> BAKER. [J].
+>>>
+>>> CHERNIK. [J].
+>>>
+>>> DOWLER. [J].
+````
 
 === #bbl(en: [`gb-7714-2015-note` is totally broken], zh: [`gb-7714-2015-note`完全无法使用]) <bib-note>
 
@@ -2101,20 +2167,21 @@ gbt7714.04.1.2:01.simplified:
 
 #prompt[
   #babel(
-    en: [Are there difficulties creating files related to bibliography? Including the database of reference entries (Hayagriva `*.yml`, BibTeX `*.bib`) and the #link("https://docs.citationstyles.org/en/stable/specification.html")[Citation Style Language] style `*.csl`.],
-    zh: [准备参考文献相关的文件是否存在困难？包括参考文件数据库（Hayagriva `*.yml`、BibTeX `*.bib`）和 #link("https://docs.citationstyles.org/en/stable/specification.html")[Citation Style Language] 样式 `*.csl`。],
+    en: [Are there difficulties creating files related to bibliography? Including the database of reference entries (Hayagriva `*.yml`, Bib(La)TeX `*.bib`) and the #link("https://docs.citationstyles.org/en/stable/specification.html")[Citation Style Language] style `*.csl`.],
+    zh: [准备参考文献相关的文件是否存在困难？包括参考文件数据库（Hayagriva `*.yml`、Bib(La)TeX `*.bib`）和 #link("https://docs.citationstyles.org/en/stable/specification.html")[Citation Style Language] 样式 `*.csl`。],
   )
 ]
 
 === #bbl(en: [`@standard` is not correctly interpreted], zh: [`@standard`被错误解释]) <bib-standard-misc>
 
 #level.basic
+#issue("biblatex#62")
 #issue("hayagriva#312")
 #issue("tzhtaylor/modern-sjtu-thesis#9", closed: true)
 
 #babel(
-  en: [`@standard` is the `[S]` type in GB/T 7714—2015. It is #link("https://docs.citationstyles.org/en/stable/specification.html#appendix-iii-types")[a regular type in CSL], and a non-standard type in BibTeX (but accepted by biber). However, typst interprets it as `@misc` (`[Z]`) or `@webpage` (`[EB]`).],
-  zh: [`@standard`是 GB/T 7714—2015 里的`[S]`类型文献。它#link("https://docs.citationstyles.org/en/stable/specification.html#appendix-iii-types")[在 CSL 中是个正常类型]，不过并非 BibTeX 的标准类型（但 biber 支持）。然而 typst 将它解释为`@misc`（`[Z]`）或`@webpage`（`[EB]`）。],
+  en: [`@standard` is the `[S]` type in GB/T 7714—2015. It is #link("https://docs.citationstyles.org/en/stable/specification.html#appendix-iii-types")[a regular type in CSL], and a non-standard type in BibLaTeX (#link("https://mirrors.ctan.org/macros/latex/contrib/biblatex/doc/biblatex.pdf#subsubsection.2.1.3")[`biblatex.pdf` has a dedicated section for non-standard types that are accepted by biber]). However, typst interprets it as `@misc` (`[Z]`) or `@webpage` (`[EB]`).],
+  zh: [`@standard`是 GB/T 7714—2015 里的`[S]`类型文献。它#link("https://docs.citationstyles.org/en/stable/specification.html#appendix-iii-types")[在 CSL 中是个正常类型]，在 BibLaTeX 则是非标准类型（#link("https://mirrors.ctan.org/macros/latex/contrib/biblatex/doc/biblatex.pdf#subsubsection.2.1.3")[`biblatex.pdf`有专门章节列出能被 biber 接受的非标准类型]）。然而 typst 将它解释为`@misc`（`[Z]`）或`@webpage`（`[EB]`）。],
 )
 
 ```example-bib
@@ -2150,10 +2217,33 @@ key:
 # GB/X 03792[R].
 ```
 
+=== #bbl(en: [Numeric `month`s are lost], zh: [数值型`month`被忽略]) <bib-numeric-month>
+
+#level.ok
+#issue("biblatex#103", closed: true)
+#pull("biblatex#104", merged: true)
+
+#till-next(now-fixed.with(last-affected: "0.14.2", last-level: "advanced"))
+
+#babel(
+  en: [Regarding the `month` field in `*.bib`, BibTeX prefers the names (e.g., `January` or `jan`), while BibLaTeX prefers numbers (e.g., `1`). Currently, Hayagriva only recognizes the former.],
+  zh: [关于`*.bib`中的`month`字段，BibTeX 习惯填写名称（例：`January`或`jan`），而 BibLaTeX 习惯填写数字（例：`1`）。目前 Hayagriva 只识别前者。],
+)
+
+```example-bib
+@book{key,
+  year = {2009},
+  month = {2}
+}
+% [M]. 2009-02.
+```
+
 === #bbl(en: [Failed to load some CSL styles], zh: [无法加载某些 CSL 样式]) <csl-load>
 
 #level.advanced
 #issue("citationberg#35", closed: true)
+#issue("citationberg#22", closed: true)
+#pull("citationberg#23", merged: true)
 #issue("hayagriva#405")
 #workaround("https://typst-doc-cn.github.io/guide/FAQ/bib-csl.html")
 #workaround("https://typst-doc-cn.github.io/csl-validator/", note: "csl-validator")
@@ -2165,8 +2255,8 @@ key:
 )
 
 #babel(
-  en: [As of October 2025, 222 of 302 (74%) #link("https://zotero-chinese.com/styles/")[Chinese CSL styles] are considered malformed by hayagriva. Unfortunately, hayagriva hardly provides clear error messages, making it very difficult to debug.],
-  zh: [截至2025年十月，302个#link("https://zotero-chinese.com/styles/")[中文 CSL 样式]中的222个（74%）都会被 hayagriva 判为 malformed。而且很不幸，hayagriva 提供的错误信息一般并不清晰，导致调试异常困难。],
+  en: [As of October 2025, 222 of 302 (74%) #link("https://zotero-chinese.com/styles/")[Chinese CSL styles] are considered malformed by hayagriva.],
+  zh: [截至2025年十月，302个#link("https://zotero-chinese.com/styles/")[中文 CSL 样式]中的222个（74%）都会被 hayagriva 判为 malformed。],
 )
 
 = #bbl(en: [Other], zh: [杂项]) <h-other>

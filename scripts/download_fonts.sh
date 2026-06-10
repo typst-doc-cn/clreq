@@ -24,7 +24,7 @@ fi
 
 # KaiTi and a specific version of SimSun
 if ! typst fonts --font-path . | rg --quiet '^KaiTi$' || \
-   ! typst fonts --font-path . | rg --quiet '^SimSun$'; then
+  ! typst fonts --font-path . | rg --quiet '^SimSun$'; then
   curl --location --remote-name https://github.com/typst-doc-cn/guide/releases/download/files/fonts.7z
   7z x fonts.7z -ofonts
   rm fonts.7z
@@ -33,6 +33,11 @@ fi
 # MOESongUN
 if ! typst fonts --font-path . | rg --quiet '^MOESongUN$'; then
   curl --location --remote-name https://github.com/typst-doc-cn/moe-tw-fonts/raw/main/fonts/eduSong_Unicode-v4.4-2025-12.ttf
+fi
+
+# jf open 粉圓 2.1
+if ! typst fonts --font-path . | rg --quiet '^jf open 粉圓 2\.1$'; then
+  curl --location --remote-name https://github.com/justfont/open-huninn-font/releases/download/v2.1/jf-openhuninn-2.1.ttf
 fi
 
 # Check
