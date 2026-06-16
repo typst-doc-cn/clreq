@@ -1034,7 +1034,8 @@ $ f(x) = y "（定义8）" $
 
 #till-next(now-fixed.with(last-affected: "0.14.2", last-level: "advanced"))
 
-```example
+```example-page
+>>> // This example behaves differently in `example` and `example-page` because of cjk-latin-spacing.
 >>> Current:
 #set par(justify: true)
 #block(width: 3em)[第1回成段]
@@ -2253,11 +2254,13 @@ key:
 )
 
 ```example-bib
-@book{key,
-  year = {2009},
-  month = {2}
+@misc{key,
+  year = {2026},
+  month = {6},
+  day = {16},
+  url = {https://w3.org/},
 }
-% [M]. 2009-02.
+% [EB/OL]. (2026-06-16). https://w3.org/.
 ```
 
 === #bbl(en: [Failed to load some CSL styles], zh: [无法加载某些 CSL 样式]) <csl-load>
