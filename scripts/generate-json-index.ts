@@ -181,12 +181,14 @@ function labelToId(label: string | undefined): string | undefined {
 async function queryDocument(): Promise<(Heading | GeneralMetadata)[]> {
   return (JSON.parse(
     await typst([
-      "query",
-      "index.typ", // This cannot be main.typ, or there will be an additional heading (`outline`'s title).
+      "eval",
+      "--in=index.typ", // This cannot be main.typ, or there will be an additional heading (`outline`'s title).
       [
+        "query(",
         "selector.or(heading, <priority>, <issue>, <pull>, <workaround>)",
         ".after(outline)",
         ".before(<addendum>, inclusive: false)",
+        ")",
       ].join(""),
       "--target=html",
       ...extraArgs.pre,

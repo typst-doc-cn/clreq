@@ -131,9 +131,9 @@ async function queryDocument(): Promise<
 
   const data = JSON.parse(
     await typst([
-      "query",
-      "main.typ",
-      "selector(<pull>).or(<issue>)",
+      "eval",
+      "--in=main.typ",
+      "query(selector(<pull>).or(<issue>))",
       "--target=html",
       ...extraArgs.pre,
     ]),
