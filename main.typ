@@ -329,6 +329,28 @@ $ f(x) = y "（定义8）" $
 #pull("typst#8425", merged: true)
 #workaround("https://github.com/typst/typst/discussions/2508")
 
+#babel(
+  en: [Variable fonts are now supported.],
+  zh: [现已支持可变字体。],
+)
+
+```example-page
+>>> Current & Expected: \
+#set text(
+  10em,
+  font: "Source Han Serif SC",
+  fill: white.transparentize(100%),
+  stroke: black + 0.1pt,
+)
+#for n in range(16, inclusive: true) {
+  place(
+    center + horizon,
+    text(weight: 250 + n * 40)[永],
+  )
+}
+#hide[永]
+```
+
 #till-next(now-fixed.with(last-affected: "0.14.2", last-level: "advanced"))
 
 #babel(
