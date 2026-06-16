@@ -31,10 +31,9 @@ async function renderExamples({ color }: { color?: Color }) {
 
   const examples = JSON.parse(
     await typst([
-      "query",
-      "main.typ",
-      "<external-example>",
-      "--field=value",
+      "eval",
+      "--in=main.typ",
+      "query(<external-example>).map(x => x.value)",
       "--diagnostic-format=short",
       "--target=html",
       ...extraArgs.pre,

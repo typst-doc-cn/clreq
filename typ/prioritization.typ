@@ -68,7 +68,7 @@
 
 #let paint-level(level) = {
   let l = config.at(level)
-  // In typst v0.14, `html.span` does not support `data-*` attributes, so we have to use `html.elem("span", …)`.
+  // In typst v0.14/v0.15, `html.span` does not support `data-*` attributes, so we have to use `html.elem("span", …)`.
   // https://github.com/typst/typst/issues/6870
   html.elem(
     "span",

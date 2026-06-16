@@ -329,6 +329,28 @@ $ f(x) = y "（定义8）" $
 #pull("typst#8425", merged: true)
 #workaround("https://github.com/typst/typst/discussions/2508")
 
+#babel(
+  en: [Variable fonts are now supported.],
+  zh: [现已支持可变字体。],
+)
+
+```example-page
+>>> Current & Expected: \
+#set text(
+  10em,
+  font: "Source Han Serif SC",
+  fill: white.transparentize(100%),
+  stroke: black + 0.1pt,
+)
+#for n in range(16, inclusive: true) {
+  place(
+    center + horizon,
+    text(weight: 250 + n * 40)[永],
+  )
+}
+#hide[永]
+```
+
 #till-next(now-fixed.with(last-affected: "0.14.2", last-level: "advanced"))
 
 #babel(
@@ -1012,7 +1034,8 @@ $ f(x) = y "（定义8）" $
 
 #till-next(now-fixed.with(last-affected: "0.14.2", last-level: "advanced"))
 
-```example
+```example-page
+>>> // This example behaves differently in `example` and `example-page` because of cjk-latin-spacing.
 >>> Current:
 #set par(justify: true)
 #block(width: 3em)[第1回成段]
@@ -2231,11 +2254,13 @@ key:
 )
 
 ```example-bib
-@book{key,
-  year = {2009},
-  month = {2}
+@misc{key,
+  year = {2026},
+  month = {6},
+  day = {16},
+  url = {https://w3.org/},
 }
-% [M]. 2009-02.
+% [EB/OL]. (2026-06-16). https://w3.org/.
 ```
 
 === #bbl(en: [Failed to load some CSL styles], zh: [无法加载某些 CSL 样式]) <csl-load>
