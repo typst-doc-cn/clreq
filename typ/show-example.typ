@@ -114,7 +114,7 @@
     //
     // We have to apply this to `layout*-example` functions in all kinds of examples.
     //
-    // Reason: In typst v0.14.0-rc.1, `text.size` does not affect the apparent size of text in HTML, but does affect the conversion rate between the absolute lengths in Typst and HTML.
+    // Reason: In typst v0.14/v0.15, `text.size` does not affect the apparent size of text in HTML, but does affect the conversion rate between the absolute lengths in Typst and HTML.
     // If an image is sized absolutely in points, then typst will make sure its relative size to text is the same in both PNG/SVG/PDF and HTML.
     // SVGs compiled from page and bibliography examples specify their sizes in absolute lengths.
     // To make scales of preview images consistent, we have to apply this rule to all kinds of examples.
