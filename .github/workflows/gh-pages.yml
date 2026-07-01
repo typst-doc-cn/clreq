@@ -41,7 +41,7 @@ jobs:
       - name: Load typst-version
         run: |
           echo "TYPST_VERSION=$(jq . scripts/typst-version.json --raw-output)" >> "$GITHUB_ENV"
-      - uses: typst-community/setup-typst@v4
+      - uses: typst-community/setup-typst@v5
         with:
           typst-version: v${{ env.TYPST_VERSION }}
       - name: Restore cached fonts
