@@ -1192,6 +1192,7 @@ $ f(x) = y "（定义8）" $
 
 #level.advanced
 #issue("typst#2348")
+#pull("typst#8570")
 
 ```example
 >>> #show: block.with(width: 8em)
@@ -2009,10 +2010,12 @@ $ integral f dif x $
   zh: [`institution`机构名称和`school`学校名称不显示],
 ) <publisher-alias>
 
-#level.broken
-#issue("hayagriva#112")
-#pull("hayagriva#484")
+#level.ok
+#issue("hayagriva#112", closed: true)
+#pull("hayagriva#484", merged: true)
 #workaround("https://typst-doc-cn.github.io/guide/FAQ/bib-missing-school.html")
+
+#till-next(now-fixed.with(last-affected: "0.15.0", last-level: "broken"))
 
 #babel(
   en: [In `*.bib`, the `school` field is conventionally associated with `@thesis` (`[D]`), and the `institution` field with `@report` (`[R]`). These fields should be placed between the location and the date after `[D]`/`[R]` when citing the works.],
@@ -2034,7 +2037,7 @@ $ integral f dif x $
   address = {New York},
   year = {1985},
 }
-% SWEARINGEN R. #text(font: "New Computer Modern")[Morphology and syntax of British sailors’ English] [R]. 249. New York: Profanity Institute, 1985.
+% SWEARINGEN R. #text(font: "New Computer Modern")[Morphology and syntax of British sailors’ English:] 249[R]. New York: Profanity Institute, 1985.
 @thesis{王楠2016,
   title = {在“共产主义视镜”下想象科学——“十七年”期间的中国科幻文学与科学话语},
   author = {王楠},
@@ -2150,7 +2153,7 @@ gbt7714.04.1.2:01.simplified:
 #issue("hayagriva#189", note: [mentioned])
 #issue("hayagriva#280", closed: true)
 #pull("hayagriva#301", merged: true)
-#issue("typst#6612")
+#issue("typst#6612", closed: true)
 #issue("typst#7113", closed: true)
 
 #till-next(now-fixed.with(last-affected: "0.13.1", last-level: "advanced"))
