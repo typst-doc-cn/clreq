@@ -301,6 +301,26 @@ $ f(x) = y "（定义8）" $
   )
 ]
 
+=== #bbl(
+  en: [Source Han `VF.ttf` fonts render tofus],
+  zh: [思源字体`VF.ttf`版被渲染成豆腐块],
+) <ttf-65536>
+
+#level.basic
+#issue("typst#8434")
+#pull("typst#8172")
+#workaround("https://typst-doc-cn.github.io/guide/FAQ/ttf-65536.html")
+
+#babel(
+  en: [Variable versions of Source Han fonts are released in `*-VF.ttf*`, `*-VF.otf*`, and other formats. When exporting to PNG or SVG with typst, `*-VF.ttf*` causes an overflow (65536, the number of glyphs, exceeds `u16::MAX`), resulting in all characters being rendered as tofus.],
+  zh: [思源字体的可变版本提供`*-VF.ttf*`、`*-VF.otf*`等格式。用 typst 导出 PNG、SVG 时，前一类格式会触发溢出（字形数 65536 超过`u16::MAX`），导致所有字符都渲染成豆腐块。]
+)
+
+#babel(
+  en: [This issue is marked as Basic, although it's easy to resolve once identified. This is because only some font formats and export formats are affected, and a font may be shadowed by fonts of the same name but different formats. As a result, identifying and debugging is rather difficult.],
+  zh: [这一问题在定位后相对容易解决，但仍算作 Basic，因为只有部分字体格式和导出格式受影响，并且字体可能被不同格式的同名字体遮蔽，定位和调试问题比较困难。],
+)
+
 === #bbl(en: [Size per font], zh: [按字体设置字号]) <per-font-size>
 
 #level.advanced
@@ -423,7 +443,7 @@ $ f(x) = y "（定义8）" $
 #level.ok
 #issue("typst#8090", closed: true)
 #pull("typst#8095", merged: true)
-// TODO: Link to typst.app/docs when Typst v0.15 is released.
+#workaround("https://typst.app/docs/reference/text/super/#parameters-baseline")
 
 #babel(
   en: [KaiTi (aka. 中易楷体, 楷体, simkai) and Noto Serif CJK (思源宋体) are two common fonts. They set incompatible metrics for superscripts and subscripts, resulting in misalignment when used together.],
@@ -1397,6 +1417,32 @@ $ integral f dif x $
 >>> #set text(tracking: 0em)
 >>> Expected: \
 >>> #block(width: 8 * 1.25em - 0.25em)[*勇踏*前人未至之境#linebreak(justify: true)]
+```
+
+=== #bbl(
+  en: [When language is not configured, some punctuation marks are improperly compressed],
+  zh: [未设置语言时，有些标点挤压不当],
+) <lang-compress-punct>
+
+#level.ok
+#issue("typst#8557", closed: true)
+
+#babel(
+  en: [The compression rules for some punctuation marks are special. For instance, in Taiwan and Hong Kong, the space around #unichar("、") must be reduced equally on both sides. Configuring the language is necessary to let them be compressed properly.],
+  zh: [有些标点的挤压规则比较特殊。例如港台的 #unichar("、") 必须从左右两侧对称挤压。要设置语言才能让这些标点正常挤压。],
+)
+
+```example
+>>> Current & Expected:
+>>>
+#show: block.with(width: 4.5em)
+#set par(justify: true)
+
+#set text(lang: "en", font: "jf open 粉圓 2.1")
+逗號、頓號
+
+#set text(lang: "zh", region: "TW")
+逗號、頓號
 ```
 
 === #bbl(
@@ -2473,6 +2519,13 @@ key:
     zh: [在`set text(font: array)`中支持自动补全字体名称],
   )
 
+- #issue("webapp-issues#894")
+
+  #bbl(
+    en: [Add variable versions of Noto CJK (or Source Han) fonts],
+    zh: [添加思源字体的可变版本],
+  )
+
 #set heading(numbering: none)
 
 = #bbl(en: [Addendum], zh: [附录]) <addendum>
@@ -2558,5 +2611,6 @@ key:
     If any of the following issues is closed in the future, it can be removed.
 
     - Latvian smart quotes are not applied consistently in bibliography output #issue("hayagriva#471")
+    - Inconsistent CJK Bracket Spacing Behavior #issue("typst#8555") // Only ja uses these brackets
   ]
 }
