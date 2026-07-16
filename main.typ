@@ -313,7 +313,7 @@ $ f(x) = y "（定义8）" $
 
 #babel(
   en: [Variable versions of Source Han fonts are released in `*-VF.ttf*`, `*-VF.otf*`, and other formats. When exporting to PNG or SVG with typst, `*-VF.ttf*` causes an overflow (65536, the number of glyphs, exceeds `u16::MAX`), resulting in all characters being rendered as tofus.],
-  zh: [思源字体的可变版本提供`*-VF.ttf*`、`*-VF.otf*`等格式。用 typst 导出 PNG、SVG 时，前一类格式会触发溢出（字形数 65536 超过`u16::MAX`），导致所有字符都渲染成豆腐块。]
+  zh: [思源字体的可变版本提供`*-VF.ttf*`、`*-VF.otf*`等格式。用 typst 导出 PNG、SVG 时，前一类格式会触发溢出（字形数 65536 超过`u16::MAX`），导致所有字符都渲染成豆腐块。],
 )
 
 #babel(
