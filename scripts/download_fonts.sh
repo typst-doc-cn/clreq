@@ -18,7 +18,8 @@ if ! typst fonts --font-path . | rg --quiet '^Noto Color Emoji$'; then
 fi
 
 # Source Han Serif SC VF
-if ! typst fonts --font-path . | rg --quiet '^Source Han Serif SC VF$'; then
+# `typst fonts` trims the VF suffix, so we have to check the file name.
+if ! typst fonts --font-path . --variants | rg --quiet 'SourceHanSerifSC-VF\.otf'; then
   curl --location --remote-name https://mirrors.cernet.edu.cn/adobe-fonts/source-han-serif/Variable/OTF/SourceHanSerifSC-VF.otf
 fi
 
