@@ -174,7 +174,9 @@ function assertUniq(issues: IssueMeta[]): Result {
   );
 
   if (duplicates.length > 0) {
-    return Result.Err(`Duplicated issues found:\n${new Set(duplicates)}`);
+    return Result.Err(
+      `Duplicated issues found:\n${Array.from(new Set(duplicates)).join(", ")}`,
+    );
   } else {
     return Result.Ok("All issues are unique.");
   }
