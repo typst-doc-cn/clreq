@@ -184,6 +184,7 @@
 
 #level.advanced
 #issue("typst#3385")
+#issue("typst#8732", note: [mentioned])
 #workaround("https://typst-doc-cn.github.io/guide/FAQ/chinese-in-raw.html")
 
 #babel(en: [This issue continues the above issue.], zh: [这一问题接续上一问题。])
@@ -218,6 +219,7 @@
 #level.advanced
 #issue("typst#366")
 #issue("typst#6737")
+#issue("typst#8732", note: [mentioned])
 #workaround("https://typst-doc-cn.github.io/guide/FAQ/equation-chinese-font.html")
 
 #babel(
@@ -475,7 +477,7 @@ $ f(x) = y "（定义8）" $
 
 #level.basic
 #issue("typst#7396")
-#pull("typst#7415")
+#pull("typst#7415", rejected: true)
 
 #babel(
   en: [
@@ -1148,8 +1150,12 @@ $ f(x) = y "（定义8）" $
 
 === #bbl(en: [Two-em dashes are overhung], zh: [破折号被错误悬挂]) <two-em-dash-overhung>
 
-#level.basic
-#issue("typst#6735")
+#level.ok
+#issue("typst#6735", closed: true)
+#pull("typst#7376", rejected: true)
+#pull("typst#8131", merged: true)
+
+#till-next(now-fixed.with(last-affected: "0.15.1", last-level: "basic"))
 
 #babel(
   en: [Two-em dashes have a width of 2 em and should not be overhung. This punctuation has two forms in Unicode: #unichar("⸺") is recommended, and two adjacent #unichar("—") characters are often used in practice. At present, the latter forms will be overhung.],
@@ -1230,6 +1236,34 @@ $ f(x) = y "（定义8）" $
 >>> 《新生》的出版之期接近了……
 >>>
 >>> #h(1.5em)《新生》#h(-0.5em)的出版之期接近了……
+```
+
+#babel(
+  en: [
+    As shown below, this issue is more visible when multiple short paragraphs are put together. The left side of the initial parenthesis should always be shrunk. Otherwise, the first-line indents will be misaligned.
+  ],
+  zh: [
+    如下例，多个短自然段相邻时，这个问题特别明显。行首括号的左侧应该始终压缩，否则首行缩进会显得不一致。
+  ],
+)
+
+```example-page
+#set page(width: 14em, margin: 0.5em)
+>>> #show "1": set text(font: "Noto Serif CJK SC")
+>>> Current:
+#set par(
+  first-line-indent: (amount: 2em, all: true),
+  justify: true,
+)
+（1）桑之未落
+
+（1）桑之未落，其叶沃若。
+>>> Expected:
+>>> #set par(first-line-indent: 0em)
+>>> #show: block.with(width: 100%, inset: (left: 2em))
+>>> （1）桑之未落
+>>>
+>>> （1）桑之未落，其叶沃若。
 ```
 
 === #bbl(
@@ -1663,12 +1697,20 @@ $ integral f dif x $
 
 #level.advanced
 #issue("typst#6527")
+#pull("typst#7247", merged: true)
 #workaround("https://github.com/typst/typst/issues/6527#issuecomment-3026200835")
 
 #babel(
   en: [The default value of `heading.hanging-indent` is `auto`, which indicates that the subsequent heading lines will be indented based on the width of the numbering. However, the `auto` width is not accurate if the numbering ends with a full-width punctuation, e.g., #unichar("、").],
   zh: [`heading.hanging-indent`默认为`auto`，表示标题从第二行起按编号的宽度缩进。然而若编号以全宽标点结尾，例如 #unichar("、")，那么`auto`得出的宽度并不准确。],
 )
+
+#babel(
+  en: [This issue has been partially resolved. However, the result is still problematic when applying a show rule on `h(0.3em, weak: true)` to resolve the above issue.],
+  zh: [这一问题目前已部分改善，但用 show 规则去除前一问题的`h(0.3em, weak: true)`时，结果仍然不正常。],
+)
+
+#till-next(now-fixed.with(last-affected: "0.15.1", last-level: "advanced"))
 
 ```example-page
 #set page(width: 5 * 12pt + 2 * 1em, margin: 1em)
@@ -2416,6 +2458,7 @@ key:
 #level.advanced
 #issue("typst#792")
 #pull("typst#7350")
+#pull("codex#182")
 #workaround("https://typst-doc-cn.github.io/guide/FAQ/chinese-remove-space.html")
 #workaround("https://typst.app/universe/package/cjk-unbreak")
 #workaround("https://typst.app/universe/package/cjk-spacer")
