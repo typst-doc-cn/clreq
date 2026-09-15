@@ -2654,6 +2654,5 @@ key:
     If any of the following issues is closed in the future, it can be removed.
 
     - Latvian smart quotes are not applied consistently in bibliography output #issue("hayagriva#471")
-    - Inconsistent CJK Bracket Spacing Behavior #issue("typst#8555") // Only ja uses these brackets
   ]
 }
