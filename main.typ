@@ -2455,13 +2455,15 @@ key:
   zh: [忽略源码中CJK字符间的换行],
 ) <ignore-linebreak>
 
-#level.advanced
-#issue("typst#792")
-#pull("typst#7350")
-#pull("codex#182")
+#level.ok
+#issue("typst#792", closed: true)
+#pull("typst#7350", merged: true)
+#pull("codex#182", merged: true)
 #workaround("https://typst-doc-cn.github.io/guide/FAQ/chinese-remove-space.html")
 #workaround("https://typst.app/universe/package/cjk-unbreak")
 #workaround("https://typst.app/universe/package/cjk-spacer")
+
+#till-next(now-fixed.with(last-affected: "0.15.1", last-level: "advanced"))
 
 ```example
 >>> Current: \
