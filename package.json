@@ -6,7 +6,7 @@
     "description": "Chinese Layout Gap Analysis for Typst",
     "dependencies": {
         "@std/fmt": "jsr:^1.0.9",
-        "concurrently": "^10.0.3",
+        "concurrently": "^10.0.5",
         "es-toolkit": "^1.52.0",
         "glob-watcher": "^6.0.0"
     },
