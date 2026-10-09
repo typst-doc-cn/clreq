@@ -2003,8 +2003,35 @@ $ integral f dif x $
 
 ````example-page
 >>> Expected: \
+// Expected to be possible:
 <<< 孔乙己@key，另见#cite(<key>, form: "prose-short")。
 >>> 孔乙己#super[[1]]，另见文献#h(0.25em)#[[1]]。
+````
+
+=== #bbl(
+  en: [The brackets in prose form citations are not rendered in superscript],
+  zh: [prose格式引用的括号没有上标],
+) <cite-prose-super>
+
+#level.basic
+#issue("hayagriva#511")
+
+#babel(
+  en: [When citing with #link("https://typst.app/docs/reference/model/cite/#parameters-form", `form: "prose"`), citation numbers and the square brackets should both be rendered in superscript, but at present, only the number is.],
+  zh: [按#link("https://typst.app/docs/reference/model/cite/#parameters-form", `form: "prose"`)引用时，引用编号与括号应一同上标，但目前只有编号会上标。],
+)
+
+````example-page
+>>> Current: \
+#cite(<a>, form: "prose")曾说
+
+>>> Expected: \
+>>> 迅哥#super[[1]]曾说 \
+>>> #show bibliography: none
+#bibliography(
+  bytes("@article{a, author = {迅哥}}"),
+  style: "gb-7714-2015-numeric",
+)
 ````
 
 === #bbl(en: [Citing with page numbers], zh: [带页码引用]) <cite-page-number>
