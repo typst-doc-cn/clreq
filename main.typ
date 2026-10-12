@@ -1582,7 +1582,7 @@ $ integral f dif x $
 ) <box-align-bottom-edge>
 
 #level.ok
-#issue("tianyi-smile/itemize#8")
+#issue("tianyi-smile/itemize#8", closed: true)
 #pull("typst#8150", merged: true)
 
 #till-next(now-fixed.with(last-affected: "0.14.2", last-level: "advanced"))
@@ -2607,7 +2607,7 @@ key:
 - #bbl(en: [Main site], zh: [主站]) \
   #link("https://typst-doc-cn.github.io/clreq/")[typst-doc-cn.github.io/clreq]
 - #bbl(en: [Mirror site], zh: [镜像站]) \
-  #link("https://gap.zhtyp.art")[gap.zhtyp.art]
+  #link("https://gap.zhtyp.top")[gap.zhtyp.top]
 - #bbl(en: [Test site], zh: [测试站]) \
   #link("https://clreq-gap-typst.netlify.app")[clreq-gap-typst.netlify.app]
 
