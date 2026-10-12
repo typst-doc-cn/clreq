@@ -2607,7 +2607,7 @@ key:
 - #bbl(en: [Main site], zh: [主站]) \
   #link("https://typst-doc-cn.github.io/clreq/")[typst-doc-cn.github.io/clreq]
 - #bbl(en: [Mirror site], zh: [镜像站]) \
-  #link("https://gap.zhtyp.art")[gap.zhtyp.art]
+  #link("https://gap.zhtyp.top")[gap.zhtyp.top]
 - #bbl(en: [Test site], zh: [测试站]) \
   #link("https://clreq-gap-typst.netlify.app")[clreq-gap-typst.netlify.app]
 
