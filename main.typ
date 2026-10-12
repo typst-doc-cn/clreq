@@ -1582,7 +1582,7 @@ $ integral f dif x $
 ) <box-align-bottom-edge>
 
 #level.ok
-#issue("tianyi-smile/itemize#8")
+#issue("tianyi-smile/itemize#8", closed: true)
 #pull("typst#8150", merged: true)
 
 #till-next(now-fixed.with(last-affected: "0.14.2", last-level: "advanced"))
