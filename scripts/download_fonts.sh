@@ -12,9 +12,9 @@ if ! typst fonts --font-path . | rg --quiet '^Noto Serif CJK SC$'; then
 fi
 
 # Noto Color Emoji, the CBDT/CBLC version
-# See https://github.com/typst/typst/issues/6611 for reasons.
+# It was once the only usable version (see https://github.com/typst/typst/issues/6611), and we just keep using it.
 if ! typst fonts --font-path . | rg --quiet '^Noto Color Emoji$'; then
-  curl --location --remote-name https://github.com/googlefonts/noto-emoji/raw/main/fonts/NotoColorEmoji.ttf
+  curl --location --remote-name https://github.com/googlefonts/noto-emoji/raw/main/2D/fonts/NotoColorEmoji.ttf
 fi
 
 # Source Han Serif SC VF
