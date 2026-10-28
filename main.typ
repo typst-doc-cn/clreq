@@ -242,6 +242,58 @@ $ f(x) = y "（定义8）" $
 >>> $ f(x) = y "（定义8）" $
 ```
 
+=== #bbl(en: [Selecting font via unprettified family name], zh: [按原始名称选择字体]) <unprettified-family-name>
+
+#level.advanced
+#issue("typst#2098")
+
+#babel(
+  en: [
+    Some fonts embed names with style suffixes in their files, and typst will clean up these suffixes. For example, the Flowing River font might embed _Flowing River ExtraBold_, where ExtraBold indicates the font weight. When selecting this font in typst, it should be trimmed to _Flowing River_; other parameters can be used to control the weight.
+  ],
+  zh: [
+    有些字体在文件中嵌入的名称带有样式后缀，typst 会加以清理。例如 Flowing River 字体嵌入的名称可能是“Flowing River ExtraBold”，其中 ExtraBold 是指字重；而在 typst 选择该字体时，应简省作“Flowing River”，并用其它参数控制字重。
+  ],
+)
+
+#babel(
+  en: [
+    Currently, the CN suffix is interpreted as _condensed_ and is trimmed. However, sometimes it indicates that the font provides the glyphs specific to China, in which case it should not be trimmed. The following example shows the situation of Source Han Serif. The `SubsetOTF/CN/*` version of this font named _Source Han Serif CN_ only provides the glyphs for China, while the `OTF/Japanese/*` version named _Source Han Serif_ provides all the glyphs and sets Japanese glyphs as the defaults. Both versions become _Source Han Serif_ in typst. This occasionally causes confusion.
+  ],
+  zh: [
+    目前 CN 后缀会被当成 condensed（窄体）而删除，然而它有时表示字体的字形针对中国，不该一律删除。下例展示了思源宋体的情况。该字体仅含中国字形的`SubsetOTF/CN/*`名为“Source Han Serif CN”，而包含全部字形且以日文字形为默认的`OTF/Japanese/*`名为“Source Han Serif”。二者在 typst 内均为“Source Han Serif”，偶尔会造成困惑。
+  ],
+)
+
+```example-page
+>>> Current: \
+#set text(fallback: false)
+#table(
+  columns: 2,
+<<<   text(font: "Source Han Serif")[天冷],
+<<<   text(font: "Source Han Serif JP")[天冷],
+>>>   ..(text(font: "Source Han Serif SC", lang: "ja")[天冷],) * 2,
+  text(font: "Source Han Serif SC")[天冷],
+  text(font: "Source Han Serif CN")[天冷],
+<<<   text(font: "Source Han Serif HC")[天冷],
+<<<   text(font: "Source Han Serif HK")[天冷],
+>>>   ..(text(font: "Source Han Serif SC", lang: "zh", region: "HK")[天冷],) * 2,
+)
+
+>>> Expected: \
+>>> #set text(font: "Source Han Serif SC")
+>>> #table(
+>>>   columns: 2,
+>>>   ..for fn in (
+>>>     text.with(lang: "ja"),
+>>>     text.with(lang: "zh", region: "CN"),
+>>>     text.with(lang: "zh", region: "HK"),
+>>>   ) {
+>>>     (fn[天冷],) * 2
+>>>   }
+>>> )
+```
+
 === #bbl(en: [Selecting font via localized family name], zh: [按本地化名称选择字体]) <local-family-name>
 
 #level.advanced
@@ -414,7 +466,7 @@ $ f(x) = y "（定义8）" $
 #set underline(stroke: orange.transparentize(30%))
 #underline[今天晚上，很好的月光。 ]
 
->>> Expected: \
+>>> #text(font: "New Computer Modern")[Expected:] \
 >>> #set text(bottom-edge: "descender")
 >>> #box(
 >>>   stroke: (bottom: orange.transparentize(30%)),
@@ -729,7 +781,7 @@ $ f(x) = y "（定义8）" $
 #issue("typst#8191")
 
 #babel(
-  en: [Chinese texts do not use word spaces. The smart quoting algorithm in Typst is not yet fully compatible with Chinese.],
+  en: [Chinese texts do not use word spaces. The smart quoting algorithm in typst is not yet fully compatible with Chinese.],
   zh: [中文不用空格分词，而 typst 的智能引号算法尚不完全适配。],
 )
 
@@ -931,6 +983,7 @@ $ f(x) = y "（定义8）" $
 
 #level.advanced
 #issue("typst#6774")
+#issue("typst#9002", note: [mentioned])
 
 #babel(
   en: [According to #link("https://www.w3.org/TR/clreq/#prohibition_rules_for_line_start_end")[prohibition rules for line start and line end] (basic), #unichar("·") should not appear at the line start.],
@@ -1216,9 +1269,12 @@ $ f(x) = y "（定义8）" $
   zh: [段首的夹注符号有时不会调整间距],
 ) <paren-par-start>
 
-#level.advanced
+#level.ok
 #issue("typst#2348")
-#pull("typst#8570")
+#pull("typst#8570", merged: true)
+#pull("typst#8988", merged: true)
+
+#till-next(now-fixed.with(last-affected: "0.15.1", last-level: "advanced"))
 
 ```example
 >>> #show: block.with(width: 8em)
@@ -1264,6 +1320,47 @@ $ f(x) = y "（定义8）" $
 >>> （1）桑之未落
 >>>
 >>> （1）桑之未落，其叶沃若。
+```
+
+=== #bbl(
+  en: [Parenthetical indication punctuation marks at the start of lines are shifted according to the tracking],
+  zh: [行首的夹注符号会随字距漂移],
+) <paren-tracking-line-start>
+
+#level.ok
+#issue("typst#8959", closed: true)
+#pull("typst#8985", merged: true)
+
+#till-next(now-fixed.with(last-affected: "0.15.1", last-level: "advanced"))
+
+#babel(
+  en: [
+    When the tracking is nonzero, parenthetical indication punctuation marks at the start of lines should be positioned the same as if the tracking is zero. It should not be shifted out of the type area when the tracking is increased.
+  ],
+  zh: [
+    字距非零时，行首夹注符号的位置应与字距为零时相同，而不应随字距增大而逐渐漂移出版心。
+  ],
+)
+
+```example-page
+>>> = Current
+>>> #[
+#show: block.with(stroke: (left: green))
+#for tracking in (0em, 0.25em, 0.75em) {
+  show: block.with(width: 5em + 3 * tracking)
+  set text(tracking: tracking)
+  [「一」文钱「十」个]
+  parbreak()
+}
+>>> ]
+>>> = Expected
+>>> #show: block.with(stroke: (left: green))
+>>> #for tracking in (0em, 0.25em, 0.75em) {
+>>>   show: block.with(width: 5em + 3 * tracking)
+>>>   show ".": h(calc.max(0em, tracking - 0.6em))
+>>>   [「一」.文#h(tracking)钱.「十」.个]
+>>>   parbreak()
+>>> }
 ```
 
 === #bbl(
@@ -1800,7 +1897,7 @@ $ integral f dif x $
 
 // Ref: https://www.w3.org/TR/clreq/#considerations_in_designing_type_area
 #babel(
-  en: [In Chinese typography, line length should be multiples of the character size. Otherwise, several alignment issues described in @justification may occur.],
+  en: [In Chinese typography, line length should be multiples of the character size. Otherwise, several alignment issues described in @justification may occur. Therefore, the width of the type area is usually determined before page margins, rather than the other way around.],
   zh: [中文排版中，一行的行长应为文字尺寸的整数倍，不然容易触发 @justification 中的若干对齐问题。因此通常“先确定版心，再余出空白”，而不是“先确定边距，再剩出版心”。],
 )
 
@@ -2510,6 +2607,7 @@ key:
 
 #level.advanced
 #issue("typst#6460")
+#issue("typst#8944")
 
 #babel(
   en: [At present, there are no relevant methods, no matter the messages come from the core compiler or third-party packages.],
