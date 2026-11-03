@@ -106,6 +106,8 @@ GitHub Actions 会监控文档中标记的`#issue`和`#pull`，发现状态变�
 + #till-next(now-fixed.with(last-affected: "0.13.1", last-level: "basic"))
 ```
 
+注意`last-affected`可能需要跟随 Typst 小版本更新。例如合并 [hayagriva#484](https://github.com/typst/hayagriva/pull/484) 时最新 Typst 版本为 0.15.0，故彼时在文档相应章节记录`last-affected: "0.15.0"`；后来 Typst 又发布了 0.15.1，但并未包含 hayagriva#484，此时应将文档更新为`last-affected: "0.15.1"`。
+
 ### 多语言内容（`babel`/`bbl`）
 
 - `en`、`zh`两字段分别在 English、中文模式显示。

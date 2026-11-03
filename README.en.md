@@ -105,6 +105,8 @@ An example update is as below.
 + #till-next(now-fixed.with(last-affected: "0.13.1", last-level: "basic"))
 ```
 
+Note that `last-affected` may need to follow Typst patch updates. For instance, when [hayagriva#484](https://github.com/typst/hayagriva/pull/484) was merged, the latest Typst version was 0.15.0, so we added `last-affected: "0.15.0"` to the corresponding section; later Typst released 0.15.1 without including hayagriva#484, so we should update it to `last-affected: "0.15.1"`.
+
 ### Multilingual content (`babel`/`bbl`)
 
 - The `en` and `zh` fields are displayed in English and 中文 modes, respectively.
