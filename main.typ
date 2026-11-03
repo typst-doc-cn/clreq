@@ -2227,7 +2227,7 @@ $ integral f dif x $
 #pull("hayagriva#484", merged: true)
 #workaround("https://typst-doc-cn.github.io/guide/FAQ/bib-missing-school.html")
 
-#till-next(now-fixed.with(last-affected: "0.15.0", last-level: "broken"))
+#till-next(now-fixed.with(last-affected: "0.15.1", last-level: "broken"))
 
 #babel(
   en: [In `*.bib`, the `school` field is conventionally associated with `@thesis` (`[D]`), and the `institution` field with `@report` (`[R]`). These fields should be placed between the location and the date after `[D]`/`[R]` when citing the works.],
