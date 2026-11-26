@@ -2614,6 +2614,7 @@ key:
 
 #level.advanced
 #workaround("https://typst-doc-cn.github.io/guide/FAQ/dual_language_caption.html")
+#workaround("https://typst.app/universe/package/cap-able")
 
 ```example-page
 >>> Expected:
@@ -2624,6 +2625,8 @@ key:
 >>>   Figure 1 #h(0.5em) Caption
 >>> ]
 ```
+
+双语标题现在可以使用 `cap-able` 包的 `bicap` 函数快速实现。
 
 == #bbl(en: [What else?], zh: [其它]) <other>
 
